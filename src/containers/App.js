@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { 
   Container,
   Menu,
-  Header
+  Header,
+  Button,
+  Divider
 } from 'semantic-ui-react'
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
 
@@ -16,7 +18,7 @@ class App extends Component {
       <BrowserRouter>
       <Container>
 
-        <Menu size='massive'>
+        <Menu secondary style={{ marginBottom: '30px'}}>
           <Menu.Item>
             <Header >GCProfile</Header>
           </Menu.Item>
@@ -25,9 +27,19 @@ class App extends Component {
           </Menu.Item>    
           <Menu.Item>
             <Link to='/profile/hello'>Profile Route - id is hello</Link>
-          </Menu.Item>            
+          </Menu.Item>
+          <Menu.Menu position='right'>
+            <Menu.Item>
+              <Button basic content='Notifications' size='tiny' />
+            </Menu.Item>  
+            <Menu.Item>
+              <Button primary content='Language' size='tiny' />
+            </Menu.Item>
+          </Menu.Menu>            
         </Menu>
         
+        <Divider />
+
         <Switch>
           <div>
             <Route exact path='/' component={Home} />
