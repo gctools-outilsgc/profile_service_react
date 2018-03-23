@@ -1,13 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
+import LocalizedComponent
+  from '@gctools-components/react-i18n-translation-webpack';
 
-class Home extends Component {
-    render() {
-      return (
-        <div>
-            This is the home page
-        </div>            
-      );
-    }
-  }
-  
-  export default Home;
+const Home = () => (
+  <div>
+    {__('This is the home page')}
+  </div>
+);
+
+export default LocalizedComponent(Home);
