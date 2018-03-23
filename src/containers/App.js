@@ -1,56 +1,57 @@
-import React, { Component } from 'react';
-import { 
-  Container,
-  Menu,
-  Header,
-  Button,
-  Divider
-} from 'semantic-ui-react'
-import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
+import React from 'react';
+import { Container, Menu, Header, Button } from 'semantic-ui-react';
+import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
+import LocalizedComponent
+  from '@gctools-components/react-i18n-translation-webpack';
 
+import Home from './Home';
+import Profile from './Profile';
 
-import Home from  './Home'
-import Profile from './Profile'
-
-class App extends Component {
-  render() {
-    return (
-      <BrowserRouter>
-      <Container>
-
-        <Menu secondary style={{ marginBottom: '30px'}}>
-          <Menu.Item>
-            <Header >GCProfile</Header>
-          </Menu.Item>
-          <Menu.Item>
-            <Link to='/'>Home</Link>
-          </Menu.Item>    
-          <Menu.Item>
-            <Link to='/profile/hello'>Profile Route - id is hello</Link>
-          </Menu.Item>
-          <Menu.Menu position='right'>
-            <Menu.Item>
-              <Button basic content='Notifications' size='tiny' />
-            </Menu.Item>  
-            <Menu.Item>
-              <Button primary content='Language' size='tiny' />
-            </Menu.Item>
-          </Menu.Menu>            
-        </Menu>
-        
-        <Divider />
-
-        <Switch>
-          <div>
-            <Route exact path='/' component={Home} />
-            <Route path='/profile/:id' component={Profile} />
-          </div>
-        </Switch>
-
-      </Container>
-      </BrowserRouter> 
-    );
+const changeLanguage = () => {
+  if (localizer.lang === 'en_CA') {
+    localizer.setLanguage('fr_CA');
+  } else {
+    localizer.setLanguage('en_CA');
   }
-}
+};
 
-export default App;
+const style = {
+  menu: {
+    marginBottom: '30px',
+  },
+};
+
+const App = () => (
+  <BrowserRouter>
+    <Container>
+      <Menu secondary style={style.menu}>
+        <Menu.Item>
+          <Header >GCProfile</Header>
+        </Menu.Item>
+        <Menu.Item>
+          <Link to="/" href="/">Home</Link>
+        </Menu.Item>
+        <Menu.Item>
+          <Link to="/profile/hello" href="/profile/hello">
+            Profile Route - id is hello
+          </Link>
+        </Menu.Item>
+        <Menu.Menu position="right">
+          <Menu.Item>
+            <Button onClick={changeLanguage}>{localizer.lang}</Button>
+          </Menu.Item>
+        </Menu.Menu>
+      </Menu>
+
+      <Switch>
+        <div>
+          <Route exact path="/" component={Home} />
+          <Route path="/profile/:id" component={Profile} />
+        </div>
+      </Switch>
+
+    </Container>
+  </BrowserRouter>
+);
+
+export default LocalizedComponent(App);
