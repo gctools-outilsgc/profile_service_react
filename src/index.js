@@ -12,7 +12,7 @@ import App from './containers/App';
 import registerServiceWorker from './registerServiceWorker';
 
 const apollo = new ApolloClient({
-  link: new HttpLink({ uri: 'http://gcrec.lpss.me/graphql' }),
+  link: new HttpLink({ uri: 'https://graphql.gccollab.ca/graphqlcore' }),
   cache: new InMemoryCache(),
 });
 

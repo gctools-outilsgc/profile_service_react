@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Container, Menu, Header, Button } from 'semantic-ui-react';
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 import LocalizedComponent
@@ -32,8 +32,8 @@ const App = () => (
           <Link to="/" href="/">Home</Link>
         </Menu.Item>
         <Menu.Item>
-          <Link to="/profile/hello" href="/profile/hello">
-            Profile Route - id is hello
+          <Link to="/profile/2" href="/profile/2">
+            Profile Route - gcID is 2
           </Link>
         </Menu.Item>
         <Menu.Menu position="right">
@@ -44,10 +44,10 @@ const App = () => (
       </Menu>
 
       <Switch>
-        <div>
+        <Fragment>
           <Route exact path="/" component={Home} />
           <Route path="/profile/:id" component={Profile} />
-        </div>
+        </Fragment>
       </Switch>
 
     </Container>
