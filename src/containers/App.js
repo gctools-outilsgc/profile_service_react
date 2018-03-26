@@ -26,10 +26,10 @@ const App = () => (
     <Container>
       <Menu secondary style={style.menu}>
         <Menu.Item>
-          <Header >GCProfile</Header>
+          <Header >{__('GCProfile')}</Header>
         </Menu.Item>
         <Menu.Item>
-          <Link to="/" href="/">Home</Link>
+          <Link to="/" href="/">{__('Home')}</Link>
         </Menu.Item>
         <Menu.Item>
           <Link to="/profile/2" href="/profile/2">

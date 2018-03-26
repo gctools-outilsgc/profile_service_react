@@ -1,0 +1,32 @@
+msgid ""
+msgstr ""
+"Language : en\n"
+"Plural-Forms : nplurals=2; plural=(n != 1);\n"
+"MIME-Version : 1.0\n"
+"Content-Type : text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding : 8bit\n"
+
+#: src/components/ProfileInfo.js 25:25
+msgid "Loading"
+msgstr ""
+
+#: src/components/ProfileInfo.js 32:48
+msgid "Edit"
+msgstr ""
+
+#: src/components/ProfileInfo.js 42:35
+msgid "Work"
+msgstr ""
+
+#: src/components/ProfileInfo.js 51:35
+msgid "Mobile"
+msgstr ""
+
+#: src/components/ProfileInfo.js 60:35
+msgid "Address"
+msgstr ""
+
+#: src/components/ProfileInfo.js 69:34
+msgid "Email"
+msgstr ""
+

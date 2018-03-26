@@ -1,0 +1,40 @@
+
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2018-03-26 10:11-0300\n"
+"PO-Revision-Date: 2018-03-26 10:11-0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr_CA\n"
+"Language-Team: fr_CA <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.5.3\n"
+
+#: 25:25 src/components/ProfileInfo.js
+msgid "Loading"
+msgstr "Chargement"
+
+#: 32:48 src/components/ProfileInfo.js
+msgid "Edit"
+msgstr "Modifier"
+
+#: 42:35 src/components/ProfileInfo.js
+msgid "Work"
+msgstr "Travail"
+
+#: 51:35 src/components/ProfileInfo.js
+msgid "Mobile"
+msgstr ""
+
+#: 60:35 src/components/ProfileInfo.js
+msgid "Address"
+msgstr "Adresse"
+
+#: 69:34 src/components/ProfileInfo.js
+msgid "Email"
+msgstr "Courriel"
+
