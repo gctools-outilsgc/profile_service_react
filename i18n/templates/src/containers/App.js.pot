@@ -14,3 +14,11 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
+#: src/containers/App.js 22:5
+msgid "EN"
+msgstr ""
+
+#: src/containers/App.js 22:5
+msgid "FR"
+msgstr ""
+

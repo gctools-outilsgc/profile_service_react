@@ -19,7 +19,7 @@ const changeLanguage = () => {
 
 const LanguageToggle = () => (
   <Button compact onClick={changeLanguage}>
-    {localizer.lang}
+    {__('FR')}
   </Button>
 );
 
