@@ -30,3 +30,19 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
+#: src/components/ProfileInfo.js 80:35
+msgid "Title"
+msgstr ""
+
+#: src/components/ProfileInfo.js 98:35
+msgid "Organization"
+msgstr ""
+
+#: src/components/ProfileInfo.js 119:41
+msgid "Phone number"
+msgstr ""
+
+#: src/components/ProfileInfo.js 135:41
+msgid "Mobile phone number"
+msgstr ""
+
