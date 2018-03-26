@@ -30,6 +30,20 @@ query profileInfoQuery($gcID: String!) {
   }
 }`;
 
+const updateProfileMutation = gql`
+mutation uPM($gcID: String!, $dataToModify: ModifyProfileInput!) {
+  modifyProfile(gcId: $gcID, dataToModify: $dataToModify) {
+    gcID
+    name
+    email
+    titleEn
+    titleFr
+    avatar
+    mobilePhone
+    officePhone
+  }
+}
+`;
 
 export default graphql(profileInfoQuery, {
   props: props => ({
@@ -44,4 +58,6 @@ export default graphql(profileInfoQuery, {
       gcID,
     },
   }),
-})(ProfileInfo);
+})(graphql(updateProfileMutation, {
+  props: props => ({ mutateProfile: props.mutate }),
+})(ProfileInfo));
