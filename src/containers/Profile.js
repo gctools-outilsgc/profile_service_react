@@ -11,7 +11,12 @@ const fakeProps = {
     work: '1234567890',
     mobile: '0987654321',
   },
-  address: '123 Fake Street',
+  address: {
+    street: '123 Fake Street',
+    city: 'Ottawa',
+    postal: 'k1A0R5',
+    country: 'Canada',
+  },
   email: 'john.doe@mail.mail',
 };
 
@@ -47,13 +52,12 @@ Profile.defaultProps = {
 const ProfileInfo = () => (
   <Item.Group>
     <Item>
-
       <Item.Image style={style.imageExample} size="tiny" />
       <Item.Content>
-        <Button floated="right" basic size="small">
-          <Icon size="tiny" name="edit" /> Edit
+        <Button icon="edit" floated="right" basic size="small">
+          <Icon name="edit" /> Edit
         </Button>
-        <Item.Header> {fakeProps.name} </Item.Header>
+        <Item.Header as="h1"> {fakeProps.name} </Item.Header>
         <Item.Meta> {fakeProps.titleEn} / {fakeProps.titleFR} </Item.Meta>
         <Item.Meta> {fakeProps.department} </Item.Meta>
         <Item.Description style={{ marginTop: '20px' }}>
@@ -81,7 +85,10 @@ const ProfileInfo = () => (
               <List.Content>
                 <List.Header> Address </List.Header>
                 <List.Description>
-                  {fakeProps.address}
+                  {fakeProps.address.street}<br />
+                  {fakeProps.address.city}<br />
+                  {fakeProps.address.postal}<br />
+                  {fakeProps.address.country}
                 </List.Description>
               </List.Content>
             </List.Item>

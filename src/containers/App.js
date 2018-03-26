@@ -1,11 +1,12 @@
 import React from 'react';
-import { Container, Menu, Header, Button } from 'semantic-ui-react';
+import { Container, Menu, Button, Divider, Image } from 'semantic-ui-react';
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 import LocalizedComponent
   from '@gctools-components/react-i18n-translation-webpack';
 
 import Home from './Home';
 import Profile from './Profile';
+import logo from '../assets/logo.png';
 
 const changeLanguage = () => {
   if (localizer.lang === 'en_CA') {
@@ -17,7 +18,20 @@ const changeLanguage = () => {
 
 const style = {
   menu: {
-    marginBottom: '30px',
+    marginBottom: '20px',
+  },
+  logo: {
+    image: {
+      width: '50px',
+      marginRight: '10px',
+    },
+    text: {
+      fontSize: '24px',
+    },
+  },
+  content: {
+    paddingLeft: '13px',
+    paddingRight: '13px',
   },
 };
 
@@ -26,7 +40,8 @@ const App = () => (
     <Container>
       <Menu secondary style={style.menu}>
         <Menu.Item>
-          <Header >GCProfile</Header>
+          <Image src={logo} style={style.logo.image} verticalAlign="middle" />
+          <span style={style.logo.text}>GCProfile</span>
         </Menu.Item>
         <Menu.Item>
           <Link to="/" href="/">Home</Link>
@@ -38,13 +53,17 @@ const App = () => (
         </Menu.Item>
         <Menu.Menu position="right">
           <Menu.Item>
-            <Button onClick={changeLanguage}>{localizer.lang}</Button>
+            <Button compact onClick={changeLanguage}>
+              {localizer.lang}
+            </Button>
           </Menu.Item>
         </Menu.Menu>
       </Menu>
 
+      <Divider />
+
       <Switch>
-        <div>
+        <div style={style.content}>
           <Route exact path="/" component={Home} />
           <Route path="/profile/:id" component={Profile} />
         </div>
