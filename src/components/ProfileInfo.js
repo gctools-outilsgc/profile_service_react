@@ -10,6 +10,14 @@ const style = {
     backgroundColor: 'blue',
     height: '80px',
   },
+  list: {
+    float: 'left',
+    marginTop: '0px',
+    marginRight: '15px',
+    listItem: {
+      marginBottom: '10px',
+    },
+  },
 };
 
 const ProfileInfo = (props) => {
@@ -29,14 +37,14 @@ const ProfileInfo = (props) => {
           <Item.Image style={style.imageExample} size="tiny" />
           <Item.Content>
             <Button floated="right" basic size="small">
-              <Icon size="tiny" name="edit" /> {__('Edit')}
+              <Icon name="edit" /> {__('Edit')}
             </Button>
             <Item.Header> {profile.name} </Item.Header>
             <Item.Meta> {profile.titleEn} / {profile.titleFR} </Item.Meta>
             <Item.Meta> {profile.org.nameEn} </Item.Meta>
             <Item.Description style={{ marginTop: '20px' }}>
-              <List horizontal>
-                <List.Item>
+              <List style={style.list}>
+                <List.Item style={style.list.listItem}>
                   <List.Icon size="large" name="phone" />
                   <List.Content>
                     <List.Header> {__('Work')} </List.Header>
@@ -54,15 +62,22 @@ const ProfileInfo = (props) => {
                     </List.Description>
                   </List.Content>
                 </List.Item>
+              </List>
+              <List style={style.list}>
                 <List.Item>
                   <List.Icon size="large" name="point" />
                   <List.Content>
                     <List.Header> {__('Address')} </List.Header>
                     <List.Description>
-                      {profile.address.streetAddress}
+                      {profile.address.streetAddress}<br />
+                      {profile.address.city}, {profile.address.province}<br />
+                      {profile.address.postalCode}<br />
+                      {profile.address.country}
                     </List.Description>
                   </List.Content>
                 </List.Item>
+              </List>
+              <List style={style.list}>
                 <List.Item>
                   <List.Icon size="large" name="mail" />
                   <List.Content>
