@@ -30,3 +30,43 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
+#: src/components/ProfileInfo.js 80:35
+msgid "Title"
+msgstr ""
+
+#: src/components/ProfileInfo.js 98:35
+msgid "Organization"
+msgstr ""
+
+#: src/components/ProfileInfo.js 119:41
+msgid "Phone number"
+msgstr ""
+
+#: src/components/ProfileInfo.js 135:41
+msgid "Mobile phone number"
+msgstr ""
+
+#: src/components/ProfileInfo.js 67:47
+msgid "Cancel"
+msgstr ""
+
+#: src/components/ProfileInfo.js 75:45
+msgid "Save"
+msgstr ""
+
+#: src/components/ProfileInfo.js 197:41
+msgid "City"
+msgstr ""
+
+#: src/components/ProfileInfo.js 205:41
+msgid "Province"
+msgstr ""
+
+#: src/components/ProfileInfo.js 213:41
+msgid "Postal Code"
+msgstr ""
+
+#: src/components/ProfileInfo.js 221:41
+msgid "Country"
+msgstr ""
+
