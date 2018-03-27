@@ -59,8 +59,7 @@ export default compose(
       employees: (p.data.profiles && p.data.profiles.length === 1) ?
         p.data.profiles[0].Employees : [],
       sup: (p.data.profiles && p.data.profiles.length === 1) ?
-        Object.assign({}, p.data.profiles[0], (p.data.profiles[0].org) ?
-          {} : { org: {} }) : undefined,
+        p.data.profiles[0] : { org: {} },
     }),
     options: ({ gcID }) => ({
       variables: {

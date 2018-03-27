@@ -54,3 +54,19 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
+#: src/components/ProfileInfo.js 197:41
+msgid "City"
+msgstr ""
+
+#: src/components/ProfileInfo.js 205:41
+msgid "Province"
+msgstr ""
+
+#: src/components/ProfileInfo.js 213:41
+msgid "Postal Code"
+msgstr ""
+
+#: src/components/ProfileInfo.js 221:41
+msgid "Country"
+msgstr ""
+

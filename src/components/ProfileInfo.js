@@ -11,6 +11,14 @@ const style = {
     backgroundColor: 'blue',
     height: '80px',
   },
+  list: {
+    float: 'left',
+    marginTop: '0px',
+    marginRight: '15px',
+    listItem: {
+      marginBottom: '10px',
+    },
+  },
 };
 
 class ProfileInfo extends Component {
@@ -34,7 +42,7 @@ class ProfileInfo extends Component {
   }
 
   handleSave() {
-    console.log('saved!');
+    console.log('saved!'); // eslint-disable-line
     this.setState({ editMode: false });
   }
 
@@ -134,8 +142,8 @@ class ProfileInfo extends Component {
                 />
               </Item.Meta>
               <Item.Description style={{ marginTop: '20px' }}>
-                <List horizontal>
-                  <List.Item>
+                <List style={style.list}>
+                  <List.Item style={style.list.listItem}>
                     <List.Icon size="large" name="phone" />
                     <List.Content>
                       <List.Header> {__('Work')} </List.Header>
@@ -167,6 +175,8 @@ class ProfileInfo extends Component {
                       </List.Description>
                     </List.Content>
                   </List.Item>
+                </List>
+                <List style={style.list}>
                   <List.Item>
                     <List.Icon size="large" name="point" />
                     <List.Content>
@@ -177,6 +187,38 @@ class ProfileInfo extends Component {
                           values={[{
                             value: this.state.profile.address.streetAddress,
                             placeholder: __('Address'),
+                          }]}
+                          showLabel={false}
+                        /><br />
+                        <ReactI18nEdit
+                          edit={this.state.editMode}
+                          values={[{
+                            value: this.state.profile.address.city,
+                            placeholder: __('City'),
+                          }]}
+                          showLabel={false}
+                        />,
+                        <ReactI18nEdit
+                          edit={this.state.editMode}
+                          values={[{
+                            value: this.state.profile.address.province,
+                            placeholder: __('Province'),
+                          }]}
+                          showLabel={false}
+                        /><br />
+                        <ReactI18nEdit
+                          edit={this.state.editMode}
+                          values={[{
+                            value: this.state.profile.address.postalCode,
+                            placeholder: __('Postal Code'),
+                          }]}
+                          showLabel={false}
+                        /><br />
+                        <ReactI18nEdit
+                          edit={this.state.editMode}
+                          values={[{
+                            value: this.state.profile.address.country,
+                            placeholder: __('Country'),
                           }]}
                           showLabel={false}
                         />
@@ -238,6 +280,11 @@ ProfileInfo.propTypes = {
       id: PropTypes.string,
       nameEn: PropTypes.string,
       nameFr: PropTypes.string,
+      organization: PropTypes.shape({
+        id: PropTypes.string,
+        nameEn: PropTypes.string,
+        nameFr: PropTypes.string,
+      }),
     }),
   }),
 };
