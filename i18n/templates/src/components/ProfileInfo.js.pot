@@ -46,3 +46,11 @@ msgstr ""
 msgid "Mobile phone number"
 msgstr ""
 
+#: src/components/ProfileInfo.js 67:47
+msgid "Cancel"
+msgstr ""
+
+#: src/components/ProfileInfo.js 75:45
+msgid "Save"
+msgstr ""
+

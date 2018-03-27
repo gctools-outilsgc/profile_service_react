@@ -21,6 +21,7 @@ class ProfileInfo extends Component {
       ready: false,
       profile: undefined,
     };
+    this.handleSave = this.handleSave.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -32,6 +33,11 @@ class ProfileInfo extends Component {
     }
   }
 
+  handleSave() {
+    console.log('saved!');
+    this.setState({ editMode: false });
+  }
+
   render() {
     const {
       loading,
@@ -39,6 +45,38 @@ class ProfileInfo extends Component {
     } = this.props;
     if (error) return `Error!: ${error}`;
     if (this.state.ready === false) return false;
+    let editButtons = (
+      <Button
+        floated="right"
+        size="small"
+        basic
+        onClick={() => this.setState({ editMode: true })}
+      >
+        <Icon size="tiny" name="edit" />{__('Edit')}
+      </Button>
+    );
+    if (this.state.editMode) {
+      editButtons = (
+        <div>
+          <Button
+            floated="right"
+            size="small"
+            basic
+            onClick={this.handleSave}
+          >
+            <Icon size="tiny" name="save" />{__('Save')}
+          </Button>
+          <Button
+            floated="right"
+            size="small"
+            basic
+            onClick={() => this.setState({ editMode: false })}
+          >
+            <Icon size="tiny" name="cancel" />{__('Cancel')}
+          </Button>
+        </div>
+      );
+    }
     return (
       <Segment>
         <Dimmer active={loading}>
@@ -48,14 +86,7 @@ class ProfileInfo extends Component {
           <Item>
             <Item.Image style={style.imageExample} size="tiny" />
             <Item.Content>
-              <Button
-                floated="right"
-                size="small"
-                basic
-                onClick={() => this.setState({ editMode: true })}
-              >
-                <Icon size="tiny" name="edit" /> {__('Edit')}
-              </Button>
+              {editButtons}
               <Item.Header>
                 <ReactI18nEdit
                   edit={this.state.editMode}
