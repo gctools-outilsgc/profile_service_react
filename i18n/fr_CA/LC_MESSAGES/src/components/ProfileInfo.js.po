@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-03-26 10:11-0300\n"
+"POT-Creation-Date: 2018-03-27 14:29-0300\n"
 "PO-Revision-Date: 2018-03-26 10:11-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr_CA\n"
@@ -37,4 +37,44 @@ msgstr "Adresse"
 #: 69:34 src/components/ProfileInfo.js
 msgid "Email"
 msgstr "Courriel"
+
+#: 80:35 src/components/ProfileInfo.js
+msgid "Title"
+msgstr ""
+
+#: 98:35 src/components/ProfileInfo.js
+msgid "Organization"
+msgstr ""
+
+#: 119:41 src/components/ProfileInfo.js
+msgid "Phone number"
+msgstr ""
+
+#: 135:41 src/components/ProfileInfo.js
+msgid "Mobile phone number"
+msgstr ""
+
+#: 67:47 src/components/ProfileInfo.js
+msgid "Cancel"
+msgstr ""
+
+#: 75:45 src/components/ProfileInfo.js
+msgid "Save"
+msgstr ""
+
+#: 197:41 src/components/ProfileInfo.js
+msgid "City"
+msgstr ""
+
+#: 205:41 src/components/ProfileInfo.js
+msgid "Province"
+msgstr ""
+
+#: 213:41 src/components/ProfileInfo.js
+msgid "Postal Code"
+msgstr ""
+
+#: 221:41 src/components/ProfileInfo.js
+msgid "Country"
+msgstr ""
 
