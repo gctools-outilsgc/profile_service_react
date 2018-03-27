@@ -38,6 +38,40 @@ class ProfileInfo extends Component {
       this.setState({
         profile: nextProps.profile, ready: true,
       });
+    } else if (!this.props.error && nextProps.error) {
+      const profile = {
+        gcID: '2',
+        name: 'Error Errorman',
+        email: 'error@anerrorhasoccured.error',
+        avatar: '',
+        mobilePhone: '5555555555',
+        officePhone: '5555555555',
+        address: {
+          id: '1',
+          streetAddress: '123 error street',
+          city: 'Error',
+          province: 'ER',
+          postalCode: 'E4R0R3',
+          country: 'CA',
+        },
+        titleEn: 'Director of errors',
+        titleFr: 'Directeur des erreurs',
+        org: {
+          id: '1',
+          nameEn: 'Error control',
+          nameFr: 'Controle des erreurs',
+          organization: {
+            id: '1',
+            nameEn: 'Error coordinator',
+            nameFr: 'Coordinateur des erreurs',
+          },
+        },
+      };
+      this.setState({
+        ready: true,
+        profile,
+        error_profile: profile,
+      });
     }
   }
 
@@ -49,38 +83,13 @@ class ProfileInfo extends Component {
   render() {
     const {
       loading,
-      error,
     } = this.props;
-    // if (error) {
-    //   profile.gcID = '2';
-    //   profile.name = 'Error Errorman';
-    //   profile.email = 'error@anerrorhasoccured.error';
-    //   profile.avatar = '';
-    //   profile.mobilePhone = '5555555555';
-    //   profile.officePhone = '5555555555';
-    //   profile.address = {
-    //     id: '1',
-    //     streetAddress: '123 error street',
-    //     city: 'Error',
-    //     province: 'ER',
-    //     postalCode: 'E4R0R3',
-    //     country: 'CA',
-    //   };
-    //   profile.titleEn = 'Director of errors';
-    //   profile.titleFr = 'Directeur des erreurs';
-    //   profile.org = {
-    //     id: '1',
-    //     nameEn: 'Error control',
-    //     nameFr: 'Controle des erreurs',
-    //     organization: {
-    //       id: '1',
-    //       nameEn: 'Error coordinator',
-    //       nameFr: 'Coordinateur des erreurs',
-    //     },
-    //   };
-    // };
-    if (error) return `Error!: ${error}`;
     if (this.state.ready === false) return false;
+    console.log(this.props);
+    const capitalize = function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    };
+
     let editButtons = (
       <Button
         floated="right"
@@ -106,7 +115,14 @@ class ProfileInfo extends Component {
             floated="right"
             size="small"
             basic
-            onClick={() => this.setState({ editMode: false })}
+            onClick={() => {
+              const profile = (this.state.error_profile)
+                ? this.state.error_profile : this.props.profile;
+              this.setState({
+                editMode: false,
+                profile,
+              });
+            }}
           >
             <Icon size="tiny" name="cancel" />{__('Cancel')}
           </Button>
@@ -127,10 +143,20 @@ class ProfileInfo extends Component {
                 <ReactI18nEdit
                   edit={this.state.editMode}
                   values={[{
+                    lang: '',
                     value: this.state.profile.name,
                     placeholder: 'name',
                   }]}
                   showLabel={false}
+                  onChange={(data) => {
+                    this.setState({
+                      profile: Object.assign(
+                        {},
+                        this.state.profile,
+                        { name: data.value },
+                      ),
+                    });
+                  }}
                 />
               </Item.Header>
               <Item.Meta>
@@ -149,6 +175,18 @@ class ProfileInfo extends Component {
                       placeholder: __('Title'),
                     },
                   ]}
+                  onChange={(data) => {
+                    const changeObj = {};
+                    changeObj[`title${capitalize(data.lang.split('_', 1)[0])}`]
+                      = data.value;
+                    this.setState({
+                      profile: Object.assign(
+                        {},
+                        this.state.profile,
+                        changeObj,
+                      ),
+                    });
+                  }}
                 />
               </Item.Meta>
               <Item.Meta>
@@ -167,6 +205,18 @@ class ProfileInfo extends Component {
                       placeholder: __('Organization'),
                     },
                   ]}
+                  onChange={(data) => {
+                    const changeObj = {};
+                    changeObj[`name${capitalize(data.lang.split('_', 1)[0])}`]
+                      = data.value;
+                    this.setState({
+                      profile: Object.assign(
+                        {},
+                        this.state.profile,
+                        { org: changeObj },
+                      ),
+                    });
+                  }}
                 />
               </Item.Meta>
               <Item.Description style={{ marginTop: '20px' }}>
@@ -179,10 +229,20 @@ class ProfileInfo extends Component {
                         <ReactI18nEdit
                           edit={this.state.editMode}
                           values={[{
+                            lang: '',
                             value: this.state.profile.officePhone,
                             placeholder: __('Phone number'),
                           }]}
                           showLabel={false}
+                          onChange={(data) => {
+                            this.setState({
+                              profile: Object.assign(
+                                {},
+                                this.state.profile,
+                                { officePhone: data.value },
+                              ),
+                            });
+                          }}
                         />
                       </List.Description>
                     </List.Content>
@@ -195,10 +255,20 @@ class ProfileInfo extends Component {
                         <ReactI18nEdit
                           edit={this.state.editMode}
                           values={[{
+                            lang: '',
                             value: this.state.profile.mobilePhone,
                             placeholder: __('Mobile phone number'),
                           }]}
                           showLabel={false}
+                          onChange={(data) => {
+                            this.setState({
+                              profile: Object.assign(
+                                {},
+                                this.state.profile,
+                                { mobilePhone: data.value },
+                              ),
+                            });
+                          }}
                         />
                       </List.Description>
                     </List.Content>
