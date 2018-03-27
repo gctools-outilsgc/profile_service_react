@@ -51,6 +51,34 @@ class ProfileInfo extends Component {
       loading,
       error,
     } = this.props;
+    // if (error) {
+    //   profile.gcID = '2';
+    //   profile.name = 'Error Errorman';
+    //   profile.email = 'error@anerrorhasoccured.error';
+    //   profile.avatar = '';
+    //   profile.mobilePhone = '5555555555';
+    //   profile.officePhone = '5555555555';
+    //   profile.address = {
+    //     id: '1',
+    //     streetAddress: '123 error street',
+    //     city: 'Error',
+    //     province: 'ER',
+    //     postalCode: 'E4R0R3',
+    //     country: 'CA',
+    //   };
+    //   profile.titleEn = 'Director of errors';
+    //   profile.titleFr = 'Directeur des erreurs';
+    //   profile.org = {
+    //     id: '1',
+    //     nameEn: 'Error control',
+    //     nameFr: 'Controle des erreurs',
+    //     organization: {
+    //       id: '1',
+    //       nameEn: 'Error coordinator',
+    //       nameFr: 'Coordinateur des erreurs',
+    //     },
+    //   };
+    // };
     if (error) return `Error!: ${error}`;
     if (this.state.ready === false) return false;
     let editButtons = (

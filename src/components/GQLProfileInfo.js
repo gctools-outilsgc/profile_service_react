@@ -74,7 +74,7 @@ mutation modifyOrg($orgId: Int!, $dataToModify: ModifyOrganizationInput!) {
 }`;
 
 const modifyOrgTier = gql`
-mutation modifyOrgTier($orgid:Int!, $dataToModify: ModifyOrgTierInput!) {
+mutation modifyOrgTier($orgId: Int!, $dataToModify: ModifyOrgTierInput!) {
   modifyOrgTier(orgId: $orgId, dataToModify: $dataToModify) {
     nameEn
     nameFr
