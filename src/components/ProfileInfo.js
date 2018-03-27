@@ -41,7 +41,7 @@ const ProfileInfo = (props) => {
             </Button>
             <Item.Header> {profile.name} </Item.Header>
             <Item.Meta> {profile.titleEn} / {profile.titleFR} </Item.Meta>
-            <Item.Meta> {profile.org.nameEn} </Item.Meta>
+            <Item.Meta> {profile.org.organization.nameEn} </Item.Meta>
             <Item.Description style={{ marginTop: '20px' }}>
               <List style={style.list}>
                 <List.Item style={style.list.listItem}>
@@ -95,7 +95,7 @@ const ProfileInfo = (props) => {
 };
 
 ProfileInfo.defaultProps = {
-  profile: { org: {}, address: {} },
+  profile: { org: { organization: {} }, address: {} },
   error: undefined,
 };
 
@@ -123,6 +123,11 @@ ProfileInfo.propTypes = {
       id: PropTypes.string,
       nameEn: PropTypes.string,
       nameFr: PropTypes.string,
+      organization: PropTypes.shape({
+        id: PropTypes.string,
+        nameEn: PropTypes.string,
+        nameFr: PropTypes.string,
+      }),
     }),
   }),
 };

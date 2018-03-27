@@ -26,12 +26,19 @@ query profileInfoQuery($gcID: String!) {
       id
       nameEn
       nameFr
+      organization {
+        id
+        nameEn
+        nameFr
+        acronymEn
+        acronymFr
+      }
     }
   }
 }`;
 
-const updateProfileMutation = gql`
-mutation uPM($gcID: String!, $dataToModify: ModifyProfileInput!) {
+const modifyProfileMutation = gql`
+mutation modifyPr($gcID: String!, $dataToModify: ModifyProfileInput!) {
   modifyProfile(gcId: $gcID, dataToModify: $dataToModify) {
     gcID
     name
@@ -44,6 +51,35 @@ mutation uPM($gcID: String!, $dataToModify: ModifyProfileInput!) {
   }
 }
 `;
+
+const modifyAddressMutation = gql`
+mutation modifyAddr($addressID: Int!, $dataToModify: ModifyAddressInput!) {
+  modifyAddress(addressId: $addressID, dataToModify:$dataToModify) {
+    streetAddress
+    city
+    province
+    postalCode
+    country
+  }
+}`;
+
+const modifyOrgMutation = gql`
+mutation modifyOrg($orgId: Int!, $dataToModify: ModifyOrganizationInput!) {
+  modifyOrganization(organizationId: $orgId, dataToModify: $dataToModify) {
+    nameEn
+    nameFr
+    acronymFr
+    acronymEn
+  }
+}`;
+
+const modifyOrgTier = gql`
+mutation modifyOrgTier($orgid:Int!, $dataToModify: ModifyOrgTierInput!) {
+  modifyOrgTier(orgId: $orgId, dataToModify: $dataToModify) {
+    nameEn
+    nameFr
+  }
+}`;
 
 export default graphql(profileInfoQuery, {
   props: props => ({
@@ -58,6 +94,12 @@ export default graphql(profileInfoQuery, {
       gcID,
     },
   }),
-})(graphql(updateProfileMutation, {
+})(graphql(modifyProfileMutation, {
   props: props => ({ mutateProfile: props.mutate }),
-})(ProfileInfo));
+})(graphql(modifyAddressMutation, {
+  props: props => ({ mutateAddress: props.mutate }),
+})(graphql(modifyOrgMutation, {
+  props: props => ({ mutateOrg: props.mutate }),
+})(graphql(modifyOrgTier, {
+  props: props => ({ mutateOrgTier: props.mutate }),
+})(ProfileInfo)))));
