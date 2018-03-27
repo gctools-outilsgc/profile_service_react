@@ -58,16 +58,14 @@ const App = () => (
       </Menu>
 
       <Divider />
-
-      <Switch>
-        <div style={style.content}>
+      <div style={style.content}>
+        <Switch>
           <Fragment>
             <Route exact path="/" component={Home} />
             <Route path="/profile/:id" component={Profile} />
           </Fragment>
-        </div>
-      </Switch>
-
+        </Switch>
+      </div>
     </Container>
   </BrowserRouter>
 );
