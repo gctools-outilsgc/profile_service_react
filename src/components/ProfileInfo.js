@@ -19,10 +19,7 @@ class ProfileInfo extends Component {
     this.state = {
       editMode: false,
       ready: false,
-      profile: {
-        org: {},
-        address: {},
-      },
+      profile: undefined,
     };
   }
 
@@ -182,7 +179,7 @@ class ProfileInfo extends Component {
 }
 
 ProfileInfo.defaultProps = {
-  profile: { org: {}, address: {} },
+  profile: undefined,
   error: undefined,
 };
 
