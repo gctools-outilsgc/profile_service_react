@@ -14,14 +14,15 @@ const OrgChart = (props) => {
     employees,
   } = props;
   if (error) return `Error!: ${error}`;
-
   const orgStructure = { subordinates: [] };
   if (supervisor && supervisor.gcID && profiles) {
     orgStructure.name = supervisor.name;
     orgStructure.uuid = supervisor.gcID;
+    orgStructure.orgTier = (supervisor.org) ? supervisor.org.nameEn : '';
     profiles.forEach(p => orgStructure.subordinates.push({
       name: p.name,
       uuid: p.gcID,
+      orgTier: (p.org) ? p.org.nameEn : '',
     }));
     if (employees && employees.length > 0) {
       for (let x = 0; x < orgStructure.subordinates.length; x += 1) {
@@ -31,12 +32,12 @@ const OrgChart = (props) => {
             orgStructure.subordinates[x].subordinates.push({
               name: p.name,
               uuid: p.gcID,
+              orgTier: (p.org) ? p.org.nameEn : '',
             }));
           break;
         }
       }
     }
-    console.log(orgStructure);
   } else {
     return null;
   }
