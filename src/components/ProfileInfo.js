@@ -332,39 +332,6 @@ class ProfileInfo extends Component {
                     return retVal;
                   }}
                 </Query>
-                {/* <ReactI18nEdit
-                  edit={this.state.editMode}
-                  lang={localizer.lang}
-                  values={[
-                    {
-                      lang: 'en_CA',
-                      value: this.state.profile.org.organization.nameEn || '',
-                      placeholder: __('Organization'),
-                    },
-                    {
-                      lang: 'fr_CA',
-                      value: this.state.profile.org.organization.nameFr || '',
-                      placeholder: __('Organization'),
-                    },
-                  ]}
-                  onChange={(data) => {
-                    const changeObj = {};
-                    changeObj[`name${capitalize(data.lang.split('_', 1)[0])}`]
-                      = data.value;
-                    const organization = Object.assign(
-                      {},
-                      this.state.profile.org.organization,
-                      changeObj,
-                    );
-                    this.setState({
-                      profile: Object.assign(
-                        {},
-                        this.state.profile,
-                        { org: { organization } },
-                      ),
-                    });
-                  }}
-                /> */}
               </Item.Meta>
               <Item.Description style={{ marginTop: '20px' }}>
                 <List style={style.list}>
