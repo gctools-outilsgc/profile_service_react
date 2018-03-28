@@ -6,6 +6,9 @@ import LocalizedComponent
   from '@gctools-components/react-i18n-translation-webpack';
 import ReactI18nEdit from '@gctools-components/react-i18n-edit';
 
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
+
 const style = {
   imageExample: {
     backgroundColor: 'blue',
@@ -22,22 +25,21 @@ const style = {
 };
 
 class ProfileInfo extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       editMode: false,
-      ready: false,
-      profile: undefined,
+      // ready: false,
+      profile: props.profile,
+      saving: false,
     };
-    this.handleSave = this.handleSave.bind(this);
+    this.onSave = this.onSave.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.profile &&
         nextProps.profile !== this.props.profile) {
-      this.setState({
-        profile: nextProps.profile, ready: true,
-      });
+      this.setState({ profile: nextProps.profile, saving: false });
     } else if (!this.props.error && nextProps.error) {
       const profile = {
         gcID: '2',
@@ -68,24 +70,128 @@ class ProfileInfo extends Component {
         },
       };
       this.setState({
-        ready: true,
         profile,
         error_profile: profile,
       });
     }
   }
 
-  handleSave() {
-    console.log('saved!'); // eslint-disable-line
-    this.setState({ editMode: false });
+  onAddressChange(data, addressComponent) {
+    const address = Object.assign(
+      {},
+      this.state.profile.address,
+    );
+    address[addressComponent] = data.value;
+    this.setState({
+      profile: Object.assign(
+        {},
+        this.state.profile,
+        { address },
+      ),
+    });
+  }
+
+  onSave() {
+    const rf = (a, b, f) => {
+      for (let i = 0; i < f.length; i += 1) {
+        delete a[f[i]]; // eslint-disable-line no-param-reassign
+        delete b[f[i]]; // eslint-disable-line no-param-reassign
+      }
+    };
+
+    const {
+      mutateProfile,
+      mutateAddress,
+      mutateOrg,
+      refetch,
+    } = this.props;
+    const oldProfile = Object.assign({}, this.props.profile);
+    const newProfile = Object.assign({}, this.state.profile);
+    const oldAddress = Object.assign({}, this.props.profile.address);
+    const newAddress = Object.assign({}, this.state.profile.address);
+    const oldOrganization
+      = Object.assign({}, this.props.profile.org.organization);
+    const newOrganization
+      = Object.assign({}, this.state.profile.org.organization);
+
+    rf(oldProfile, newProfile, ['__typename', 'org', 'address', 'gcID']);
+    rf(oldAddress, newAddress, ['__typename', 'id']);
+    rf(oldOrganization, newOrganization, ['__typename', 'id']);
+
+    let profileChanged = false;
+    const fields = Object.keys(oldProfile);
+    for (let i = 0; i < fields.length; i += 1) {
+      if (oldProfile[fields[i]] !== newProfile[fields[i]]) {
+        profileChanged = true;
+        break;
+      }
+    }
+    let addressChanged = false;
+    const addressFields = Object.keys(oldAddress);
+    for (let i = 0; i < addressFields.length; i += 1) {
+      if (oldAddress[addressFields[i]] !== newAddress[addressFields[i]]) {
+        addressChanged = true;
+        break;
+      }
+    }
+    let organizationChanged = false;
+    const organizationFields = Object.keys(oldOrganization);
+    for (let i = 0; i < organizationFields.length; i += 1) {
+      if (oldOrganization[organizationFields[i]]
+        !== newOrganization[organizationFields[i]]) {
+        organizationChanged = true;
+        break;
+      }
+    }
+
+    const operations = [];
+    this.setState({ saving: true });
+
+    if (profileChanged) {
+      operations.push(mutateProfile({
+        variables: {
+          gcID: this.props.profile.gcID,
+          dataToModify: newProfile,
+        },
+      }));
+    }
+
+    if (addressChanged) {
+      operations.push(mutateAddress({
+        variables: {
+          addressID: this.props.profile.address.id,
+          dataToModify: newAddress,
+        },
+      }));
+    }
+
+    if (organizationChanged) {
+      operations.push(mutateOrg({
+        variables: {
+          orgId: this.props.profile.org.organization.id,
+          dataToModify: newOrganization,
+        },
+      }));
+    }
+
+    if (operations.length > 0) {
+      this.setState({ editMode: false, saving: true });
+      Promise.all(operations).then(() => {
+        refetch();
+      }).catch(() => {
+        console.log('An error has occured.');
+        this.setState({ editMode: true, saving: false });
+      });
+    } else {
+      this.setState({ editMode: false });
+      console.log('Nothing to save...');
+    }
   }
 
   render() {
     const {
       loading,
     } = this.props;
-    if (this.state.ready === false) return false;
-    console.log(this.props);
     const capitalize = function capitalize(str) {
       return str.charAt(0).toUpperCase() + str.slice(1);
     };
@@ -107,7 +213,7 @@ class ProfileInfo extends Component {
             floated="right"
             size="small"
             basic
-            onClick={this.handleSave}
+            onClick={this.onSave}
           >
             <Icon size="tiny" name="save" />{__('Save')}
           </Button>
@@ -131,7 +237,7 @@ class ProfileInfo extends Component {
     }
     return (
       <Segment>
-        <Dimmer active={loading}>
+        <Dimmer active={loading || this.state.saving} inverted>
           <Loader content={__('Loading')} />
         </Dimmer>
         <Item.Group>
@@ -144,7 +250,7 @@ class ProfileInfo extends Component {
                   edit={this.state.editMode}
                   values={[{
                     lang: '',
-                    value: this.state.profile.name,
+                    value: this.state.profile.name || '',
                     placeholder: 'name',
                   }]}
                   showLabel={false}
@@ -166,12 +272,12 @@ class ProfileInfo extends Component {
                   values={[
                     {
                       lang: 'en_CA',
-                      value: this.state.profile.titleEn,
+                      value: this.state.profile.titleEn || '',
                       placeholder: __('Title'),
                     },
                     {
                       lang: 'fr_CA',
-                      value: this.state.profile.titleFr,
+                      value: this.state.profile.titleFr || '',
                       placeholder: __('Title'),
                     },
                   ]}
@@ -190,18 +296,34 @@ class ProfileInfo extends Component {
                 />
               </Item.Meta>
               <Item.Meta>
+                <Query query={gql`
+                  query organizationQuery {
+                    organizations {
+                      id
+                      nameEn
+                      nameFr
+                    }
+                  }`}
+                >
+                  {({ orgLoading, error, data }) => {
+                    if (orgLoading) return 'Loading...';
+                    if (error) return `Error...${error.message}`;
+                    console.log(data);
+                    return <span>drop down goes here</span>;
+                  }}
+                </Query>
                 <ReactI18nEdit
                   edit={this.state.editMode}
                   lang={localizer.lang}
                   values={[
                     {
                       lang: 'en_CA',
-                      value: this.state.profile.org.nameEn,
+                      value: this.state.profile.org.organization.nameEn || '',
                       placeholder: __('Organization'),
                     },
                     {
                       lang: 'fr_CA',
-                      value: this.state.profile.org.nameFr,
+                      value: this.state.profile.org.organization.nameFr || '',
                       placeholder: __('Organization'),
                     },
                   ]}
@@ -209,11 +331,16 @@ class ProfileInfo extends Component {
                     const changeObj = {};
                     changeObj[`name${capitalize(data.lang.split('_', 1)[0])}`]
                       = data.value;
+                    const organization = Object.assign(
+                      {},
+                      this.state.profile.org.organization,
+                      changeObj,
+                    );
                     this.setState({
                       profile: Object.assign(
                         {},
                         this.state.profile,
-                        { org: changeObj },
+                        { org: { organization } },
                       ),
                     });
                   }}
@@ -230,18 +357,20 @@ class ProfileInfo extends Component {
                           edit={this.state.editMode}
                           values={[{
                             lang: '',
-                            value: this.state.profile.officePhone,
+                            value: this.state.profile.officePhone || '',
                             placeholder: __('Phone number'),
                           }]}
                           showLabel={false}
                           onChange={(data) => {
-                            this.setState({
-                              profile: Object.assign(
-                                {},
-                                this.state.profile,
-                                { officePhone: data.value },
-                              ),
-                            });
+                            if (data.value.length <= 15) {
+                              this.setState({
+                                profile: Object.assign(
+                                  {},
+                                  this.state.profile,
+                                  { officePhone: data.value },
+                                ),
+                              });
+                            }
                           }}
                         />
                       </List.Description>
@@ -256,18 +385,20 @@ class ProfileInfo extends Component {
                           edit={this.state.editMode}
                           values={[{
                             lang: '',
-                            value: this.state.profile.mobilePhone,
+                            value: this.state.profile.mobilePhone || '',
                             placeholder: __('Mobile phone number'),
                           }]}
                           showLabel={false}
                           onChange={(data) => {
-                            this.setState({
-                              profile: Object.assign(
-                                {},
-                                this.state.profile,
-                                { mobilePhone: data.value },
-                              ),
-                            });
+                            if (data.value.length <= 15) {
+                              this.setState({
+                                profile: Object.assign(
+                                  {},
+                                  this.state.profile,
+                                  { mobilePhone: data.value },
+                                ),
+                              });
+                            }
                           }}
                         />
                       </List.Description>
@@ -283,42 +414,61 @@ class ProfileInfo extends Component {
                         <ReactI18nEdit
                           edit={this.state.editMode}
                           values={[{
-                            value: this.state.profile.address.streetAddress,
+                            lang: '',
+                            value:
+                              this.state.profile.address.streetAddress || '',
                             placeholder: __('Address'),
                           }]}
                           showLabel={false}
+                          onChange={data =>
+                            this.onAddressChange(data, 'streetAddress')
+                          }
                         /><br />
                         <ReactI18nEdit
                           edit={this.state.editMode}
                           values={[{
-                            value: this.state.profile.address.city,
+                            lang: '',
+                            value: this.state.profile.address.city || '',
                             placeholder: __('City'),
                           }]}
                           showLabel={false}
+                          onChange={data => this.onAddressChange(data, 'city')}
                         />,
                         <ReactI18nEdit
                           edit={this.state.editMode}
                           values={[{
-                            value: this.state.profile.address.province,
+                            lang: '',
+                            value: this.state.profile.address.province || '',
                             placeholder: __('Province'),
                           }]}
                           showLabel={false}
+                          onChange={data =>
+                            this.onAddressChange(data, 'province')
+                          }
                         /><br />
                         <ReactI18nEdit
                           edit={this.state.editMode}
                           values={[{
-                            value: this.state.profile.address.postalCode,
+                            lang: '',
+                            value: this.state.profile.address.postalCode || '',
                             placeholder: __('Postal Code'),
                           }]}
                           showLabel={false}
+                          onChange={data =>
+                            this.onAddressChange(data, 'postalCode')
+                          }
                         /><br />
                         <ReactI18nEdit
                           edit={this.state.editMode}
                           values={[{
-                            value: this.state.profile.address.country,
+                            lang: '',
+                            value: this.state.profile.address.country || '',
                             placeholder: __('Country'),
                           }]}
                           showLabel={false}
+                          onChange={data =>
+                            this.onAddressChange(data, 'country')
+                          }
                         />
                       </List.Description>
                     </List.Content>
@@ -331,10 +481,20 @@ class ProfileInfo extends Component {
                         <ReactI18nEdit
                           edit={this.state.editMode}
                           values={[{
-                            value: this.state.profile.email,
+                            lang: '',
+                            value: this.state.profile.email || '',
                             placeholder: __('Email'),
                           }]}
                           showLabel={false}
+                          onChange={(data) => {
+                            this.setState({
+                              profile: Object.assign(
+                                {},
+                                this.state.profile,
+                                { email: data.value },
+                              ),
+                            });
+                          }}
                         />
                       </List.Description>
                     </List.Content>
@@ -350,7 +510,7 @@ class ProfileInfo extends Component {
 }
 
 ProfileInfo.defaultProps = {
-  profile: undefined,
+  profile: { org: { organization: {} }, address: {} },
   error: undefined,
 };
 
@@ -385,6 +545,10 @@ ProfileInfo.propTypes = {
       }),
     }),
   }),
+  mutateProfile: PropTypes.func.isRequired,
+  mutateAddress: PropTypes.func.isRequired,
+  mutateOrg: PropTypes.func.isRequired,
+  refetch: PropTypes.func.isRequired,
 };
 
 export default LocalizedComponent(ProfileInfo);
