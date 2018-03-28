@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Segment, Dimmer, Loader, Item, Icon, Button, List }
+import { Segment, Dimmer, Loader, Item, Icon, Button, List, Dropdown }
   from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import LocalizedComponent
@@ -29,7 +29,6 @@ class ProfileInfo extends Component {
     super(props);
     this.state = {
       editMode: false,
-      // ready: false,
       profile: props.profile,
       saving: false,
     };
@@ -69,21 +68,16 @@ class ProfileInfo extends Component {
     const {
       mutateProfile,
       mutateAddress,
-      mutateOrg,
+      mutateOrgTier,
       refetch,
     } = this.props;
     const oldProfile = Object.assign({}, this.props.profile);
     const newProfile = Object.assign({}, this.state.profile);
     const oldAddress = Object.assign({}, this.props.profile.address);
     const newAddress = Object.assign({}, this.state.profile.address);
-    const oldOrganization
-      = Object.assign({}, this.props.profile.org.organization);
-    const newOrganization
-      = Object.assign({}, this.state.profile.org.organization);
 
     rf(oldProfile, newProfile, ['__typename', 'org', 'address', 'gcID']);
     rf(oldAddress, newAddress, ['__typename', 'id']);
-    rf(oldOrganization, newOrganization, ['__typename', 'id']);
 
     let profileChanged = false;
     const fields = Object.keys(oldProfile);
@@ -98,15 +92,6 @@ class ProfileInfo extends Component {
     for (let i = 0; i < addressFields.length; i += 1) {
       if (oldAddress[addressFields[i]] !== newAddress[addressFields[i]]) {
         addressChanged = true;
-        break;
-      }
-    }
-    let organizationChanged = false;
-    const organizationFields = Object.keys(oldOrganization);
-    for (let i = 0; i < organizationFields.length; i += 1) {
-      if (oldOrganization[organizationFields[i]]
-        !== newOrganization[organizationFields[i]]) {
-        organizationChanged = true;
         break;
       }
     }
@@ -132,11 +117,14 @@ class ProfileInfo extends Component {
       }));
     }
 
-    if (organizationChanged) {
-      operations.push(mutateOrg({
+    if (this.props.profile.org.organization.id
+      !== this.state.profile.org.organization.id) {
+      operations.push(mutateOrgTier({
         variables: {
-          orgId: this.props.profile.org.organization.id,
-          dataToModify: newOrganization,
+          orgId: this.props.profile.org.id,
+          dataToModify: {
+            organizationId: this.state.profile.org.organization.id,
+          },
         },
       }));
     }
@@ -176,6 +164,7 @@ class ProfileInfo extends Component {
       </Button>
     );
     if (this.state.editMode) {
+      const sameState = (this.props.profile === this.state.profile);
       editButtons = (
         <div>
           <Button
@@ -183,6 +172,7 @@ class ProfileInfo extends Component {
             size="small"
             basic
             onClick={this.onSave}
+            disabled={sameState}
           >
             <Icon size="tiny" name="save" />{__('Save')}
           </Button>
@@ -273,45 +263,52 @@ class ProfileInfo extends Component {
                   }`}
                 >
                   {({ orgLoading, orgError, data }) => {
-                    if (orgLoading) return 'Loading...';
                     if (orgError) return `Error...${orgError.message}`;
-                    console.log(data);
-                    return <span>drop down goes here</span>;
+                    const lang = capitalize(localizer.lang.split('_', 1)[0]);
+                    let retVal = false;
+                    if (this.state.profile.org.organization[`name${lang}`]) {
+                      retVal =
+                        this.state.profile.org.organization[`name${lang}`];
+                      if (this.state.editMode === true) {
+                        const options = [];
+                        // eslint-disable-next-line
+                        for (const key of data.organizations) {
+                          options.push({
+                            key: key.id,
+                            text: key[`name${lang}`],
+                            value: key.id,
+                          });
+                        }
+                        retVal = (
+                          <Dropdown
+                            value={this.state.profile.org.organization.id}
+                            options={options}
+                            closeOnBlur
+                            selection
+                            loading={orgLoading}
+                            onChange={(e, data1) => {
+                              const changeObj = {};
+                              changeObj.id = data1.value;
+                              const organization = Object.assign(
+                                {},
+                                this.state.profile.org.organization,
+                                changeObj,
+                              );
+                              this.setState({
+                                profile: Object.assign(
+                                  {},
+                                  this.state.profile,
+                                  { org: { organization } },
+                                ),
+                              });
+                            }}
+                          />
+                        );
+                      }
+                    }
+                    return retVal;
                   }}
                 </Query>
-                <ReactI18nEdit
-                  edit={this.state.editMode}
-                  lang={localizer.lang}
-                  values={[
-                    {
-                      lang: 'en_CA',
-                      value: this.state.profile.org.organization.nameEn || '',
-                      placeholder: __('Organization'),
-                    },
-                    {
-                      lang: 'fr_CA',
-                      value: this.state.profile.org.organization.nameFr || '',
-                      placeholder: __('Organization'),
-                    },
-                  ]}
-                  onChange={(data) => {
-                    const changeObj = {};
-                    changeObj[`name${capitalize(data.lang.split('_', 1)[0])}`]
-                      = data.value;
-                    const organization = Object.assign(
-                      {},
-                      this.state.profile.org.organization,
-                      changeObj,
-                    );
-                    this.setState({
-                      profile: Object.assign(
-                        {},
-                        this.state.profile,
-                        { org: { organization } },
-                      ),
-                    });
-                  }}
-                />
               </Item.Meta>
               <Item.Description style={{ marginTop: '20px' }}>
                 <List style={style.list}>
@@ -514,7 +511,7 @@ ProfileInfo.propTypes = {
   }),
   mutateProfile: PropTypes.func.isRequired,
   mutateAddress: PropTypes.func.isRequired,
-  mutateOrg: PropTypes.func.isRequired,
+  mutateOrgTier: PropTypes.func.isRequired,
   refetch: PropTypes.func.isRequired,
 };
 
