@@ -189,6 +189,7 @@ class ProfileInfo extends Component {
       </Button>
     );
     if (this.state.editMode) {
+      const sameState = (this.props.profile === this.state.profile);
       editButtons = (
         <div>
           <Button
@@ -196,6 +197,7 @@ class ProfileInfo extends Component {
             size="small"
             basic
             onClick={this.onSave}
+            disabled={sameState}
           >
             <Icon size="tiny" name="save" />{__('Save')}
           </Button>
