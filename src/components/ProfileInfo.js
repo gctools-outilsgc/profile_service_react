@@ -32,6 +32,10 @@ class ProfileInfo extends Component {
     this.handleSave = this.handleSave.bind(this);
   }
 
+  componentWillMount() {
+    document.title = 'Profile Page';
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.profile &&
         nextProps.profile !== this.props.profile) {
@@ -60,7 +64,7 @@ class ProfileInfo extends Component {
         basic
         onClick={() => this.setState({ editMode: true })}
       >
-        <Icon size="tiny" name="edit" />{__('Edit')}
+        <Icon name="edit" />{__('Edit')}
       </Button>
     );
     if (this.state.editMode) {
@@ -69,10 +73,10 @@ class ProfileInfo extends Component {
           <Button
             floated="right"
             size="small"
-            basic
+            positive
             onClick={this.handleSave}
           >
-            <Icon size="tiny" name="save" />{__('Save')}
+            <Icon name="save" />{__('Save')}
           </Button>
           <Button
             floated="right"
@@ -80,7 +84,7 @@ class ProfileInfo extends Component {
             basic
             onClick={() => this.setState({ editMode: false })}
           >
-            <Icon size="tiny" name="cancel" />{__('Cancel')}
+            <Icon name="cancel" />{__('Cancel')}
           </Button>
         </div>
       );
