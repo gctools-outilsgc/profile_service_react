@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Segment, Dimmer, Loader, Item, Icon, Button, List }
+import { Segment, Dimmer, Loader, Item, Icon, Button, List, Dropdown }
   from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import LocalizedComponent
@@ -70,6 +70,7 @@ class ProfileInfo extends Component {
       mutateProfile,
       mutateAddress,
       mutateOrg,
+      mutateOrgTier,
       refetch,
     } = this.props;
     const oldProfile = Object.assign({}, this.props.profile);
@@ -137,6 +138,18 @@ class ProfileInfo extends Component {
         variables: {
           orgId: this.props.profile.org.organization.id,
           dataToModify: newOrganization,
+        },
+      }));
+    }
+
+    if (this.props.profile.org.organization.id
+      !== this.state.profile.org.organization.id) {
+      operations.push(mutateOrgTier({
+        variables: {
+          orgId: this.props.profile.org.id,
+          dataToModify: {
+            organizationId: this.state.profile.org.organization.id,
+          },
         },
       }));
     }
@@ -273,13 +286,53 @@ class ProfileInfo extends Component {
                   }`}
                 >
                   {({ orgLoading, orgError, data }) => {
-                    if (orgLoading) return 'Loading...';
+                    if (orgLoading) return undefined;
                     if (orgError) return `Error...${orgError.message}`;
-                    console.log(data);
-                    return <span>drop down goes here</span>;
+                    const lang = capitalize(localizer.lang.split('_', 1)[0]);
+                    let retVal = false;
+                    if (this.state.profile.org.organization[`name${lang}`]) {
+                      retVal =
+                        this.state.profile.org.organization[`name${lang}`];
+                      if (this.state.editMode === true) {
+                        const options = [];
+                        // eslint-disable-next-line
+                        for (const key of data.organizations) {
+                          options.push({
+                            key: key.id,
+                            text: key[`name${lang}`],
+                            value: key.id,
+                          });
+                        }
+                        retVal = (
+                          <Dropdown
+                            value={this.state.profile.org.organization.id}
+                            options={options}
+                            closeOnBlur
+                            selection
+                            onChange={(e, data1) => {
+                              const changeObj = {};
+                              changeObj.id = data1.value;
+                              const organization = Object.assign(
+                                {},
+                                this.state.profile.org.organization,
+                                changeObj,
+                              );
+                              this.setState({
+                                profile: Object.assign(
+                                  {},
+                                  this.state.profile,
+                                  { org: { organization } },
+                                ),
+                              });
+                            }}
+                          />
+                        );
+                      }
+                    }
+                    return retVal;
                   }}
                 </Query>
-                <ReactI18nEdit
+                {/* <ReactI18nEdit
                   edit={this.state.editMode}
                   lang={localizer.lang}
                   values={[
@@ -311,7 +364,7 @@ class ProfileInfo extends Component {
                       ),
                     });
                   }}
-                />
+                /> */}
               </Item.Meta>
               <Item.Description style={{ marginTop: '20px' }}>
                 <List style={style.list}>
@@ -515,6 +568,7 @@ ProfileInfo.propTypes = {
   mutateProfile: PropTypes.func.isRequired,
   mutateAddress: PropTypes.func.isRequired,
   mutateOrg: PropTypes.func.isRequired,
+  mutateOrgTier: PropTypes.func.isRequired,
   refetch: PropTypes.func.isRequired,
 };
 
