@@ -74,7 +74,7 @@ mutation modifyOrg($orgId: Int!, $dataToModify: ModifyOrganizationInput!) {
 }`;
 
 const modifyOrgTier = gql`
-mutation modifyOrgTier($orgid:Int!, $dataToModify: ModifyOrgTierInput!) {
+mutation modifyOrgTier($orgId: Int!, $dataToModify: ModifyOrgTierInput!) {
   modifyOrgTier(orgId: $orgId, dataToModify: $dataToModify) {
     nameEn
     nameFr
@@ -85,6 +85,7 @@ export default graphql(profileInfoQuery, {
   props: props => ({
     error: props.data.error,
     loading: props.data.loading,
+    refetch: props.data.refetch,
     profile: (props.data.profiles && props.data.profiles.length === 1) ?
       Object.assign({}, props.data.profiles[0], (props.data.profiles[0].org) ?
         {} : { org: {} }) : undefined,
