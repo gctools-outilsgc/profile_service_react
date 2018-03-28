@@ -40,39 +40,6 @@ class ProfileInfo extends Component {
     if (nextProps.profile &&
         nextProps.profile !== this.props.profile) {
       this.setState({ profile: nextProps.profile, saving: false });
-    } else if (!this.props.error && nextProps.error) {
-      const profile = {
-        gcID: '2',
-        name: 'Error Errorman',
-        email: 'error@anerrorhasoccured.error',
-        avatar: '',
-        mobilePhone: '5555555555',
-        officePhone: '5555555555',
-        address: {
-          id: '1',
-          streetAddress: '123 error street',
-          city: 'Error',
-          province: 'ER',
-          postalCode: 'E4R0R3',
-          country: 'CA',
-        },
-        titleEn: 'Director of errors',
-        titleFr: 'Directeur des erreurs',
-        org: {
-          id: '1',
-          nameEn: 'Error control',
-          nameFr: 'Controle des erreurs',
-          organization: {
-            id: '1',
-            nameEn: 'Error coordinator',
-            nameFr: 'Coordinateur des erreurs',
-          },
-        },
-      };
-      this.setState({
-        profile,
-        error_profile: profile,
-      });
     }
   }
 
@@ -191,7 +158,9 @@ class ProfileInfo extends Component {
   render() {
     const {
       loading,
+      error,
     } = this.props;
+    if (error) return 'Error';
     const capitalize = function capitalize(str) {
       return str.charAt(0).toUpperCase() + str.slice(1);
     };
@@ -222,11 +191,9 @@ class ProfileInfo extends Component {
             size="small"
             basic
             onClick={() => {
-              const profile = (this.state.error_profile)
-                ? this.state.error_profile : this.props.profile;
               this.setState({
                 editMode: false,
-                profile,
+                profile: this.props.profile,
               });
             }}
           >
@@ -305,9 +272,9 @@ class ProfileInfo extends Component {
                     }
                   }`}
                 >
-                  {({ orgLoading, error, data }) => {
+                  {({ orgLoading, orgError, data }) => {
                     if (orgLoading) return 'Loading...';
-                    if (error) return `Error...${error.message}`;
+                    if (orgError) return `Error...${orgError.message}`;
                     console.log(data);
                     return <span>drop down goes here</span>;
                   }}
