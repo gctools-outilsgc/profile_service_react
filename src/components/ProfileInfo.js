@@ -29,7 +29,6 @@ class ProfileInfo extends Component {
     super(props);
     this.state = {
       editMode: false,
-      // ready: false,
       profile: props.profile,
       saving: false,
     };
@@ -69,7 +68,6 @@ class ProfileInfo extends Component {
     const {
       mutateProfile,
       mutateAddress,
-      mutateOrg,
       mutateOrgTier,
       refetch,
     } = this.props;
@@ -77,14 +75,9 @@ class ProfileInfo extends Component {
     const newProfile = Object.assign({}, this.state.profile);
     const oldAddress = Object.assign({}, this.props.profile.address);
     const newAddress = Object.assign({}, this.state.profile.address);
-    const oldOrganization
-      = Object.assign({}, this.props.profile.org.organization);
-    const newOrganization
-      = Object.assign({}, this.state.profile.org.organization);
 
     rf(oldProfile, newProfile, ['__typename', 'org', 'address', 'gcID']);
     rf(oldAddress, newAddress, ['__typename', 'id']);
-    rf(oldOrganization, newOrganization, ['__typename', 'id']);
 
     let profileChanged = false;
     const fields = Object.keys(oldProfile);
@@ -99,15 +92,6 @@ class ProfileInfo extends Component {
     for (let i = 0; i < addressFields.length; i += 1) {
       if (oldAddress[addressFields[i]] !== newAddress[addressFields[i]]) {
         addressChanged = true;
-        break;
-      }
-    }
-    let organizationChanged = false;
-    const organizationFields = Object.keys(oldOrganization);
-    for (let i = 0; i < organizationFields.length; i += 1) {
-      if (oldOrganization[organizationFields[i]]
-        !== newOrganization[organizationFields[i]]) {
-        organizationChanged = true;
         break;
       }
     }
@@ -129,15 +113,6 @@ class ProfileInfo extends Component {
         variables: {
           addressID: this.props.profile.address.id,
           dataToModify: newAddress,
-        },
-      }));
-    }
-
-    if (organizationChanged) {
-      operations.push(mutateOrg({
-        variables: {
-          orgId: this.props.profile.org.organization.id,
-          dataToModify: newOrganization,
         },
       }));
     }
@@ -536,7 +511,6 @@ ProfileInfo.propTypes = {
   }),
   mutateProfile: PropTypes.func.isRequired,
   mutateAddress: PropTypes.func.isRequired,
-  mutateOrg: PropTypes.func.isRequired,
   mutateOrgTier: PropTypes.func.isRequired,
   refetch: PropTypes.func.isRequired,
 };
