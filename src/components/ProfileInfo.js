@@ -286,7 +286,6 @@ class ProfileInfo extends Component {
                   }`}
                 >
                   {({ orgLoading, orgError, data }) => {
-                    if (orgLoading) return undefined;
                     if (orgError) return `Error...${orgError.message}`;
                     const lang = capitalize(localizer.lang.split('_', 1)[0]);
                     let retVal = false;
@@ -309,6 +308,7 @@ class ProfileInfo extends Component {
                             options={options}
                             closeOnBlur
                             selection
+                            loading={orgLoading}
                             onChange={(e, data1) => {
                               const changeObj = {};
                               changeObj.id = data1.value;
