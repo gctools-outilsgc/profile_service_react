@@ -22,3 +22,7 @@ msgstr ""
 msgid "FR"
 msgstr ""
 
+#: src/containers/App.js 124:48
+msgid "Login"
+msgstr ""
+

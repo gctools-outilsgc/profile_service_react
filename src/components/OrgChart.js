@@ -9,6 +9,7 @@ const OrgChart = (props) => {
     loading,
     error,
     sup: { supervisor },
+    sup: me,
     profiles,
     gcID,
     employees,
@@ -39,7 +40,10 @@ const OrgChart = (props) => {
       }
     }
   } else {
-    return null;
+    if (!me.gcID) return null;
+    orgStructure.name = me.name;
+    orgStructure.uuid = me.gcID;
+    orgStructure.orgTier = (me.org) ? me.org.nameEn : '';
   }
 
   return (

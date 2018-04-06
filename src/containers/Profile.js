@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Segment } from 'semantic-ui-react';
+import { Segment } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 import ProfileInfo from '../components/GQLProfileInfo';
@@ -9,7 +9,6 @@ const Profile = ({ match }) => (
   <div>
     <ProfileInfo gcID={match.params.id} />
     <Segment>
-      <Header> Here is where the org chart goes </Header>
       <OrgChart gcID={match.params.id} />
     </Segment>
   </div>

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-03-27 14:29-0300\n"
+"POT-Creation-Date: 2018-04-06 14:58-0300\n"
 "PO-Revision-Date: 2018-03-26 10:11-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en_CA\n"
@@ -77,4 +77,23 @@ msgstr ""
 #: 221:41 src/components/ProfileInfo.js
 msgid "Country"
 msgstr ""
+
+#: 343:29 src/components/ProfileInfo.js
+msgid "Unknown department"
+msgstr ""
+
+#: 436:37 src/components/ProfileInfo.js
+msgid "Add new org tier to the selected"
+msgstr "Add new org tier to the selected organization"
+
+#: 457:53 src/components/ProfileInfo.js
+msgid "Name of tier"
+msgstr ""
+
+#: 286:19 src/components/ProfileInfo.js
+msgid "Change"
+msgstr ""
+
+#~ msgid "Add new org tier to the selected org"
+#~ msgstr "Add new org tier to the selected organization"
 

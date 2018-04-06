@@ -1,6 +1,17 @@
-import React, { Component } from 'react';
-import { Segment, Dimmer, Loader, Item, Icon, Button, List, Dropdown }
-  from 'semantic-ui-react';
+import React, { Component, Fragment } from 'react';
+import {
+  Segment,
+  Dimmer,
+  Modal,
+  Loader,
+  Item,
+  Icon,
+  Button,
+  List,
+  Popup,
+  Header,
+  Dropdown
+} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import LocalizedComponent
   from '@gctools-components/react-i18n-translation-webpack';
@@ -9,10 +20,14 @@ import ReactI18nEdit from '@gctools-components/react-i18n-edit';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
+import { connect } from 'react-redux';
+
 const style = {
   imageExample: {
     backgroundColor: 'blue',
     height: '80px',
+    width: '80px',
+    marginRight: '15px',
   },
   list: {
     float: 'left',
@@ -24,13 +39,17 @@ const style = {
   },
 };
 
+const defaultNewOrgTier = { nameEn: '', nameFr: '' };
+
 class ProfileInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
       editMode: false,
-      profile: props.profile,
+      profile: Object.assign({}, props.profile),
       saving: false,
+      createOrgTierOpen: false,
+      newOrgTier: defaultNewOrgTier,
     };
     this.onSave = this.onSave.bind(this);
   }
@@ -68,18 +87,30 @@ class ProfileInfo extends Component {
     const {
       mutateProfile,
       mutateAddress,
-      mutateOrgTier,
+      createAddressMutation,
       refetch,
     } = this.props;
-    const oldProfile = Object.assign({}, this.props.profile);
-    const newProfile = Object.assign({}, this.state.profile);
+    const oldProfile = Object.assign(
+      {},
+      this.props.profile,
+      { orgId: this.props.profile.org.id },
+    );
+    const newProfile = Object.assign(
+      {},
+      this.state.profile,
+      { orgId: this.state.profile.org.id },
+    );
     const oldAddress = Object.assign({}, this.props.profile.address);
     const newAddress = Object.assign({}, this.state.profile.address);
 
-    rf(oldProfile, newProfile, ['__typename', 'org', 'address', 'gcID']);
+    rf(
+      oldProfile,
+      newProfile,
+      ['__typename', 'org', 'address', 'gcID', 'avatar', 'avatarFile'],
+    );
     rf(oldAddress, newAddress, ['__typename', 'id']);
 
-    let profileChanged = false;
+    let profileChanged = (this.state.profile.avatarFile !== undefined);
     const fields = Object.keys(oldProfile);
     for (let i = 0; i < fields.length; i += 1) {
       if (oldProfile[fields[i]] !== newProfile[fields[i]]) {
@@ -87,12 +118,25 @@ class ProfileInfo extends Component {
         break;
       }
     }
+
     let addressChanged = false;
+    let createAddress = false;
     const addressFields = Object.keys(oldAddress);
-    for (let i = 0; i < addressFields.length; i += 1) {
-      if (oldAddress[addressFields[i]] !== newAddress[addressFields[i]]) {
-        addressChanged = true;
-        break;
+    if (addressFields.length === 0) {
+      const newAddressFields = Object.keys(newAddress);
+      for (let i = 0; i < newAddressFields.length; i += 1) {
+        if (newAddress[newAddressFields[i]] !== '') {
+          addressChanged = true;
+          createAddress = true;
+          break;
+        }
+      }
+    } else {
+      for (let i = 0; i < addressFields.length; i += 1) {
+        if (oldAddress[addressFields[i]] !== newAddress[addressFields[i]]) {
+          addressChanged = true;
+          break;
+        }
       }
     }
 
@@ -100,33 +144,50 @@ class ProfileInfo extends Component {
     this.setState({ saving: true });
 
     if (profileChanged) {
+      const variables = {
+        gcID: this.props.profile.gcID,
+        dataToModify: newProfile,
+      };
+
+      if (this.state.profile.avatarFile !== undefined) {
+        variables.avatar = this.state.profile.avatarFile;
+      }
+
       operations.push(mutateProfile({
-        variables: {
-          gcID: this.props.profile.gcID,
-          dataToModify: newProfile,
+        context: {
+          headers: {
+            Authorization: `Bearer ${this.props.accessToken}`,
+          },
         },
+        variables,
       }));
     }
 
     if (addressChanged) {
-      operations.push(mutateAddress({
-        variables: {
-          addressID: this.props.profile.address.id,
-          dataToModify: newAddress,
-        },
-      }));
-    }
-
-    if (this.props.profile.org.organization.id
-      !== this.state.profile.org.organization.id) {
-      operations.push(mutateOrgTier({
-        variables: {
-          orgId: this.props.profile.org.id,
-          dataToModify: {
-            organizationId: this.state.profile.org.organization.id,
+      if (createAddress) {
+        operations.push(createAddressMutation({
+          context: {
+            headers: {
+              Authorization: `Bearer ${this.props.accessToken}`,
+            },
           },
-        },
-      }));
+          variables: {
+            ...newAddress,
+          },
+        }));
+      } else {
+        operations.push(mutateAddress({
+          context: {
+            headers: {
+              Authorization: `Bearer ${this.props.accessToken}`,
+            },
+          },
+          variables: {
+            addressID: this.props.profile.address.id,
+            dataToModify: newAddress,
+          },
+        }));
+      }
     }
 
     if (operations.length > 0) {
@@ -138,8 +199,7 @@ class ProfileInfo extends Component {
         this.setState({ editMode: true, saving: false });
       });
     } else {
-      this.setState({ editMode: false });
-      console.log('Nothing to save...');
+      this.setState({ editMode: false, saving: false });
     }
   }
 
@@ -147,16 +207,23 @@ class ProfileInfo extends Component {
     const {
       loading,
       error,
+      accessToken,
+      myGcID,
+      modifyProfile,
+      profile: { gcID },
     } = this.props;
     if (error) return 'Error';
     const capitalize = function capitalize(str) {
       return str.charAt(0).toUpperCase() + str.slice(1);
     };
 
+    const canEdit = (accessToken !== '') && modifyProfile && (gcID === myGcID);
+
     let editButtons = (
       <Button
         floated="right"
         size="small"
+        disabled={!canEdit}
         basic
         onClick={() => this.setState({ editMode: true })}
       >
@@ -164,7 +231,6 @@ class ProfileInfo extends Component {
       </Button>
     );
     if (this.state.editMode) {
-      const sameState = (this.props.profile === this.state.profile);
       editButtons = (
         <div>
           <Button
@@ -172,7 +238,6 @@ class ProfileInfo extends Component {
             size="small"
             basic
             onClick={this.onSave}
-            disabled={sameState}
           >
             <Icon size="tiny" name="save" />{__('Save')}
           </Button>
@@ -183,7 +248,11 @@ class ProfileInfo extends Component {
             onClick={() => {
               this.setState({
                 editMode: false,
-                profile: this.props.profile,
+                profile: Object.assign(
+                  {},
+                  this.props.profile,
+                  { avatarFile: undefined },
+                ),
               });
             }}
           >
@@ -199,7 +268,49 @@ class ProfileInfo extends Component {
         </Dimmer>
         <Item.Group>
           <Item>
-            <Item.Image style={style.imageExample} size="tiny" />
+            <Item>
+              <div style={style.imageExample}>
+                <img
+                  width={80}
+                  height={80}
+                  src={this.state.profile.avatar}
+                  alt="avatar"
+                />
+              </div>
+              <Button
+                size="small"
+                basic
+                style={{ display: (this.state.editMode) ? 'block' : 'none' }}
+              >
+                <label htmlFor="avatarUpload">
+                  {__('Change')}
+                  <input
+                    type="file"
+                    id="avatarUpload"
+                    style={{ display: 'none' }}
+                    required
+                    onChange={({ target }) => {
+                      if (target.validity.valid) {
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                          this.setState({
+                            profile: Object.assign(
+                              {},
+                              this.state.profile,
+                              {
+                                avatar: reader.result,
+                                avatarFile: target.files[0],
+                              },
+                            ),
+                          });
+                        };
+                        reader.readAsDataURL(target.files[0]);
+                      }
+                    }}
+                  />
+                </label>
+              </Button>
+            </Item>
             <Item.Content>
               {editButtons}
               <Item.Header>
@@ -259,54 +370,211 @@ class ProfileInfo extends Component {
                       id
                       nameEn
                       nameFr
+                      OrgTiers {
+                        id
+                        nameEn
+                        nameFr
+                      }
                     }
                   }`}
                 >
-                  {({ orgLoading, orgError, data }) => {
+                  {({
+                    orgLoading,
+                    orgError,
+                    data: orgData,
+                    refetch: orgRefetch,
+                  }) => {
                     if (orgError) return `Error...${orgError.message}`;
                     const lang = capitalize(localizer.lang.split('_', 1)[0]);
-                    let retVal = false;
-                    if (this.state.profile.org.organization[`name${lang}`]) {
-                      retVal =
-                        this.state.profile.org.organization[`name${lang}`];
-                      if (this.state.editMode === true) {
-                        const options = [];
-                        // eslint-disable-next-line
-                        for (const key of data.organizations) {
-                          options.push({
-                            key: key.id,
-                            text: key[`name${lang}`],
-                            value: key.id,
-                          });
-                        }
-                        retVal = (
-                          <Dropdown
-                            value={this.state.profile.org.organization.id}
-                            options={options}
-                            closeOnBlur
-                            selection
-                            loading={orgLoading}
-                            onChange={(e, data1) => {
-                              const changeObj = {};
-                              changeObj.id = data1.value;
-                              const organization = Object.assign(
-                                {},
-                                this.state.profile.org.organization,
-                                changeObj,
-                              );
-                              this.setState({
-                                profile: Object.assign(
-                                  {},
-                                  this.state.profile,
-                                  { org: { organization } },
-                                ),
-                              });
-                            }}
-                          />
-                        );
+                    const selectedOrg = this.state.profile.org.organization;
+                    if (this.state.editMode !== true) {
+                      if (selectedOrg[`name${lang}`]) {
+                        return selectedOrg[`name${lang}`];
                       }
+                      return __('Unknown department');
                     }
-                    return retVal;
+                    const options = [];
+                    if (!this.props.profile.org.organization.id) {
+                      options.push({
+                        key: 'org-undefined',
+                        text: '',
+                        value: undefined,
+                      });
+                    }
+                    orgData.organizations.forEach(key =>
+                      options.push({
+                        key: `org-${key.id}`,
+                        text: key[`name${lang}`],
+                        value: key.id,
+                      }));
+                    const tierOptions = [];
+                    if (!this.props.profile.org.id) {
+                      tierOptions.push({
+                        key: 'orgtier-undefined',
+                        text: '',
+                        value: undefined,
+                      });
+                    }
+                    orgData.organizations
+                      .filter(key => key.id === selectedOrg.id)
+                      .forEach(key =>
+                      key.OrgTiers.forEach(tier =>
+                        tierOptions.push({
+                          key: `orgtier-${tier.id}`,
+                          text: tier[`name${lang}`],
+                          value: tier.id,
+                        })));
+
+                    const { mutateCreateOrgTier } = this.props;
+
+                    return (
+                      <Fragment>
+                        <Dropdown
+                          value={selectedOrg.id}
+                          options={options}
+                          closeOnBlur
+                          selection
+                          loading={orgLoading}
+                          onChange={(e, data1) => {
+                            const changeObj = {};
+                            changeObj.id = data1.value;
+                            const organization = Object.assign(
+                              {},
+                              this.state.profile.org.organization,
+                              changeObj,
+                            );
+                            this.setState({
+                              profile: Object.assign(
+                                {},
+                                this.state.profile,
+                                { org: { organization } },
+                              ),
+                            });
+                          }}
+                        />
+                        <Dropdown
+                          value={this.state.profile.org.id}
+                          options={tierOptions}
+                          closeOnBlur
+                          selection
+                          loading={orgLoading}
+                          onChange={(e, data1) => {
+                            const changeObj = {};
+                            changeObj.id = data1.value;
+                            const org = Object.assign(
+                              {},
+                              this.state.profile.org,
+                              changeObj,
+                            );
+                            this.setState({
+                              profile: Object.assign(
+                                {},
+                                this.state.profile,
+                                { org },
+                              ),
+                            });
+                          }}
+                        />
+                        <Modal
+                          open={this.state.createOrgTierOpen}
+                          closeOnEscape={false}
+                          closeOnRootNodeClick={false}
+                          onClose={() =>
+                            this.setState({ createOrgTierOpen: false })
+                          }
+                        >
+                          <Header
+                            icon="add"
+                            content={__('Add new org tier to the selected')}
+                          />
+                          <Modal.Content>
+                            <Item.Group>
+                              <Item>
+                                <Item.Content>
+                                  <Item.Header>
+                                    <ReactI18nEdit
+                                      edit
+                                      values={[{
+                                        lang: 'en_CA',
+                                        value: this.state.newOrgTier.nameEn,
+                                        placeholder: __('Name of tier'),
+                                      }, {
+                                        lang: 'fr_CA',
+                                        value: this.state.newOrgTier.nameFr,
+                                        placeholder: __('Name of tier'),
+                                      }]}
+                                      onChange={(data) => {
+                                        const l = data.lang.split('_', 1)[0];
+                                        const changeObj = {};
+                                        changeObj[`name${capitalize(l)}`]
+                                          = data.value;
+                                        this.setState({
+                                          newOrgTier: Object.assign(
+                                            {},
+                                            this.state.newOrgTier,
+                                            changeObj,
+                                          ),
+                                        });
+                                      }}
+                                    />
+                                  </Item.Header>
+                                </Item.Content>
+                              </Item>
+                            </Item.Group>
+                          </Modal.Content>
+                          <Modal.Actions>
+                            <Button
+                              positive
+                              onClick={() => {
+                                mutateCreateOrgTier({
+                                  context: {
+                                    headers: {
+                                      Authorization:
+                                        `Bearer ${this.props.accessToken}`,
+                                    },
+                                  },
+                                  variables: {
+                                    ...this.state.newOrgTier,
+                                    organizationId: selectedOrg.id,
+                                    ownerGcId: myGcID,
+                                  },
+                                }).then(() => {
+                                  orgRefetch();
+                                  this.setState({
+                                    createOrgTierOpen: false,
+                                    newOrgTier: defaultNewOrgTier,
+                                  });
+                                });
+                              }}
+                            >
+                              <Icon name="save" /> {__('Save')}
+                            </Button>
+                            <Button
+                              negative
+                              onClick={() =>
+                                this.setState({
+                                  createOrgTierOpen: false,
+                                  newOrgTier: defaultNewOrgTier,
+                                })}
+                            >
+                              <Icon name="cancel" /> {__('Cancel')}
+                            </Button>
+                          </Modal.Actions>
+                        </Modal>
+                        <Popup
+                          trigger={
+                            <Button
+                              disabled={!(selectedOrg.id > 0)}
+                              icon="add"
+                              onClick={() => {
+                                this.setState({ createOrgTierOpen: true });
+                              }}
+                            />
+                          }
+                          content={__('Add new org tier to the selected')}
+                        />
+                      </Fragment>
+                    );
                   }}
                 </Query>
               </Item.Meta>
@@ -476,6 +744,9 @@ class ProfileInfo extends Component {
 ProfileInfo.defaultProps = {
   profile: { org: { organization: {} }, address: {} },
   error: undefined,
+  accessToken: '',
+  myGcID: '',
+  modifyProfile: false,
 };
 
 ProfileInfo.propTypes = {
@@ -511,8 +782,22 @@ ProfileInfo.propTypes = {
   }),
   mutateProfile: PropTypes.func.isRequired,
   mutateAddress: PropTypes.func.isRequired,
-  mutateOrgTier: PropTypes.func.isRequired,
+  createAddressMutation: PropTypes.func.isRequired,
+  mutateCreateOrgTier: PropTypes.func.isRequired,
   refetch: PropTypes.func.isRequired,
+  accessToken: PropTypes.string,
+  myGcID: PropTypes.string,
+  modifyProfile: PropTypes.bool,
 };
 
-export default LocalizedComponent(ProfileInfo);
+const mapStateToProps = ({ user }) => {
+  const props = {};
+  if (user) {
+    props.accessToken = user.access_token;
+    props.myGcID = user.profile.sub;
+    props.modifyProfile = user.profile.modify_profile === 'True';
+  }
+  return props;
+};
+
+export default connect(mapStateToProps)(LocalizedComponent(ProfileInfo));

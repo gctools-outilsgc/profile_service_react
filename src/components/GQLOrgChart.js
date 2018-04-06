@@ -6,6 +6,16 @@ import OrgChart from './OrgChart';
 const orgChartSupervisorQuery = gql`
 query orgChartSupervisorQuery($gcID: String!) {
   profiles(gcID: $gcID) {
+    gcID
+    name
+    avatar
+    titleEn
+    titleFr
+    org {
+      id
+      nameEn
+      nameFr
+    }
     Employees {
       gcID
       name

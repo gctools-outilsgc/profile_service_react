@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-03-27 14:29-0300\n"
+"POT-Creation-Date: 2018-04-06 14:58-0300\n"
 "PO-Revision-Date: 2018-03-26 10:11-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr_CA\n"
@@ -40,31 +40,31 @@ msgstr "Courriel"
 
 #: 80:35 src/components/ProfileInfo.js
 msgid "Title"
-msgstr ""
+msgstr "Titre"
 
 #: 98:35 src/components/ProfileInfo.js
 msgid "Organization"
-msgstr ""
+msgstr "Organisation"
 
 #: 119:41 src/components/ProfileInfo.js
 msgid "Phone number"
-msgstr ""
+msgstr "Numéro de téléphone"
 
 #: 135:41 src/components/ProfileInfo.js
 msgid "Mobile phone number"
-msgstr ""
+msgstr "numéro de téléphone mobile"
 
 #: 67:47 src/components/ProfileInfo.js
 msgid "Cancel"
-msgstr ""
+msgstr "Annuler"
 
 #: 75:45 src/components/ProfileInfo.js
 msgid "Save"
-msgstr ""
+msgstr "Sauvegarder"
 
 #: 197:41 src/components/ProfileInfo.js
 msgid "City"
-msgstr ""
+msgstr "Ville"
 
 #: 205:41 src/components/ProfileInfo.js
 msgid "Province"
@@ -72,9 +72,25 @@ msgstr ""
 
 #: 213:41 src/components/ProfileInfo.js
 msgid "Postal Code"
-msgstr ""
+msgstr "Code postal"
 
 #: 221:41 src/components/ProfileInfo.js
 msgid "Country"
-msgstr ""
+msgstr "Pays"
+
+#: 343:29 src/components/ProfileInfo.js
+msgid "Unknown department"
+msgstr "Ministère inconnu"
+
+#: 436:37 src/components/ProfileInfo.js
+msgid "Add new org tier to the selected"
+msgstr "Ajouter un nouveau niveau d'organisation à l'organisation sélectionnée"
+
+#: 457:53 src/components/ProfileInfo.js
+msgid "Name of tier"
+msgstr "Nom du niveau"
+
+#: 286:19 src/components/ProfileInfo.js
+msgid "Change"
+msgstr "Modifier"
 
