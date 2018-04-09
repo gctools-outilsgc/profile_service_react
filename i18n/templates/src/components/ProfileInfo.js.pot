@@ -86,3 +86,7 @@ msgstr ""
 msgid "Change"
 msgstr ""
 
+#: src/components/ProfileInfo.js 280:20
+msgid "This person has no avatar image."
+msgstr ""
+

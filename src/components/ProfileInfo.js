@@ -24,7 +24,7 @@ import { connect } from 'react-redux';
 
 const style = {
   imageExample: {
-    backgroundColor: 'blue',
+    textAlign: 'center',
     height: '80px',
     width: '80px',
     marginRight: '15px',
@@ -50,6 +50,7 @@ class ProfileInfo extends Component {
       saving: false,
       createOrgTierOpen: false,
       newOrgTier: defaultNewOrgTier,
+      avatarLoading: 0,
     };
     this.onSave = this.onSave.bind(this);
   }
@@ -261,6 +262,25 @@ class ProfileInfo extends Component {
         </div>
       );
     }
+    const { avatar: avatarUrl } = this.state.profile;
+    const avClass = (this.state.avatarLoading === 0) ? 'avatar-loading' : '';
+    const avatar = (this.state.avatarLoading < 2) ? (
+      <img
+        width={80}
+        height={80}
+        src={(typeof avatarUrl !== 'undefined') ? avatarUrl || 'b' : undefined}
+        alt="avatar"
+        onLoad={() => { this.setState({ avatarLoading: 1 }); }}
+        onError={() => { this.setState({ avatarLoading: 2 }); }}
+      />
+    ) : (
+      <Icon
+        name="user"
+        size="huge"
+        aria-label={__('This person has no avatar image.')}
+        style={{ color: '#aaa' }}
+      />
+    );
     return (
       <Segment>
         <Dimmer active={loading || this.state.saving} inverted>
@@ -269,13 +289,8 @@ class ProfileInfo extends Component {
         <Item.Group>
           <Item>
             <Item>
-              <div style={style.imageExample}>
-                <img
-                  width={80}
-                  height={80}
-                  src={this.state.profile.avatar}
-                  alt="avatar"
-                />
+              <div style={style.imageExample} className={avClass}>
+                {avatar}
               </div>
               <Button
                 size="small"

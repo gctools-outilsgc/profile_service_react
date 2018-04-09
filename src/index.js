@@ -24,6 +24,7 @@ const link = ApolloLink.from([
     if (graphQLErrors) {
       errors = graphQLErrors.map(({ message }) => message);
     } else if (networkError) errors.push(networkError);
+    console.log(errors);
     if (errors.length > 0) {
       store.dispatch(errorAction(errors));
     }

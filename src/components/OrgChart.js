@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import GCOrgChart from '@gctools-components/react-gc-orgchart';
 
-const OrgChart = (props) => {
+const OrgChart = (props, context) => {
   const {
     loading,
     error,
@@ -46,14 +46,40 @@ const OrgChart = (props) => {
     orgStructure.orgTier = (me.org) ? me.org.nameEn : '';
   }
 
+  const navigateToProfile = (uuid) => {
+    if (gcID !== uuid) {
+      context.router.history.push(`/profile/${uuid}`);
+    }
+  };
+
+
+  const onClick = (e, obj) => {
+    navigateToProfile(obj.uuid);
+  };
+
+  const onKeyPress = (e, obj) => {
+    if (e.key === 'Enter') {
+      navigateToProfile(obj.uuid);
+    }
+  };
+
   return (
     <Segment>
       <Dimmer active={loading}>
         <Loader content="Loading" />
       </Dimmer>
-      <GCOrgChart orgStructure={orgStructure} subject={gcID} />
+      <GCOrgChart
+        orgStructure={orgStructure}
+        subject={gcID}
+        onClick={onClick}
+        onKeyPress={onKeyPress}
+      />
     </Segment>
   );
+};
+
+OrgChart.contextTypes = {
+  router: PropTypes.object,
 };
 
 OrgChart.defaultProps = {
