@@ -63,6 +63,26 @@ mutation modifyAddr($addressID: Int!, $dataToModify: ModifyAddressInput!) {
   }
 }`;
 
+const createAddressMutation = gql`
+mutation createAddr(
+  $streetAddress: String!,
+  $city: String!,
+  $province: String!,
+  $postalCode: String!,
+  $country: String!
+) {
+  createAddress(
+    streetAddress: $streetAddress,
+    city: $city,
+    province: $province,
+    postalCode: $postalCode,
+    country: $country
+  ) {
+    city
+  }
+}`;
+
+
 const modifyOrgMutation = gql`
 mutation modifyOrg($orgId: Int!, $dataToModify: ModifyOrganizationInput!) {
   modifyOrganization(organizationId: $orgId, dataToModify: $dataToModify) {
@@ -73,11 +93,20 @@ mutation modifyOrg($orgId: Int!, $dataToModify: ModifyOrganizationInput!) {
   }
 }`;
 
-const modifyOrgTier = gql`
-mutation modifyOrgTier($orgId: Int!, $dataToModify: ModifyOrgTierInput!) {
-  modifyOrgTier(orgId: $orgId, dataToModify: $dataToModify) {
+const createOrgTier = gql`
+mutation createOrgTier(
+  $nameEn: String!,
+  $nameFr: String!,
+  $organizationId: Int!,
+  $ownerGcId: String!
+) {
+  createOrgTier(
+    nameEn: $nameEn,
+    nameFr: $nameFr,
+    organizationId: $organizationId,
+    ownerGcId: $ownerGcId
+  ) {
     nameEn
-    nameFr
   }
 }`;
 
@@ -87,8 +116,12 @@ export default graphql(profileInfoQuery, {
     loading: props.data.loading,
     refetch: props.data.refetch,
     profile: (props.data.profiles && props.data.profiles.length === 1) ?
-      Object.assign({}, props.data.profiles[0], (props.data.profiles[0].org) ?
-        {} : { org: {} }) : undefined,
+      Object.assign(
+        {},
+        props.data.profiles[0],
+        (props.data.profiles[0].org) ? {} : { org: { organization: {} } },
+        (props.data.profiles[0].address) ? {} : { address: {} },
+      ) : undefined,
   }),
   options: ({ gcID }) => ({
     variables: {
@@ -99,8 +132,10 @@ export default graphql(profileInfoQuery, {
   props: props => ({ mutateProfile: props.mutate }),
 })(graphql(modifyAddressMutation, {
   props: props => ({ mutateAddress: props.mutate }),
+})(graphql(createAddressMutation, {
+  props: props => ({ createAddressMutation: props.mutate }),
 })(graphql(modifyOrgMutation, {
   props: props => ({ mutateOrg: props.mutate }),
-})(graphql(modifyOrgTier, {
-  props: props => ({ mutateOrgTier: props.mutate }),
-})(ProfileInfo)))));
+})(graphql(createOrgTier, {
+  props: props => ({ mutateCreateOrgTier: props.mutate }),
+})(ProfileInfo))))));

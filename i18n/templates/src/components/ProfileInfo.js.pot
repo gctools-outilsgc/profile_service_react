@@ -70,3 +70,23 @@ msgstr ""
 msgid "Country"
 msgstr ""
 
+#: src/components/ProfileInfo.js 343:29
+msgid "Unknown department"
+msgstr ""
+
+#: src/components/ProfileInfo.js 436:37
+msgid "Add new org tier to the selected"
+msgstr ""
+
+#: src/components/ProfileInfo.js 457:53
+msgid "Name of tier"
+msgstr ""
+
+#: src/components/ProfileInfo.js 286:19
+msgid "Change"
+msgstr ""
+
+#: src/components/ProfileInfo.js 280:20
+msgid "This person has no avatar image."
+msgstr ""
+
