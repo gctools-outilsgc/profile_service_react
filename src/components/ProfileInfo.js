@@ -27,7 +27,7 @@ const style = {
     textAlign: 'center',
     height: '80px',
     width: '80px',
-    marginRight: '15px',
+    margin: '0 auto',
   },
   list: {
     float: 'left',
@@ -290,25 +290,26 @@ class ProfileInfo extends Component {
         <Dimmer active={loading || this.state.saving} inverted>
           <Loader content={__('Loading')} />
         </Dimmer>
-        <Item.Group>
-          <Item>
-            <Item>
-              <div style={style.imageExample} className={avClass}>
-                {avatar}
-              </div>
-              <Button
-                size="small"
-                basic
-                style={{ display: (this.state.editMode) ? 'block' : 'none' }}
-              >
-                <label htmlFor="avatarUpload">
-                  {__('Change')}
-                  <input
-                    type="file"
-                    id="avatarUpload"
-                    style={{ display: 'none' }}
-                    required
-                    onChange={({ target }) => {
+        {editButtons}
+        <div style={style.imageExample} className={avClass}>
+          {avatar}
+        </div>
+        <Button
+          size="small"
+          basic
+          style={{
+            margin: '0 auto',
+            display: (this.state.editMode) ? 'block' : 'none',
+          }}
+        >
+          <label htmlFor="avatarUpload">
+            {__('Change')}
+            <input
+              type="file"
+              id="avatarUpload"
+              style={{ display: 'none' }}
+              required
+              onChange={({ target }) => {
                       if (target.validity.valid) {
                         const reader = new FileReader();
                         reader.onloadend = () => {
@@ -326,12 +327,12 @@ class ProfileInfo extends Component {
                         reader.readAsDataURL(target.files[0]);
                       }
                     }}
-                  />
-                </label>
-              </Button>
-            </Item>
+            />
+          </label>
+        </Button>
+        <Item.Group>
+          <Item>
             <Item.Content>
-              {editButtons}
               <Item.Header>
                 <ReactI18nEdit
                   edit={this.state.editMode}
@@ -627,7 +628,7 @@ class ProfileInfo extends Component {
                       </List.Description>
                     </List.Content>
                   </List.Item>
-                  <List.Item>
+                  <List.Item style={style.list.listItem}>
                     <List.Icon size="large" name="mobile" />
                     <List.Content>
                       <List.Header> {__('Mobile')} </List.Header>
@@ -655,76 +656,7 @@ class ProfileInfo extends Component {
                       </List.Description>
                     </List.Content>
                   </List.Item>
-                </List>
-                <List style={style.list}>
-                  <List.Item>
-                    <List.Icon size="large" name="point" />
-                    <List.Content>
-                      <List.Header> {__('Address')} </List.Header>
-                      <List.Description>
-                        <ReactI18nEdit
-                          edit={this.state.editMode}
-                          values={[{
-                            lang: '',
-                            value:
-                              this.state.profile.address.streetAddress || '',
-                            placeholder: __('Address'),
-                          }]}
-                          showLabel={false}
-                          onChange={data =>
-                            this.onAddressChange(data, 'streetAddress')
-                          }
-                        /><br />
-                        <ReactI18nEdit
-                          edit={this.state.editMode}
-                          values={[{
-                            lang: '',
-                            value: this.state.profile.address.city || '',
-                            placeholder: __('City'),
-                          }]}
-                          showLabel={false}
-                          onChange={data => this.onAddressChange(data, 'city')}
-                        />,
-                        <ReactI18nEdit
-                          edit={this.state.editMode}
-                          values={[{
-                            lang: '',
-                            value: this.state.profile.address.province || '',
-                            placeholder: __('Province'),
-                          }]}
-                          showLabel={false}
-                          onChange={data =>
-                            this.onAddressChange(data, 'province')
-                          }
-                        /><br />
-                        <ReactI18nEdit
-                          edit={this.state.editMode}
-                          values={[{
-                            lang: '',
-                            value: this.state.profile.address.postalCode || '',
-                            placeholder: __('Postal Code'),
-                          }]}
-                          showLabel={false}
-                          onChange={data =>
-                            this.onAddressChange(data, 'postalCode')
-                          }
-                        /><br />
-                        <ReactI18nEdit
-                          edit={this.state.editMode}
-                          values={[{
-                            lang: '',
-                            value: this.state.profile.address.country || '',
-                            placeholder: __('Country'),
-                          }]}
-                          showLabel={false}
-                          onChange={data =>
-                            this.onAddressChange(data, 'country')
-                          }
-                        />
-                      </List.Description>
-                    </List.Content>
-                  </List.Item>
-                  <List.Item>
+                  <List.Item style={style.list.listItem}>
                     <List.Icon size="large" name="mail" />
                     <List.Content>
                       <List.Header>{__('Email')} </List.Header>
@@ -747,6 +679,87 @@ class ProfileInfo extends Component {
                             });
                           }}
                         />
+                      </List.Description>
+                    </List.Content>
+                  </List.Item>
+                </List>
+                <List style={style.list}>
+                  <List.Item>
+                    <List.Icon size="large" name="point" />
+                    <List.Content>
+                      <List.Header> {__('Address')} </List.Header>
+                      <List.Description>
+                        <div>
+                          <ReactI18nEdit
+                            edit={this.state.editMode}
+                            values={[{
+                            lang: '',
+                            value:
+                              this.state.profile.address.streetAddress || '',
+                            placeholder: __('Address'),
+                          }]}
+                            showLabel={false}
+                            onChange={data =>
+                            this.onAddressChange(data, 'streetAddress')
+                          }
+                          />
+                        </div>
+                        <div>
+                          <ReactI18nEdit
+                            edit={this.state.editMode}
+                            values={[{
+                            lang: '',
+                            value: this.state.profile.address.city || '',
+                            placeholder: __('City'),
+                          }]}
+                            showLabel={false}
+                            onChange={
+                            data => this.onAddressChange(data, 'city')
+                          }
+                          />,
+                        </div>
+                        <div>
+                          <ReactI18nEdit
+                            edit={this.state.editMode}
+                            values={[{
+                            lang: '',
+                            value: this.state.profile.address.province || '',
+                            placeholder: __('Province'),
+                          }]}
+                            showLabel={false}
+                            onChange={data =>
+                            this.onAddressChange(data, 'province')
+                          }
+                          />
+                        </div>
+                        <div>
+                          <ReactI18nEdit
+                            edit={this.state.editMode}
+                            values={[{
+                            lang: '',
+                            value: this.state.profile.address.postalCode || '',
+                            placeholder: __('Postal Code'),
+                          }]}
+                            showLabel={false}
+                            onChange={data =>
+                            this.onAddressChange(data, 'postalCode')
+                          }
+                          />
+                        </div>
+                        <div>
+                          <ReactI18nEdit
+                            edit={this.state.editMode}
+                            values={[{
+                            lang: '',
+                            value: this.state.profile.address.country || '',
+                            placeholder: __('Country'),
+                          }]}
+                            showLabel={false}
+                            onChange={data =>
+                            this.onAddressChange(data, 'country')
+                          }
+                          />
+                        </div>
                       </List.Description>
                     </List.Content>
                   </List.Item>

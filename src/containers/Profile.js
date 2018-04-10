@@ -1,17 +1,19 @@
 import React from 'react';
-import { Segment } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 import ProfileInfo from '../components/GQLProfileInfo';
 import OrgChart from '../components/GQLOrgChart';
 
 const Profile = ({ match }) => (
-  <div>
-    <ProfileInfo gcID={match.params.id} />
-    <Segment>
+  <Grid stackable columns={2}>
+    <Grid.Column>
+      <ProfileInfo gcID={match.params.id} />
+    </Grid.Column>
+    <Grid.Column>
       <OrgChart gcID={match.params.id} />
-    </Segment>
-  </div>
+    </Grid.Column>
+  </Grid>
 );
 
 Profile.propTypes = {

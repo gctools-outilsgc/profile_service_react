@@ -58,35 +58,6 @@ const style = {
   },
 };
 
-<<<<<<< HEAD
-const App = () => (
-  <BrowserRouter>
-    <Container>
-      <Menu secondary style={style.menu}>
-        <Menu.Item>
-          <Image src={logo} style={style.logo.image} verticalAlign="middle" />
-          <span style={style.logo.text}>{__('GCProfile')}</span>
-        </Menu.Item>
-        <Menu.Menu position="right">
-          <Menu.Item>
-            <LanguageToggle />
-          </Menu.Item>
-        </Menu.Menu>
-      </Menu>
-
-      <Divider />
-      <div style={style.content}>
-        <Switch>
-          <Fragment>
-            <Route exact path="/" component={Home} />
-            <Route path="/profile/:id" component={Profile} />
-          </Fragment>
-        </Switch>
-      </div>
-    </Container>
-  </BrowserRouter>
-);
-=======
 const url = window.location.origin;
 
 class App extends React.Component {
@@ -141,9 +112,6 @@ class App extends React.Component {
             </Menu.Item>
             <Menu.Menu position="right">
               <Menu.Item>
-                <LanguageToggle />
-              </Menu.Item>
-              <Menu.Item>
                 <Login
                   oidcConfig={{
                     authority: 'https://dev.account.gccollab.ca/openid',
@@ -172,6 +140,9 @@ class App extends React.Component {
                     />
                   )}
                 </Login>
+              </Menu.Item>
+              <Menu.Item>
+                <LanguageToggle />
               </Menu.Item>
             </Menu.Menu>
           </Menu>
@@ -202,6 +173,5 @@ const mapDispToProps = dispatch => ({
   onLogout: () => dispatch(logoutAction()),
   onErrorClose: () => dispatch(clearErrorAction()),
 });
->>>>>>> e6a40fb0f0bec66bc17fe3f456540bda90d47633
 
 export default connect(mapStToProps, mapDispToProps)(LocalizedComponent(App));
