@@ -19,10 +19,7 @@ class ProfileSearch extends React.Component {
   }
 
   handleResultSelect(e, { result }) {
-    const newPath = `/profile/${result.id}`;
-    if (newPath !== this.context.router.route.location.pathname) {
-      this.context.router.history.push(newPath);
-    }
+    this.props.onResultSelect(result);
     this.setState({ value: '', skip: true });
   }
 
@@ -72,12 +69,6 @@ class ProfileSearch extends React.Component {
               results={results}
               value={value}
               noResultsMessage={__('No results found.')}
-              {...this.props}
-              // resultRenderer={item => (
-              //   <div key={`search_result_${item.description.gcID}`}>
-              //     {item.name}
-              //   </div>
-              // )}
             />
           );
         }}
@@ -86,8 +77,12 @@ class ProfileSearch extends React.Component {
   }
 }
 
-ProfileSearch.contextTypes = {
-  router: PropTypes.object,
+ProfileSearch.defaultProps = {
+  onResultSelect: () => {},
+};
+
+ProfileSearch.propTypes = {
+  onResultSelect: PropTypes.func,
 };
 
 export default LocalizedComponent(ProfileSearch);

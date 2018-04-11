@@ -113,7 +113,17 @@ class App extends React.Component {
             </Menu.Item>
             <Menu.Menu position="right">
               <Menu.Item>
-                <ProfileSearch />
+                <Route render={({ history }) => (
+                  <ProfileSearch
+                    onResultSelect={(result) => {
+                      const newPath = `/profile/${result.id}`;
+                      if (newPath !== history.location.pathname) {
+                        history.push(newPath);
+                      }
+                    }}
+                  />
+                  )}
+                />
               </Menu.Item>
               <Menu.Item>
                 <Login
@@ -168,6 +178,10 @@ App.propTypes = {
   onLogout: PropTypes.func.isRequired,
   onErrorClose: PropTypes.func.isRequired,
   showError: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
+
+App.contextTypes = {
+  router: PropTypes.object,
 };
 
 const mapStToProps = ({ showError }) => ({ showError: showError || [] });
