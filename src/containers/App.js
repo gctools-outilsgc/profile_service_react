@@ -20,6 +20,7 @@ import Login from '@gctools-components/gc-login';
 
 import Home from './Home';
 import Profile from './Profile';
+import ProfileSearch from '../components/ProfileSearch';
 import logo from '../assets/logo.png';
 import logoWhite from '../assets/logoWhite.png';
 
@@ -111,6 +112,9 @@ class App extends React.Component {
               <span style={style.logo.text}>{__('GCProfile')}</span>
             </Menu.Item>
             <Menu.Menu position="right">
+              <Menu.Item>
+                <ProfileSearch />
+              </Menu.Item>
               <Menu.Item>
                 <Login
                   oidcConfig={{
