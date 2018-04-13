@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-11 10:54-0300\n"
+"POT-Creation-Date: 2018-04-13 11:10-0300\n"
 "PO-Revision-Date: 2018-03-26 10:11-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr_CA\n"
@@ -101,4 +101,16 @@ msgstr "Cette personne n'a pas d'avatar."
 #: 291:11 src/components/ProfileInfo.js
 msgid "Specified profile does not exist."
 msgstr "Le profil spécifié n'existe pas."
+
+#: 705:36 src/components/ProfileInfo.js
+msgid "supervisor"
+msgstr ""
+
+#: 705:36 src/components/ProfileInfo.js
+msgid "Supervisor"
+msgstr ""
+
+#: 711:31 src/components/ProfileInfo.js
+msgid "Not identified"
+msgstr ""
 

@@ -20,7 +20,8 @@ import ReactI18nEdit from '@gctools-components/react-i18n-edit';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
-import { connect } from 'react-redux';
+import ProfileSearch from './ProfileSearch';
+import { orgChartSupervisorQuery, orgChartEmpQuery } from './GQLOrgChart';
 
 const style = {
   imageExample: {
@@ -124,6 +125,11 @@ class ProfileInfo extends Component {
           profileChanged = true;
           break;
         }
+      } else if (fields[i] === 'supervisor') {
+        if (oldProfile.supervisor.gcID !== newProfile.supervisor.gcID) {
+          profileChanged = true;
+          break;
+        }
       } else if (oldProfile[fields[i]] !== newProfile[fields[i]]) {
         profileChanged = true;
         break;
@@ -186,6 +192,15 @@ class ProfileInfo extends Component {
           variables.avatar = this.state.profile.avatarFile;
         }
 
+        if (!variables.profileInfo.supervisor.gcID) {
+          delete variables.profileInfo.supervisor;
+        } else {
+          delete variables.profileInfo.supervisor.name;
+          variables.profileInfo.supervisor.gcId
+            = variables.profileInfo.supervisor.gcID;
+          delete variables.profileInfo.supervisor.gcID;
+        }
+
         operations.push(mutateProfile({
           context: {
             headers: {
@@ -217,6 +232,7 @@ class ProfileInfo extends Component {
       myGcID,
       modifyProfile,
       profile: { gcID },
+      mySupervisor,
     } = this.props;
     if (error) return 'Error';
     const capitalize = function capitalize(str) {
@@ -300,6 +316,61 @@ class ProfileInfo extends Component {
           {__('Specified profile does not exist.')}
         </Dimmer>
         {editButtons}
+        {(() => {
+          if ((gcID !== myGcID) && (gcID !== mySupervisor)) {
+            const { mutateProfile } = this.props;
+            const refetchQueries = [];
+            refetchQueries.push({
+              query: orgChartSupervisorQuery,
+              variables: {
+                gcID,
+              },
+            });
+            refetchQueries.push({
+              query: orgChartSupervisorQuery,
+              variables: {
+                gcID: myGcID,
+              },
+            });
+            if (mySupervisor) {
+              refetchQueries.push({
+                query: orgChartEmpQuery,
+                variables: {
+                  gcID: mySupervisor,
+                },
+              });
+            }
+
+            return (
+              <Button
+                floated="left"
+                size="small"
+                basic
+                onClick={() => {
+                  mutateProfile({
+                    refetchQueries,
+                    context: {
+                      headers: {
+                        Authorization: `Bearer ${this.props.accessToken}`,
+                      },
+                    },
+                    variables: {
+                      gcID: myGcID,
+                      profileInfo: {
+                        supervisor: {
+                          gcId: gcID,
+                        },
+                      },
+                    },
+                  });
+                }}
+              >
+                <Icon name="user" />This is my supervisor
+              </Button>
+            );
+          }
+          return null;
+        })()}
         <div style={style.imageExample} className={avClass}>
           {avatar}
         </div>
@@ -699,6 +770,40 @@ class ProfileInfo extends Component {
                   </List.Item>
                 </List>
                 <List style={style.list}>
+                  <List.Item style={style.list.listItem}>
+                    <List.Icon size="large" name="user" />
+                    <List.Content>
+                      <List.Header>{__('Supervisor')} </List.Header>
+                      {(() => {
+                        const { supervisor } = this.state.profile;
+                        if (this.state.editMode) {
+                          return (
+                            <ProfileSearch
+                              defaultValue={supervisor.name}
+                              onResultSelect={(data) => {
+                                this.setState({
+                                  profile: Object.assign(
+                                    {},
+                                    this.state.profile,
+                                    {
+                                      supervisor: {
+                                        name: data.title,
+                                        gcID: data.id,
+                                      },
+                                    },
+                                  ),
+                                });
+                              }}
+                            />
+                          );
+                        }
+                        if (supervisor && supervisor.name) {
+                          return supervisor.name;
+                        }
+                        return __('Not identified');
+                      })()}
+                    </List.Content>
+                  </List.Item>
                   <List.Item>
                     <List.Icon size="large" name="point" />
                     <List.Content>
@@ -799,6 +904,7 @@ ProfileInfo.defaultProps = {
   accessToken: '',
   myGcID: '',
   modifyProfile: false,
+  mySupervisor: undefined,
 };
 
 ProfileInfo.propTypes = {
@@ -811,6 +917,10 @@ ProfileInfo.propTypes = {
     avatar: PropTypes.string,
     mobilePhone: PropTypes.string,
     officePhone: PropTypes.string,
+    supervisor: PropTypes.shape({
+      name: PropTypes.string,
+      gcID: PropTypes.string,
+    }),
     address: PropTypes.shape({
       id: PropTypes.string,
       streetAddress: PropTypes.string,
@@ -838,16 +948,7 @@ ProfileInfo.propTypes = {
   accessToken: PropTypes.string,
   myGcID: PropTypes.string,
   modifyProfile: PropTypes.bool,
+  mySupervisor: PropTypes.string,
 };
 
-const mapStateToProps = ({ user }) => {
-  const props = {};
-  if (user) {
-    props.accessToken = user.access_token;
-    props.myGcID = user.profile.sub;
-    props.modifyProfile = user.profile.modify_profile === 'True';
-  }
-  return props;
-};
-
-export default connect(mapStateToProps)(LocalizedComponent(ProfileInfo));
+export default LocalizedComponent(ProfileInfo);

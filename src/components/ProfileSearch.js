@@ -11,20 +11,32 @@ class ProfileSearch extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: '',
+      value: props.defaultValue || '',
+      isDefault: true,
     };
     this.handleResultSelect = this.handleResultSelect.bind(this);
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.searchDelay = false;
   }
 
+  componentWillReceiveProps(next) {
+    const { isDefault } = this.state;
+    if (isDefault && (next.defaultValue !== this.state.value)) {
+      this.setState({ value: next.defaultValue });
+    }
+  }
+
   handleResultSelect(e, { result }) {
-    this.props.onResultSelect(result);
-    this.setState({ value: '', skip: true });
+    this.setState({
+      value: this.props.defaultValue || '',
+      skip: true,
+      isDefault: true,
+    });
+    setTimeout(() => this.props.onResultSelect(result), 0);
   }
 
   handleSearchChange(e, { value }) {
-    this.setState({ value, skip: true });
+    this.setState({ value, skip: true, isDefault: false });
     if (this.searchDelay) {
       clearTimeout(this.searchDelay);
     }
@@ -58,7 +70,7 @@ class ProfileSearch extends React.Component {
           loading,
           data,
         }) => {
-          const { value } = this.state;
+          const { value, isDefault } = this.state;
           const results = (data.profiles) ? data.profiles.map(a =>
             ({
               title: a.name,
@@ -71,8 +83,7 @@ class ProfileSearch extends React.Component {
             <Search
               placeholder={__('Search...')}
               icon="user"
-              error="bla"
-              loading={loading && !(!value)}
+              loading={loading && !isDefault}
               onResultSelect={this.handleResultSelect}
               onSearchChange={this.handleSearchChange}
               results={results}
@@ -88,10 +99,12 @@ class ProfileSearch extends React.Component {
 
 ProfileSearch.defaultProps = {
   onResultSelect: () => {},
+  defaultValue: undefined,
 };
 
 ProfileSearch.propTypes = {
   onResultSelect: PropTypes.func,
+  defaultValue: PropTypes.string,
 };
 
 export default LocalizedComponent(ProfileSearch);

@@ -1,6 +1,8 @@
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
+import { connect } from 'react-redux';
+
 import ProfileInfo from './ProfileInfo';
 
 const profileInfoQuery = gql`
@@ -12,6 +14,10 @@ query profileInfoQuery($gcID: String!) {
     avatar
     mobilePhone
     officePhone
+    supervisor {
+      gcID
+      name
+    }
     address {
       id
       streetAddress
@@ -36,6 +42,16 @@ query profileInfoQuery($gcID: String!) {
     }
   }
 }`;
+
+const profileMeQuery = gql`
+query profileMeQuery($gcID: String!) {
+  profiles(gcID: $gcID) {
+    supervisor {
+      gcID
+    }
+  }
+}
+`;
 
 const modifyProfileMutation = gql`
 mutation modifyPr($gcID: String!, $profileInfo: ModifyProfileInput!) {
@@ -72,7 +88,17 @@ mutation createOrgTier(
   }
 }`;
 
-export default graphql(profileInfoQuery, {
+const mapStateToProps = ({ user }) => {
+  const props = {};
+  if (user) {
+    props.accessToken = user.access_token;
+    props.myGcID = user.profile.sub;
+    props.modifyProfile = user.profile.modify_profile === 'True';
+  }
+  return props;
+};
+
+export default connect(mapStateToProps)(graphql(profileInfoQuery, {
   props: props => ({
     error: props.data.error,
     loading: props.data.loading,
@@ -83,11 +109,23 @@ export default graphql(profileInfoQuery, {
         props.data.profiles[0],
         (props.data.profiles[0].org) ? {} : { org: { organization: {} } },
         (props.data.profiles[0].address) ? {} : { address: {} },
+        (props.data.profiles[0].supervisor) ? {} : { supervisor: {} },
       ) : undefined,
   }),
   options: ({ gcID }) => ({
     variables: {
       gcID,
+    },
+  }),
+})(graphql(profileMeQuery, {
+  props: props => ({
+    mySupervisor: (props.data.profiles && props.data.profiles.length === 1) ?
+      props.data.profiles[0].supervisor.gcID : undefined,
+  }),
+  skip: ({ myGcID }) => !myGcID,
+  options: ({ myGcID }) => ({
+    variables: {
+      gcID: myGcID,
     },
   }),
 })(graphql(modifyProfileMutation, {
@@ -96,4 +134,4 @@ export default graphql(profileInfoQuery, {
   props: props => ({ mutateOrg: props.mutate }),
 })(graphql(createOrgTier, {
   props: props => ({ mutateCreateOrgTier: props.mutate }),
-})(ProfileInfo))));
+})(ProfileInfo))))));

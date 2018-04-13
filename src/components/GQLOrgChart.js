@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 
 import OrgChart from './OrgChart';
 
-const orgChartSupervisorQuery = gql`
+export const orgChartSupervisorQuery = gql`
 query orgChartSupervisorQuery($gcID: String!) {
   profiles(gcID: $gcID) {
     gcID
@@ -43,7 +43,7 @@ query orgChartSupervisorQuery($gcID: String!) {
   }
 }`;
 
-const orgChartEmpQuery = gql`
+export const orgChartEmpQuery = gql`
 query orgChartEmpQuery($gcID: String!) {
   profiles(gcID: $gcID) {
     Employees {
@@ -66,6 +66,7 @@ export default compose(
     props: p => ({
       error: p.data.error,
       loading: p.data.loading,
+      refetch: p.data.refetch,
       employees: (p.data.profiles && p.data.profiles.length === 1) ?
         p.data.profiles[0].Employees : [],
       sup: (p.data.profiles && p.data.profiles.length === 1) ?
