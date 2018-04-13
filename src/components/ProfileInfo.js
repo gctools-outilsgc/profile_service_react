@@ -65,8 +65,6 @@ class ProfileInfo extends Component {
     if (nextProps.profile && JSON.stringify(nextProps.profile) !==
       JSON.stringify(this.props.profile)) {
       this.setState({ profile: nextProps.profile, saving: false });
-    } else if (this.state.saving) {
-      this.setState({ editMode: true, saving: false });
     }
   }
 
@@ -96,6 +94,8 @@ class ProfileInfo extends Component {
     const {
       mutateProfile,
       refetch,
+      mySupervisor,
+      myGcID,
     } = this.props;
     const oldProfile = Object.assign(
       {},
@@ -195,13 +195,35 @@ class ProfileInfo extends Component {
         if (!variables.profileInfo.supervisor.gcID) {
           delete variables.profileInfo.supervisor;
         } else {
-          delete variables.profileInfo.supervisor.name;
-          variables.profileInfo.supervisor.gcId
-            = variables.profileInfo.supervisor.gcID;
-          delete variables.profileInfo.supervisor.gcID;
+          variables.profileInfo.supervisor = {
+            gcId: variables.profileInfo.supervisor.gcID,
+          };
+        }
+
+        const refetchQueries = [];
+        refetchQueries.push({
+          query: orgChartSupervisorQuery,
+          variables: {
+            gcID: variables.profileInfo.supervisor.gcId,
+          },
+        });
+        refetchQueries.push({
+          query: orgChartSupervisorQuery,
+          variables: {
+            gcID: myGcID,
+          },
+        });
+        if (mySupervisor) {
+          refetchQueries.push({
+            query: orgChartEmpQuery,
+            variables: {
+              gcID: mySupervisor,
+            },
+          });
         }
 
         operations.push(mutateProfile({
+          refetchQueries,
           context: {
             headers: {
               Authorization: `Bearer ${this.props.accessToken}`,
