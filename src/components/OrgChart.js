@@ -16,6 +16,7 @@ const OrgChart = (props, context) => {
   } = props;
   if (error) return `Error!: ${error}`;
   const orgStructure = { subordinates: [] };
+  const orgTierName = (localizer.lang === 'en_CA') ? 'nameEn' : 'nameFr';
   if (supervisor && supervisor.gcID && profiles) {
     orgStructure.name = supervisor.name;
     orgStructure.uuid = supervisor.gcID;
@@ -33,7 +34,7 @@ const OrgChart = (props, context) => {
             orgStructure.subordinates[x].subordinates.push({
               name: p.name,
               uuid: p.gcID,
-              orgTier: (p.org) ? p.org.nameEn : '',
+              orgTier: (p.org) ? p.org[orgTierName] : '',
             }));
           break;
         }
@@ -43,7 +44,7 @@ const OrgChart = (props, context) => {
     if (!me.gcID) return null;
     orgStructure.name = me.name;
     orgStructure.uuid = me.gcID;
-    orgStructure.orgTier = (me.org) ? me.org.nameEn : '';
+    orgStructure.orgTier = (me.org) ? me.org[orgTierName] : '';
   }
 
   const navigateToProfile = (uuid) => {

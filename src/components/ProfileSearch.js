@@ -69,6 +69,9 @@ class ProfileSearch extends React.Component {
 
           return (
             <Search
+              placeholder={__('Search...')}
+              icon="user"
+              error="bla"
               loading={loading && !(!value)}
               onResultSelect={this.handleResultSelect}
               onSearchChange={this.handleSearchChange}

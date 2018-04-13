@@ -96,9 +96,9 @@ msgstr "Modifier"
 
 #: 280:20 src/components/ProfileInfo.js
 msgid "This person has no avatar image."
-msgstr ""
+msgstr "Cette personne n'a pas d'avatar."
 
 #: 291:11 src/components/ProfileInfo.js
 msgid "Specified profile does not exist."
-msgstr ""
+msgstr "Le profil spécifié n'existe pas."
 

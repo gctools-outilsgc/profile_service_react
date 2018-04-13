@@ -10,3 +10,7 @@ msgstr ""
 msgid "No results found."
 msgstr ""
 
+#: src/components/ProfileSearch.js 72:27
+msgid "Search..."
+msgstr ""
+
