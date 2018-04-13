@@ -35,6 +35,11 @@ class ProfileSearch extends React.Component {
   }
 
   render() {
+    const capitalize = function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    };
+
+    const title = `title${capitalize(localizer.lang.split('_', 1)[0])}`;
     return (
       <Query
         query={gql`
@@ -43,6 +48,7 @@ class ProfileSearch extends React.Component {
               gcID
               name
               avatar
+              ${title}
             }
           }`}
         skip={this.state.skip || !this.state.value}
@@ -56,7 +62,7 @@ class ProfileSearch extends React.Component {
           const results = (data.profiles) ? data.profiles.map(a =>
             ({
               title: a.name,
-              description: a.titleEn,
+              description: a[title],
               image: a.avatar,
               id: a.gcID,
             })) : [];

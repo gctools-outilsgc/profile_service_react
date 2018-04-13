@@ -38,50 +38,12 @@ query profileInfoQuery($gcID: String!) {
 }`;
 
 const modifyProfileMutation = gql`
-mutation modifyPr($gcID: String!, $dataToModify: ModifyProfileInput!) {
-  modifyProfile(gcId: $gcID, dataToModify: $dataToModify) {
+mutation modifyPr($gcID: String!, $profileInfo: ModifyProfileInput!) {
+  modifyProfile(gcId: $gcID, profileInfo: $profileInfo) {
     gcID
-    name
-    email
-    titleEn
-    titleFr
-    avatar
-    mobilePhone
-    officePhone
   }
 }
 `;
-
-const modifyAddressMutation = gql`
-mutation modifyAddr($addressID: Int!, $dataToModify: ModifyAddressInput!) {
-  modifyAddress(addressId: $addressID, dataToModify:$dataToModify) {
-    streetAddress
-    city
-    province
-    postalCode
-    country
-  }
-}`;
-
-const createAddressMutation = gql`
-mutation createAddr(
-  $streetAddress: String!,
-  $city: String!,
-  $province: String!,
-  $postalCode: String!,
-  $country: String!
-) {
-  createAddress(
-    streetAddress: $streetAddress,
-    city: $city,
-    province: $province,
-    postalCode: $postalCode,
-    country: $country
-  ) {
-    city
-  }
-}`;
-
 
 const modifyOrgMutation = gql`
 mutation modifyOrg($orgId: Int!, $dataToModify: ModifyOrganizationInput!) {
@@ -130,12 +92,8 @@ export default graphql(profileInfoQuery, {
   }),
 })(graphql(modifyProfileMutation, {
   props: props => ({ mutateProfile: props.mutate }),
-})(graphql(modifyAddressMutation, {
-  props: props => ({ mutateAddress: props.mutate }),
-})(graphql(createAddressMutation, {
-  props: props => ({ createAddressMutation: props.mutate }),
 })(graphql(modifyOrgMutation, {
   props: props => ({ mutateOrg: props.mutate }),
 })(graphql(createOrgTier, {
   props: props => ({ mutateCreateOrgTier: props.mutate }),
-})(ProfileInfo))))));
+})(ProfileInfo))));

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-09 10:33-0300\n"
+"POT-Creation-Date: 2018-04-11 10:54-0300\n"
 "PO-Revision-Date: 2018-03-26 10:11-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr_CA\n"
@@ -96,5 +96,9 @@ msgstr "Modifier"
 
 #: 280:20 src/components/ProfileInfo.js
 msgid "This person has no avatar image."
+msgstr ""
+
+#: 291:11 src/components/ProfileInfo.js
+msgid "Specified profile does not exist."
 msgstr ""
 

@@ -90,3 +90,7 @@ msgstr ""
 msgid "This person has no avatar image."
 msgstr ""
 
+#: src/components/ProfileInfo.js 291:11
+msgid "Specified profile does not exist."
+msgstr ""
+
