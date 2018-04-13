@@ -30,11 +30,23 @@ const style = {
     margin: '0 auto',
   },
   list: {
-    float: 'left',
-    marginTop: '0px',
-    marginRight: '15px',
     listItem: {
       marginBottom: '10px',
+    },
+    left: {
+      marginTop: '0px',
+      marginRight: '15px',
+      float: 'left',
+    },
+    right: {
+      marginTop: '0px',
+      marginRight: '15px',
+      float: 'right',
+    },
+  },
+  form: {
+    organization: {
+      marginBottom: '50px',
     },
   },
 };
@@ -333,16 +345,17 @@ class ProfileInfo extends Component {
         <Item.Group>
           <Item>
             <Item.Content>
-              <Item.Header>
-                <ReactI18nEdit
-                  edit={this.state.editMode}
-                  values={[{
+              <span className="fluid-input-holder">
+                <Item.Header>
+                  <ReactI18nEdit
+                    edit={this.state.editMode}
+                    values={[{
                     lang: '',
                     value: this.state.profile.name || '',
                     placeholder: 'name',
                   }]}
-                  showLabel={false}
-                  onChange={(data) => {
+                    showLabel={false}
+                    onChange={(data) => {
                     this.setState({
                       profile: Object.assign(
                         {},
@@ -351,13 +364,15 @@ class ProfileInfo extends Component {
                       ),
                     });
                   }}
-                />
-              </Item.Header>
-              <Item.Meta>
-                <ReactI18nEdit
-                  edit={this.state.editMode}
-                  lang={localizer.lang}
-                  values={[
+                  />
+                </Item.Header>
+              </span>
+              <span className="fluid-input-holder">
+                <Item.Content>
+                  <ReactI18nEdit
+                    edit={this.state.editMode}
+                    lang={localizer.lang}
+                    values={[
                     {
                       lang: 'en_CA',
                       value: this.state.profile.titleEn || '',
@@ -369,7 +384,7 @@ class ProfileInfo extends Component {
                       placeholder: __('Title'),
                     },
                   ]}
-                  onChange={(data) => {
+                    onChange={(data) => {
                     const changeObj = {};
                     changeObj[`title${capitalize(data.lang.split('_', 1)[0])}`]
                       = data.value;
@@ -381,9 +396,10 @@ class ProfileInfo extends Component {
                       ),
                     });
                   }}
-                />
-              </Item.Meta>
-              <Item.Meta>
+                  />
+                </Item.Content>
+              </span>
+              <Item.Meta style={style.form.organization}>
                 <Query query={gql`
                   query organizationQuery {
                     organizations {
@@ -599,7 +615,7 @@ class ProfileInfo extends Component {
                 </Query>
               </Item.Meta>
               <Item.Description style={{ marginTop: '20px' }}>
-                <List style={style.list}>
+                <List style={style.list.left}>
                   <List.Item style={style.list.listItem}>
                     <List.Icon size="large" name="phone" />
                     <List.Content>
@@ -683,7 +699,7 @@ class ProfileInfo extends Component {
                     </List.Content>
                   </List.Item>
                 </List>
-                <List style={style.list}>
+                <List style={style.list.right}>
                   <List.Item>
                     <List.Icon size="large" name="point" />
                     <List.Content>
@@ -716,7 +732,7 @@ class ProfileInfo extends Component {
                             onChange={
                             data => this.onAddressChange(data, 'city')
                           }
-                          />,
+                          />
                         </div>
                         <div>
                           <ReactI18nEdit
