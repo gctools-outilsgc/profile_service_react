@@ -71,6 +71,11 @@ class ProfileInfo extends Component {
         profile: nextProps.profile,
       }));
     }
+    if (!nextProps.modifyProfile && this.state.editMode) {
+      this.setState(Object.assign({}, initialState, {
+        profile: nextProps.profile,
+      }));
+    }
   }
 
   onAddressChange(data, addressComponent) {
@@ -206,12 +211,14 @@ class ProfileInfo extends Component {
         }
 
         const refetchQueries = [];
-        refetchQueries.push({
-          query: orgChartSupervisorQuery,
-          variables: {
-            gcID: variables.profileInfo.supervisor.gcId,
-          },
-        });
+        if (variables.profileInfo.supervisor) {
+          refetchQueries.push({
+            query: orgChartSupervisorQuery,
+            variables: {
+              gcID: variables.profileInfo.supervisor.gcId,
+            },
+          });
+        }
         refetchQueries.push({
           query: orgChartSupervisorQuery,
           variables: {
