@@ -8,7 +8,8 @@ import {
   Button,
   Modal,
   Message,
-  Header
+  Header,
+  Dropdown
 } from 'semantic-ui-react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import LocalizedComponent
@@ -64,7 +65,7 @@ const url = window.location.origin;
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { name: false };
+    this.state = { name: false, id: false };
   }
   render() {
     const {
@@ -75,12 +76,12 @@ class App extends React.Component {
     } = this.props;
 
     const doLogin = (user) => {
-      this.setState({ name: user.profile.name });
+      this.setState({ name: user.profile.name, id: user.profile.sub });
       onLogin(user);
     };
 
     const doLogout = () => {
-      this.setState({ name: false });
+      this.setState({ name: false, id: false });
       onLogout();
     };
 
@@ -145,12 +146,43 @@ class App extends React.Component {
                   }}
                 >
                   {({ onClick }) => (
-                    <Button
-                      onClick={onClick}
-                      label={this.state.name || __('Login')}
-                      icon={<img src={logoWhite} alt="GCTools" width="20" />}
-                      primary
-                      compact
+                    <Route render={({ history }) => (
+                      <Dropdown
+                        icon={null}
+                        pointing="top"
+                        trigger={(
+                          <Button
+                            onClick={(e) => {
+                              if (!this.state.name) {
+                                e.stopPropagation();
+                                onClick(e);
+                              }
+                            }}
+                            label={this.state.name || __('Login')}
+                            icon={
+                              <img src={logoWhite} alt="GCTools" width="20" />
+                            }
+                            primary
+                            compact
+                          />
+                        )}
+                        options={(this.state.name) ? [{
+                          key: 'logout',
+                          text: __('Logout'),
+                          icon: 'sign out',
+                          onClick,
+                        }, {
+                          key: 'view-profile',
+                          text: __('View my profile'),
+                          icon: 'user',
+                          onClick: () => {
+                            const newPath = `/profile/${this.state.id}`;
+                            if (newPath !== history.location.pathname) {
+                              history.push(newPath);
+                            }
+                          },
+                        }] : null}
+                      />)}
                     />
                   )}
                 </Login>
@@ -180,9 +212,9 @@ App.propTypes = {
   showError: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-App.contextTypes = {
-  router: PropTypes.object,
-};
+// App.contextTypes = {
+//   router: PropTypes.object,
+// };
 
 const mapStToProps = ({ showError }) => ({ showError: showError || [] });
 
