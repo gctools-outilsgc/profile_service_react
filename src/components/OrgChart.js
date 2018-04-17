@@ -15,36 +15,39 @@ const OrgChart = (props, context) => {
     employees,
   } = props;
   if (error) return `Error!: ${error}`;
+  if (!me.gcID) return null;
   const orgStructure = { subordinates: [] };
   const orgTierName = (localizer.lang === 'en_CA') ? 'nameEn' : 'nameFr';
-  if (supervisor && supervisor.gcID && profiles) {
+  let subject = false;
+  if (supervisor && supervisor.gcID) {
     orgStructure.name = supervisor.name;
     orgStructure.uuid = supervisor.gcID;
     orgStructure.orgTier = (supervisor.org) ? supervisor.org.nameEn : '';
-    profiles.forEach(p => orgStructure.subordinates.push({
-      name: p.name,
-      uuid: p.gcID,
-      orgTier: (p.org) ? p.org.nameEn : '',
-    }));
-    if (employees && employees.length > 0) {
-      for (let x = 0; x < orgStructure.subordinates.length; x += 1) {
-        if (orgStructure.subordinates[x].uuid === gcID) {
-          orgStructure.subordinates[x].subordinates = [];
-          employees.forEach(p =>
-            orgStructure.subordinates[x].subordinates.push({
-              name: p.name,
-              uuid: p.gcID,
-              orgTier: (p.org) ? p.org[orgTierName] : '',
-            }));
-          break;
-        }
-      }
-    }
   } else {
-    if (!me.gcID) return null;
     orgStructure.name = me.name;
     orgStructure.uuid = me.gcID;
     orgStructure.orgTier = (me.org) ? me.org[orgTierName] : '';
+    subject = orgStructure;
+  }
+  if (profiles) {
+    profiles.forEach((p) => {
+      const i = orgStructure.subordinates.push({
+        name: p.name,
+        uuid: p.gcID,
+        orgTier: (p.org) ? p.org.nameEn : '',
+      });
+      if (p.gcID === gcID) subject = orgStructure.subordinates[i - 1];
+    });
+  }
+
+  if (subject && employees && employees.length > 0) {
+    subject.subordinates = [];
+    employees.forEach(p =>
+      subject.subordinates.push({
+        name: p.name,
+        uuid: p.gcID,
+        orgTier: (p.org) ? p.org[orgTierName] : '',
+      }));
   }
 
   const navigateToProfile = (uuid) => {
