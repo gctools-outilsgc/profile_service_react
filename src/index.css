@@ -17,7 +17,7 @@ body {
   animation: avatar-spin 2s linear infinite;
 }
 
-.avatar-loading img[src=''], .avatar-loading img:not([src]) {
+.avatar-loading img {
   opacity: 0;
 }
 

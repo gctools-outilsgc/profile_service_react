@@ -351,7 +351,9 @@ class ProfileInfo extends Component {
         </Dimmer>
         {editButtons}
         {(() => {
-          if ((gcID !== myGcID) && (gcID !== mySupervisor)) {
+          if ((gcID !== myGcID) &&
+            (gcID !== mySupervisor) &&
+            (accessToken !== '')) {
             const { mutateProfile } = this.props;
             const refetchQueries = [];
             refetchQueries.push({
@@ -399,7 +401,7 @@ class ProfileInfo extends Component {
                   });
                 }}
               >
-                <Icon name="user" />This is my supervisor
+                <Icon name="user" />{__('This is my supervisor')}
               </Button>
             );
           }
