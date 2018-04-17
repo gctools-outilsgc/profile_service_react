@@ -118,10 +118,15 @@ export default connect(mapStateToProps)(graphql(profileInfoQuery, {
     },
   }),
 })(graphql(profileMeQuery, {
-  props: props => ({
-    mySupervisor: (props.data.profiles && props.data.profiles.length === 1) ?
-      props.data.profiles[0].supervisor.gcID : undefined,
-  }),
+  props: ({ data: { profiles } }) => {
+    let mySupervisor;
+    if (profiles && profiles.length === 1 && profiles[0].supervisor) {
+      mySupervisor = profiles[0].supervisor.gcID;
+    }
+    return {
+      mySupervisor,
+    };
+  },
   skip: ({ myGcID }) => !myGcID,
   options: ({ myGcID }) => ({
     variables: {
