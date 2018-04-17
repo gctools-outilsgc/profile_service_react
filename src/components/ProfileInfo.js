@@ -42,18 +42,21 @@ const style = {
 
 const defaultNewOrgTier = { nameEn: '', nameFr: '' };
 
+const initialState = {
+  editMode: false,
+  saving: false,
+  createOrgTierOpen: false,
+  newOrgTier: defaultNewOrgTier,
+  avatarLoading: 0,
+  errorState: {},
+};
+
 class ProfileInfo extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      editMode: false,
+    this.state = Object.assign({}, initialState, {
       profile: Object.assign({}, props.profile),
-      saving: false,
-      createOrgTierOpen: false,
-      newOrgTier: defaultNewOrgTier,
-      avatarLoading: 0,
-      errorState: {},
-    };
+    });
     this.onSave = this.onSave.bind(this);
   }
 
@@ -64,7 +67,9 @@ class ProfileInfo extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.profile && JSON.stringify(nextProps.profile) !==
       JSON.stringify(this.props.profile)) {
-      this.setState({ profile: nextProps.profile, saving: false });
+      this.setState(Object.assign({}, initialState, {
+        profile: nextProps.profile,
+      }));
     }
   }
 
@@ -317,7 +322,7 @@ class ProfileInfo extends Component {
             avatarUrl || 'b'
           : undefined
         }
-        alt="avatar"
+        alt={(this.state.avatarLoading === 0) ? '' : 'avatar'}
         onLoad={() => { this.setState({ avatarLoading: 1 }); }}
         onError={() => { this.setState({ avatarLoading: 2 }); }}
       />
