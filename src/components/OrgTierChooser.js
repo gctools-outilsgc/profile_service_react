@@ -28,6 +28,11 @@ class OrgTierChooser extends React.Component {
         query={gql`
           query organizationQuery($gcID: String!) {
             profiles(gcID: $gcID) {
+              org {
+                id
+                nameEn
+                nameFr
+              }
               OwnerOfOrgTier {
                 id
                 nameEn
@@ -58,7 +63,14 @@ class OrgTierChooser extends React.Component {
 
           const OwnerOfOrgTier =
             (data.profiles && data.profiles.length === 1) ?
-              data.profiles[0].OwnerOfOrgTier : [];
+              data.profiles[0].OwnerOfOrgTier.slice(0) : [];
+
+          if (data.profiles && data.profiles.length === 1
+            && data.profiles[0].org) {
+              OwnerOfOrgTier.unshift({
+                ...data.profiles[0].org,
+              });
+          }
 
           const tierOptions = [];
           tierOptions.push({

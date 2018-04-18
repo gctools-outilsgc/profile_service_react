@@ -201,25 +201,17 @@ class ProfileInfo extends Component {
         }
 
         if (variables.profileInfo.supervisor) {
-          if (!variables.profileInfo.supervisor.gcID) {
-            delete variables.profileInfo.supervisor;
-          } else {
-            variables.profileInfo.supervisor = {
-              gcId: variables.profileInfo.supervisor.gcID,
-            };
-          }
+          variables.profileInfo.supervisor = {
+            gcId: variables.profileInfo.supervisor.gcID,
+          };
         } else {
           variables.profileInfo.supervisor = {};
         }
 
         if (variables.profileInfo.org) {
-          if (!variables.profileInfo.org.id) {
-            delete variables.profileInfo.org;
-          } else {
-            variables.profileInfo.org = {
-              orgId: variables.profileInfo.org.id,
-            };
-          }
+          variables.profileInfo.org = {
+            orgId: variables.profileInfo.org.id,
+          };
         } else {
           variables.profileInfo.org = {};
         }
