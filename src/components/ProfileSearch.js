@@ -78,14 +78,16 @@ class ProfileSearch extends React.Component {
               image: a.avatar,
               id: a.gcID,
             })) : [];
+          this.props.resultPreProcessor(results);
 
           return (
             <Search
               placeholder={__('Search...')}
               icon="user"
-              loading={loading && !isDefault}
+              loading={loading && !isDefault && value !== ''}
               onResultSelect={this.handleResultSelect}
               onSearchChange={this.handleSearchChange}
+              onBlur={e => this.props.onBlur(e, this)}
               results={results}
               value={value}
               noResultsMessage={__('No results found.')}
@@ -100,11 +102,15 @@ class ProfileSearch extends React.Component {
 ProfileSearch.defaultProps = {
   onResultSelect: () => {},
   defaultValue: undefined,
+  onBlur: () => {},
+  resultPreProcessor: () => {},
 };
 
 ProfileSearch.propTypes = {
   onResultSelect: PropTypes.func,
   defaultValue: PropTypes.string,
+  onBlur: PropTypes.func,
+  resultPreProcessor: PropTypes.func,
 };
 
 export default LocalizedComponent(ProfileSearch);

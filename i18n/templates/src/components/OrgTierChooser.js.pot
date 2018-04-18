@@ -6,10 +6,6 @@ msgstr ""
 "Content-Type : text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding : 8bit\n"
 
-#: src/components/ProfileSearch.js 74:26
-msgid "No results found."
-msgstr ""
-
-#: src/components/ProfileSearch.js 72:27
-msgid "Search..."
+#: src/components/OrgTierChooser.js 57:15
+msgid "Team has not been identified."
 msgstr ""

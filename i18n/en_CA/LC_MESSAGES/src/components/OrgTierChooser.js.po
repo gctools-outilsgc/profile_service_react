@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-18 09:15-0300\n"
-"PO-Revision-Date: 2018-04-11 11:06-0300\n"
+"POT-Creation-Date: 2018-04-18 08:44-0300\n"
+"PO-Revision-Date: 2018-04-18 08:44-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en_CA\n"
 "Language-Team: en_CA <LL@li.org>\n"
@@ -14,10 +14,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.5.3\n"
 
-#: 74:26 src/components/ProfileSearch.js
-msgid "No results found."
-msgstr ""
-
-#: 72:27 src/components/ProfileSearch.js
-msgid "Search..."
+#: 57:15 src/components/OrgTierChooser.js
+msgid "Team has not been identified."
 msgstr ""
