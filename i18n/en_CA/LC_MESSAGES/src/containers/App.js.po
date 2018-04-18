@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-05 15:24-0300\n"
+"POT-Creation-Date: 2018-04-18 10:54-0400\n"
 "PO-Revision-Date: 2018-03-26 10:17-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en_CA\n"
@@ -32,5 +32,13 @@ msgstr ""
 
 #: 124:48 src/containers/App.js
 msgid "Login"
+msgstr ""
+
+#: 160:50 src/containers/App.js
+msgid "Logout"
+msgstr ""
+
+#: 169:32 src/containers/App.js
+msgid "View my profile"
 msgstr ""
 

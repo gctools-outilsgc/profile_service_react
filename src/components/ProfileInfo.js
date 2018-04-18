@@ -20,7 +20,8 @@ import ReactI18nEdit from '@gctools-components/react-i18n-edit';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
-import { connect } from 'react-redux';
+import ProfileSearch from './ProfileSearch';
+import { orgChartSupervisorQuery, orgChartEmpQuery } from './GQLOrgChart';
 
 const style = {
   imageExample: {
@@ -53,17 +54,21 @@ const style = {
 
 const defaultNewOrgTier = { nameEn: '', nameFr: '' };
 
+const initialState = {
+  editMode: false,
+  saving: false,
+  createOrgTierOpen: false,
+  newOrgTier: defaultNewOrgTier,
+  avatarLoading: 0,
+  errorState: {},
+};
+
 class ProfileInfo extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      editMode: false,
+    this.state = Object.assign({}, initialState, {
       profile: Object.assign({}, props.profile),
-      saving: false,
-      createOrgTierOpen: false,
-      newOrgTier: defaultNewOrgTier,
-      avatarLoading: 0,
-    };
+    });
     this.onSave = this.onSave.bind(this);
   }
 
@@ -72,9 +77,16 @@ class ProfileInfo extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.profile &&
-        nextProps.profile !== this.props.profile) {
-      this.setState({ profile: nextProps.profile, saving: false });
+    if (nextProps.profile && JSON.stringify(nextProps.profile) !==
+      JSON.stringify(this.props.profile)) {
+      this.setState(Object.assign({}, initialState, {
+        profile: nextProps.profile,
+      }));
+    }
+    if (!nextProps.modifyProfile && this.state.editMode) {
+      this.setState(Object.assign({}, initialState, {
+        profile: nextProps.profile,
+      }));
     }
   }
 
@@ -103,19 +115,19 @@ class ProfileInfo extends Component {
 
     const {
       mutateProfile,
-      mutateAddress,
-      createAddressMutation,
       refetch,
+      mySupervisor,
+      myGcID,
     } = this.props;
     const oldProfile = Object.assign(
       {},
       this.props.profile,
-      { orgId: this.props.profile.org.id },
+      { org: { orgId: this.props.profile.org.id } },
     );
     const newProfile = Object.assign(
       {},
       this.state.profile,
-      { orgId: this.state.profile.org.id },
+      { org: { orgId: this.state.profile.org.id } },
     );
     const oldAddress = Object.assign({}, this.props.profile.address);
     const newAddress = Object.assign({}, this.state.profile.address);
@@ -123,28 +135,36 @@ class ProfileInfo extends Component {
     rf(
       oldProfile,
       newProfile,
-      ['__typename', 'org', 'address', 'gcID', 'avatar', 'avatarFile'],
+      ['__typename', 'address', 'gcID', 'avatar', 'avatarFile'],
     );
     rf(oldAddress, newAddress, ['__typename', 'id']);
 
     let profileChanged = (this.state.profile.avatarFile !== undefined);
     const fields = Object.keys(oldProfile);
     for (let i = 0; i < fields.length; i += 1) {
-      if (oldProfile[fields[i]] !== newProfile[fields[i]]) {
+      if (fields[i] === 'org') {
+        if (oldProfile.org.orgId !== newProfile.org.orgId) {
+          profileChanged = true;
+          break;
+        }
+      } else if (fields[i] === 'supervisor') {
+        if (oldProfile.supervisor.gcID !== newProfile.supervisor.gcID) {
+          profileChanged = true;
+          break;
+        }
+      } else if (oldProfile[fields[i]] !== newProfile[fields[i]]) {
         profileChanged = true;
         break;
       }
     }
 
     let addressChanged = false;
-    let createAddress = false;
     const addressFields = Object.keys(oldAddress);
     if (addressFields.length === 0) {
       const newAddressFields = Object.keys(newAddress);
       for (let i = 0; i < newAddressFields.length; i += 1) {
         if (newAddress[newAddressFields[i]] !== '') {
           addressChanged = true;
-          createAddress = true;
           break;
         }
       }
@@ -160,63 +180,93 @@ class ProfileInfo extends Component {
     const operations = [];
     this.setState({ saving: true });
 
-    if (profileChanged) {
-      const variables = {
-        gcID: this.props.profile.gcID,
-        dataToModify: newProfile,
-      };
+    const valid = () => {
+      const errorState = {};
 
-      if (this.state.profile.avatarFile !== undefined) {
-        variables.avatar = this.state.profile.avatarFile;
+      if (addressChanged) {
+        errorState.streetAddress = !newAddress.streetAddress;
+        errorState.city = !newAddress.city;
+        errorState.province = !newAddress.province;
+        errorState.postalCode = !newAddress.postalCode;
+        errorState.country = !newAddress.country;
       }
 
-      operations.push(mutateProfile({
-        context: {
-          headers: {
-            Authorization: `Bearer ${this.props.accessToken}`,
-          },
-        },
-        variables,
-      }));
-    }
+      errorState.orgTier = !newProfile.org.orgId;
 
-    if (addressChanged) {
-      if (createAddress) {
-        operations.push(createAddressMutation({
+      const error =
+        Object.keys(errorState).reduce((b, a) => b || errorState[a], false);
+      this.setState({ errorState, saving: !error });
+      return !error;
+    };
+
+    if (valid()) {
+      if (profileChanged || addressChanged) {
+        const variables = {
+          gcID: this.props.profile.gcID,
+          profileInfo: newProfile,
+        };
+
+        if (addressChanged) {
+          variables.profileInfo.address = newAddress;
+        }
+
+        if (this.state.profile.avatarFile !== undefined) {
+          variables.avatar = this.state.profile.avatarFile;
+        }
+
+        if (!variables.profileInfo.supervisor.gcID) {
+          delete variables.profileInfo.supervisor;
+        } else {
+          variables.profileInfo.supervisor = {
+            gcId: variables.profileInfo.supervisor.gcID,
+          };
+        }
+
+        const refetchQueries = [];
+        if (variables.profileInfo.supervisor) {
+          refetchQueries.push({
+            query: orgChartSupervisorQuery,
+            variables: {
+              gcID: variables.profileInfo.supervisor.gcId,
+            },
+          });
+        }
+        refetchQueries.push({
+          query: orgChartSupervisorQuery,
+          variables: {
+            gcID: myGcID,
+          },
+        });
+        if (mySupervisor) {
+          refetchQueries.push({
+            query: orgChartEmpQuery,
+            variables: {
+              gcID: mySupervisor,
+            },
+          });
+        }
+
+        operations.push(mutateProfile({
+          refetchQueries,
           context: {
             headers: {
               Authorization: `Bearer ${this.props.accessToken}`,
             },
           },
-          variables: {
-            ...newAddress,
-          },
+          variables,
         }));
+      }
+      if (operations.length > 0) {
+        this.setState({ editMode: false, saving: true });
+        Promise.all(operations).then(() => {
+          refetch();
+        }).catch(() => {
+          console.log('An error has occured.');
+          this.setState({ editMode: true, saving: false });
+        });
       } else {
-        operations.push(mutateAddress({
-          context: {
-            headers: {
-              Authorization: `Bearer ${this.props.accessToken}`,
-            },
-          },
-          variables: {
-            addressID: this.props.profile.address.id,
-            dataToModify: newAddress,
-          },
-        }));
+        this.setState({ editMode: false, saving: false });
       }
-    }
-
-    if (operations.length > 0) {
-      this.setState({ editMode: false, saving: true });
-      Promise.all(operations).then(() => {
-        refetch();
-      }).catch(() => {
-        console.log('An error has occured.');
-        this.setState({ editMode: true, saving: false });
-      });
-    } else {
-      this.setState({ editMode: false, saving: false });
     }
   }
 
@@ -228,6 +278,7 @@ class ProfileInfo extends Component {
       myGcID,
       modifyProfile,
       profile: { gcID },
+      mySupervisor,
     } = this.props;
     if (error) return 'Error';
     const capitalize = function capitalize(str) {
@@ -270,6 +321,7 @@ class ProfileInfo extends Component {
                   this.props.profile,
                   { avatarFile: undefined },
                 ),
+                errorState: {},
               });
             }}
           >
@@ -284,8 +336,12 @@ class ProfileInfo extends Component {
       <img
         width={80}
         height={80}
-        src={(typeof avatarUrl !== 'undefined') ? avatarUrl || 'b' : undefined}
-        alt="avatar"
+        src={
+          ((typeof avatarUrl !== 'undefined') || (!loading && !gcID)) ?
+            avatarUrl || 'b'
+          : undefined
+        }
+        alt={(this.state.avatarLoading === 0) ? '' : 'avatar'}
         onLoad={() => { this.setState({ avatarLoading: 1 }); }}
         onError={() => { this.setState({ avatarLoading: 2 }); }}
       />
@@ -302,7 +358,67 @@ class ProfileInfo extends Component {
         <Dimmer active={loading || this.state.saving} inverted>
           <Loader content={__('Loading')} />
         </Dimmer>
+        <Dimmer active={!loading && !gcID}>
+          {__('Specified profile does not exist.')}
+        </Dimmer>
         {editButtons}
+        {(() => {
+          if ((gcID !== myGcID) &&
+            (gcID !== mySupervisor) &&
+            (accessToken !== '')) {
+            const { mutateProfile } = this.props;
+            const refetchQueries = [];
+            refetchQueries.push({
+              query: orgChartSupervisorQuery,
+              variables: {
+                gcID,
+              },
+            });
+            refetchQueries.push({
+              query: orgChartSupervisorQuery,
+              variables: {
+                gcID: myGcID,
+              },
+            });
+            if (mySupervisor) {
+              refetchQueries.push({
+                query: orgChartEmpQuery,
+                variables: {
+                  gcID: mySupervisor,
+                },
+              });
+            }
+
+            return (
+              <Button
+                floated="left"
+                size="small"
+                basic
+                onClick={() => {
+                  mutateProfile({
+                    refetchQueries,
+                    context: {
+                      headers: {
+                        Authorization: `Bearer ${this.props.accessToken}`,
+                      },
+                    },
+                    variables: {
+                      gcID: myGcID,
+                      profileInfo: {
+                        supervisor: {
+                          gcId: gcID,
+                        },
+                      },
+                    },
+                  });
+                }}
+              >
+                <Icon name="user" />{__('This is my supervisor')}
+              </Button>
+            );
+          }
+          return null;
+        })()}
         <div style={style.imageExample} className={avClass}>
           {avatar}
         </div>
@@ -322,23 +438,24 @@ class ProfileInfo extends Component {
               style={{ display: 'none' }}
               required
               onChange={({ target }) => {
-                      if (target.validity.valid) {
-                        const reader = new FileReader();
-                        reader.onloadend = () => {
-                          this.setState({
-                            profile: Object.assign(
-                              {},
-                              this.state.profile,
-                              {
-                                avatar: reader.result,
-                                avatarFile: target.files[0],
-                              },
-                            ),
-                          });
-                        };
-                        reader.readAsDataURL(target.files[0]);
-                      }
-                    }}
+                if (target.validity.valid) {
+                  const reader = new FileReader();
+                  reader.onloadend = () => {
+                    this.setState({
+                      avatarLoading: 0,
+                      profile: Object.assign(
+                        {},
+                        this.state.profile,
+                        {
+                          avatar: reader.result,
+                          avatarFile: target.files[0],
+                        },
+                      ),
+                    });
+                  };
+                  reader.readAsDataURL(target.files[0]);
+                }
+              }}
             />
           </label>
         </Button>
@@ -493,6 +610,7 @@ class ProfileInfo extends Component {
                           options={tierOptions}
                           closeOnBlur
                           selection
+                          error={this.state.errorState.orgTier}
                           loading={orgLoading}
                           onChange={(e, data1) => {
                             const changeObj = {};
@@ -503,6 +621,10 @@ class ProfileInfo extends Component {
                               changeObj,
                             );
                             this.setState({
+                              errorState: Object.assign(
+                                this.state.errorState,
+                                { orgTier: false },
+                              ),
                               profile: Object.assign(
                                 {},
                                 this.state.profile,
@@ -700,6 +822,40 @@ class ProfileInfo extends Component {
                   </List.Item>
                 </List>
                 <List style={style.list.right}>
+                  <List.Item style={style.list.listItem}>
+                    <List.Icon size="large" name="user" />
+                    <List.Content>
+                      <List.Header>{__('Supervisor')} </List.Header>
+                      {(() => {
+                        const { supervisor } = this.state.profile;
+                        if (this.state.editMode) {
+                          return (
+                            <ProfileSearch
+                              defaultValue={supervisor.name}
+                              onResultSelect={(data) => {
+                                this.setState({
+                                  profile: Object.assign(
+                                    {},
+                                    this.state.profile,
+                                    {
+                                      supervisor: {
+                                        name: data.title,
+                                        gcID: data.id,
+                                      },
+                                    },
+                                  ),
+                                });
+                              }}
+                            />
+                          );
+                        }
+                        if (supervisor && supervisor.name) {
+                          return supervisor.name;
+                        }
+                        return __('Not identified');
+                      })()}
+                    </List.Content>
+                  </List.Item>
                   <List.Item>
                     <List.Icon size="large" name="point" />
                     <List.Content>
@@ -715,6 +871,7 @@ class ProfileInfo extends Component {
                             placeholder: __('Address'),
                           }]}
                             showLabel={false}
+                            error={this.state.errorState.streetAddress}
                             onChange={data =>
                             this.onAddressChange(data, 'streetAddress')
                           }
@@ -729,6 +886,7 @@ class ProfileInfo extends Component {
                             placeholder: __('City'),
                           }]}
                             showLabel={false}
+                            error={this.state.errorState.city}
                             onChange={
                             data => this.onAddressChange(data, 'city')
                           }
@@ -743,6 +901,7 @@ class ProfileInfo extends Component {
                             placeholder: __('Province'),
                           }]}
                             showLabel={false}
+                            error={this.state.errorState.province}
                             onChange={data =>
                             this.onAddressChange(data, 'province')
                           }
@@ -757,6 +916,7 @@ class ProfileInfo extends Component {
                             placeholder: __('Postal Code'),
                           }]}
                             showLabel={false}
+                            error={this.state.errorState.postalCode}
                             onChange={data =>
                             this.onAddressChange(data, 'postalCode')
                           }
@@ -771,6 +931,7 @@ class ProfileInfo extends Component {
                             placeholder: __('Country'),
                           }]}
                             showLabel={false}
+                            error={this.state.errorState.country}
                             onChange={data =>
                             this.onAddressChange(data, 'country')
                           }
@@ -795,6 +956,7 @@ ProfileInfo.defaultProps = {
   accessToken: '',
   myGcID: '',
   modifyProfile: false,
+  mySupervisor: undefined,
 };
 
 ProfileInfo.propTypes = {
@@ -807,6 +969,10 @@ ProfileInfo.propTypes = {
     avatar: PropTypes.string,
     mobilePhone: PropTypes.string,
     officePhone: PropTypes.string,
+    supervisor: PropTypes.shape({
+      name: PropTypes.string,
+      gcID: PropTypes.string,
+    }),
     address: PropTypes.shape({
       id: PropTypes.string,
       streetAddress: PropTypes.string,
@@ -829,23 +995,12 @@ ProfileInfo.propTypes = {
     }),
   }),
   mutateProfile: PropTypes.func.isRequired,
-  mutateAddress: PropTypes.func.isRequired,
-  createAddressMutation: PropTypes.func.isRequired,
   mutateCreateOrgTier: PropTypes.func.isRequired,
   refetch: PropTypes.func.isRequired,
   accessToken: PropTypes.string,
   myGcID: PropTypes.string,
   modifyProfile: PropTypes.bool,
+  mySupervisor: PropTypes.string,
 };
 
-const mapStateToProps = ({ user }) => {
-  const props = {};
-  if (user) {
-    props.accessToken = user.access_token;
-    props.myGcID = user.profile.sub;
-    props.modifyProfile = user.profile.modify_profile === 'True';
-  }
-  return props;
-};
-
-export default connect(mapStateToProps)(LocalizedComponent(ProfileInfo));
+export default LocalizedComponent(ProfileInfo);

@@ -20,17 +20,18 @@ import store, { errorAction } from './store';
 
 const link = ApolloLink.from([
   onError(({ graphQLErrors, networkError }) => {
-    let errors = [];
+    const errors = [];
     if (graphQLErrors) {
-      errors = graphQLErrors.map(({ message }) => message);
-    } else if (networkError) errors.push(networkError);
-    console.log(errors);
+      graphQLErrors.forEach(({ message }) => errors.push(message));
+    }
+    if (networkError) {
+      errors.push(networkError.message);
+    }
     if (errors.length > 0) {
       store.dispatch(errorAction(errors));
     }
   }),
   createLink({ uri: 'https://graphql.gccollab.ca/graphqlcore' }),
-  // new HttpLink({ uri: 'https://graphql.gccollab.ca/graphqlcore' }),
 ]);
 
 const apollo = new ApolloClient({

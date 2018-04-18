@@ -26,3 +26,11 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
+#: src/containers/App.js 160:50
+msgid "Logout"
+msgstr ""
+
+#: src/containers/App.js 169:32
+msgid "View my profile"
+msgstr ""
+

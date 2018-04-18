@@ -1,6 +1,8 @@
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
+import { connect } from 'react-redux';
+
 import ProfileInfo from './ProfileInfo';
 
 const profileInfoQuery = gql`
@@ -12,6 +14,10 @@ query profileInfoQuery($gcID: String!) {
     avatar
     mobilePhone
     officePhone
+    supervisor {
+      gcID
+      name
+    }
     address {
       id
       streetAddress
@@ -37,51 +43,23 @@ query profileInfoQuery($gcID: String!) {
   }
 }`;
 
-const modifyProfileMutation = gql`
-mutation modifyPr($gcID: String!, $dataToModify: ModifyProfileInput!) {
-  modifyProfile(gcId: $gcID, dataToModify: $dataToModify) {
-    gcID
-    name
-    email
-    titleEn
-    titleFr
-    avatar
-    mobilePhone
-    officePhone
+const profileMeQuery = gql`
+query profileMeQuery($gcID: String!) {
+  profiles(gcID: $gcID) {
+    supervisor {
+      gcID
+    }
   }
 }
 `;
 
-const modifyAddressMutation = gql`
-mutation modifyAddr($addressID: Int!, $dataToModify: ModifyAddressInput!) {
-  modifyAddress(addressId: $addressID, dataToModify:$dataToModify) {
-    streetAddress
-    city
-    province
-    postalCode
-    country
+const modifyProfileMutation = gql`
+mutation modifyPr($gcID: String!, $profileInfo: ModifyProfileInput!) {
+  modifyProfile(gcId: $gcID, profileInfo: $profileInfo) {
+    gcID
   }
-}`;
-
-const createAddressMutation = gql`
-mutation createAddr(
-  $streetAddress: String!,
-  $city: String!,
-  $province: String!,
-  $postalCode: String!,
-  $country: String!
-) {
-  createAddress(
-    streetAddress: $streetAddress,
-    city: $city,
-    province: $province,
-    postalCode: $postalCode,
-    country: $country
-  ) {
-    city
-  }
-}`;
-
+}
+`;
 
 const modifyOrgMutation = gql`
 mutation modifyOrg($orgId: Int!, $dataToModify: ModifyOrganizationInput!) {
@@ -110,7 +88,17 @@ mutation createOrgTier(
   }
 }`;
 
-export default graphql(profileInfoQuery, {
+const mapStateToProps = ({ user }) => {
+  const props = {};
+  if (user) {
+    props.accessToken = user.access_token;
+    props.myGcID = user.profile.sub;
+    props.modifyProfile = user.profile.modify_profile === 'True';
+  }
+  return props;
+};
+
+export default connect(mapStateToProps)(graphql(profileInfoQuery, {
   props: props => ({
     error: props.data.error,
     loading: props.data.loading,
@@ -121,6 +109,7 @@ export default graphql(profileInfoQuery, {
         props.data.profiles[0],
         (props.data.profiles[0].org) ? {} : { org: { organization: {} } },
         (props.data.profiles[0].address) ? {} : { address: {} },
+        (props.data.profiles[0].supervisor) ? {} : { supervisor: {} },
       ) : undefined,
   }),
   options: ({ gcID }) => ({
@@ -128,12 +117,24 @@ export default graphql(profileInfoQuery, {
       gcID,
     },
   }),
+})(graphql(profileMeQuery, {
+  props: ({ data: { profiles } }) => {
+    let mySupervisor;
+    if (profiles && profiles.length === 1 && profiles[0].supervisor) {
+      mySupervisor = profiles[0].supervisor.gcID;
+    }
+    return {
+      mySupervisor,
+    };
+  },
+  skip: ({ myGcID }) => !myGcID,
+  options: ({ myGcID }) => ({
+    variables: {
+      gcID: myGcID,
+    },
+  }),
 })(graphql(modifyProfileMutation, {
   props: props => ({ mutateProfile: props.mutate }),
-})(graphql(modifyAddressMutation, {
-  props: props => ({ mutateAddress: props.mutate }),
-})(graphql(createAddressMutation, {
-  props: props => ({ createAddressMutation: props.mutate }),
 })(graphql(modifyOrgMutation, {
   props: props => ({ mutateOrg: props.mutate }),
 })(graphql(createOrgTier, {
