@@ -22,7 +22,7 @@ const OrgChart = (props, context) => {
   if (supervisor && supervisor.gcID) {
     orgStructure.name = supervisor.name;
     orgStructure.uuid = supervisor.gcID;
-    orgStructure.orgTier = (supervisor.org) ? supervisor.org.nameEn : '';
+    orgStructure.orgTier = (supervisor.org) ? supervisor.org[orgTierName] : '';
   } else {
     orgStructure.name = me.name;
     orgStructure.uuid = me.gcID;
@@ -34,7 +34,7 @@ const OrgChart = (props, context) => {
       const i = orgStructure.subordinates.push({
         name: p.name,
         uuid: p.gcID,
-        orgTier: (p.org) ? p.org.nameEn : '',
+        orgTier: (p.org) ? p.org[orgTierName] : '',
       });
       if (p.gcID === gcID) subject = orgStructure.subordinates[i - 1];
     });
