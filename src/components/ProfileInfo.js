@@ -27,11 +27,29 @@ const style = {
     margin: '0 auto',
   },
   list: {
-    float: 'left',
-    marginTop: '0px',
-    marginRight: '15px',
     listItem: {
       marginBottom: '10px',
+    },
+    left: {
+      marginTop: '0px',
+      marginRight: '20px',
+      float: 'left',
+    },
+    right: {
+      marginTop: '0px',
+      marginRight: '5px',
+      float: 'left',
+    },
+    mobile: {
+      paddingLeft: '0.66em',
+    },
+    address: {
+      paddingLeft: '1em',
+    },
+  },
+  form: {
+    organization: {
+      marginBottom: '50px',
     },
   },
 };
@@ -491,16 +509,17 @@ class ProfileInfo extends Component {
         <Item.Group>
           <Item>
             <Item.Content>
-              <Item.Header>
-                <ReactI18nEdit
-                  edit={this.state.editMode}
-                  values={[{
+              <span className="fluid-input-holder">
+                <Item.Header>
+                  <ReactI18nEdit
+                    edit={this.state.editMode}
+                    values={[{
                     lang: '',
                     value: this.state.profile.name || '',
                     placeholder: 'name',
                   }]}
-                  showLabel={false}
-                  onChange={(data) => {
+                    showLabel={false}
+                    onChange={(data) => {
                     this.setState({
                       profile: Object.assign(
                         {},
@@ -509,13 +528,15 @@ class ProfileInfo extends Component {
                       ),
                     });
                   }}
-                />
-              </Item.Header>
-              <Item.Meta>
-                <ReactI18nEdit
-                  edit={this.state.editMode}
-                  lang={localizer.lang}
-                  values={[
+                  />
+                </Item.Header>
+              </span>
+              <span className="fluid-input-holder">
+                <Item.Meta>
+                  <ReactI18nEdit
+                    edit={this.state.editMode}
+                    lang={localizer.lang}
+                    values={[
                     {
                       lang: 'en_CA',
                       value: this.state.profile.titleEn || '',
@@ -527,7 +548,7 @@ class ProfileInfo extends Component {
                       placeholder: __('Title'),
                     },
                   ]}
-                  onChange={(data) => {
+                    onChange={(data) => {
                     const changeObj = {};
                     changeObj[`title${capitalize(data.lang.split('_', 1)[0])}`]
                       = data.value;
@@ -539,8 +560,9 @@ class ProfileInfo extends Component {
                       ),
                     });
                   }}
-                />
-              </Item.Meta>
+                  />
+                </Item.Meta>
+              </span>
               <Item.Meta>
                 {(() => {
                   if (organization) {
@@ -552,7 +574,7 @@ class ProfileInfo extends Component {
                   })()}
               </Item.Meta>
               <Item.Description style={{ marginTop: '20px' }}>
-                <List style={style.list}>
+                <List style={style.list.left}>
                   <List.Item style={style.list.listItem}>
                     <List.Icon size="large" name="user" />
                     <List.Content>
@@ -642,7 +664,7 @@ class ProfileInfo extends Component {
                   </List.Item>
                   <List.Item style={style.list.listItem}>
                     <List.Icon size="large" name="mobile" />
-                    <List.Content>
+                    <List.Content style={style.list.mobile}>
                       <List.Header> {__('Mobile')} </List.Header>
                       <List.Description>
                         <ReactI18nEdit
@@ -695,8 +717,8 @@ class ProfileInfo extends Component {
                     </List.Content>
                   </List.Item>
                 </List>
-                <List style={style.list}>
-                  <List.Item>
+                <List style={style.list.right}>
+                  <List.Item style={style.list.listItem}>
                     <List.Icon size="large" name="group" />
                     <List.Content>
                       <List.Header>{__('Team')} </List.Header>
@@ -718,9 +740,9 @@ class ProfileInfo extends Component {
                       />
                     </List.Content>
                   </List.Item>
-                  <List.Item>
+                  <List.Item style={style.list.listItem}>
                     <List.Icon size="large" name="point" />
-                    <List.Content>
+                    <List.Content style={style.list.address}>
                       <List.Header> {__('Address')} </List.Header>
                       <List.Description>
                         <div>
@@ -752,7 +774,7 @@ class ProfileInfo extends Component {
                             onChange={
                             data => this.onAddressChange(data, 'city')
                           }
-                          />,
+                          />
                         </div>
                         <div>
                           <ReactI18nEdit

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-18 09:15-0300\n"
+"POT-Creation-Date: 2018-04-19 13:16-0400\n"
 "PO-Revision-Date: 2018-04-11 11:06-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en_CA\n"
@@ -21,3 +21,4 @@ msgstr ""
 #: 72:27 src/components/ProfileSearch.js
 msgid "Search..."
 msgstr ""
+

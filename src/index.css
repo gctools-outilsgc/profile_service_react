@@ -25,3 +25,15 @@ body {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.fluid-input-holder .input{
+  width: 100%;
+}
+
+.fluid-input-holder .header span{
+  font-size: 2em;
+}
+
+.list .header{
+  padding-bottom: 4px;
+}
