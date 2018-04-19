@@ -106,3 +106,19 @@ msgstr ""
 msgid "This is my supervisor"
 msgstr ""
 
+#: src/components/ProfileInfo.js 847:36
+msgid "Team"
+msgstr ""
+
+#: src/components/ProfileInfo.js 541:41
+msgid "No supervisor"
+msgstr ""
+
+#: src/components/ProfileInfo.js 542:47
+msgid "Select this if you cannot find your supervisor"
+msgstr ""
+
+#: src/components/ProfileInfo.js 344:25
+msgid "Create new team"
+msgstr ""
+

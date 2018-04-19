@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-19 13:15-0400\n"
+"POT-Creation-Date: 2018-04-19 13:16-0400\n"
 "PO-Revision-Date: 2018-03-26 10:11-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr_CA\n"
@@ -113,4 +113,20 @@ msgstr "Non identifié"
 #: 402:37 src/components/ProfileInfo.js
 msgid "This is my supervisor"
 msgstr "Ceci est mon superviseur"
+
+#: 847:36 src/components/ProfileInfo.js
+msgid "Team"
+msgstr "Équipe"
+
+#: 541:41 src/components/ProfileInfo.js
+msgid "No supervisor"
+msgstr "Aucun superviseur"
+
+#: 542:47 src/components/ProfileInfo.js
+msgid "Select this if you cannot find your supervisor"
+msgstr "Sélectionnez cette option si vous ne trouvez pas votre superviseur"
+
+#: 344:25 src/components/ProfileInfo.js
+msgid "Create new team"
+msgstr "Créer une nouvelle équipe"
 

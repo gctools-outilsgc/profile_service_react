@@ -107,9 +107,7 @@ export default connect(mapStateToProps)(graphql(profileInfoQuery, {
       Object.assign(
         {},
         props.data.profiles[0],
-        (props.data.profiles[0].org) ? {} : { org: { organization: {} } },
         (props.data.profiles[0].address) ? {} : { address: {} },
-        (props.data.profiles[0].supervisor) ? {} : { supervisor: {} },
       ) : undefined,
   }),
   options: ({ gcID }) => ({

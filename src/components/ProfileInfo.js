@@ -1,26 +1,22 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import {
   Segment,
   Dimmer,
-  Modal,
   Loader,
   Item,
   Icon,
   Button,
   List,
-  Popup,
-  Header,
-  Dropdown
+  Popup
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import LocalizedComponent
   from '@gctools-components/react-i18n-translation-webpack';
 import ReactI18nEdit from '@gctools-components/react-i18n-edit';
 
-import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
-
 import ProfileSearch from './ProfileSearch';
+import OrgTierChooser from './OrgTierChooser';
+import OrgTierCreate from './OrgTierCreate';
 import { orgChartSupervisorQuery, orgChartEmpQuery } from './GQLOrgChart';
 
 const style = {
@@ -36,16 +32,19 @@ const style = {
     },
     left: {
       marginTop: '0px',
-      marginRight: '45px',
+      marginRight: '20px',
       float: 'left',
     },
     right: {
       marginTop: '0px',
-      marginRight: '15px',
+      marginRight: '5px',
       float: 'left',
     },
     mobile: {
       paddingLeft: '0.66em',
+    },
+    address: {
+      paddingLeft: '1em',
     },
   },
   form: {
@@ -84,7 +83,9 @@ class ProfileInfo extends Component {
       JSON.stringify(this.props.profile)) {
       this.setState(Object.assign({}, initialState, {
         profile: nextProps.profile,
-      }));
+      }, (this.props.profile.avatar === nextProps.profile.avatar) ? {
+        avatarLoading: 1,
+      } : {}));
     }
     if (!nextProps.modifyProfile && this.state.editMode) {
       this.setState(Object.assign({}, initialState, {
@@ -125,12 +126,12 @@ class ProfileInfo extends Component {
     const oldProfile = Object.assign(
       {},
       this.props.profile,
-      { org: { orgId: this.props.profile.org.id } },
+      // { org: { orgId: this.props.profile.org.id } },
     );
     const newProfile = Object.assign(
       {},
       this.state.profile,
-      { org: { orgId: this.state.profile.org.id } },
+      // { org: { orgId: this.state.profile.org.id } },
     );
     const oldAddress = Object.assign({}, this.props.profile.address);
     const newAddress = Object.assign({}, this.state.profile.address);
@@ -146,12 +147,14 @@ class ProfileInfo extends Component {
     const fields = Object.keys(oldProfile);
     for (let i = 0; i < fields.length; i += 1) {
       if (fields[i] === 'org') {
-        if (oldProfile.org.orgId !== newProfile.org.orgId) {
+        if (JSON.stringify(oldProfile.org) !==
+          JSON.stringify(newProfile.org)) {
           profileChanged = true;
           break;
         }
       } else if (fields[i] === 'supervisor') {
-        if (oldProfile.supervisor.gcID !== newProfile.supervisor.gcID) {
+        if (JSON.stringify(oldProfile.supervisor) !==
+          JSON.stringify(newProfile.supervisor)) {
           profileChanged = true;
           break;
         }
@@ -194,7 +197,7 @@ class ProfileInfo extends Component {
         errorState.country = !newAddress.country;
       }
 
-      errorState.orgTier = !newProfile.org.orgId;
+      // errorState.orgTier = !newProfile.org.orgId;
 
       const error =
         Object.keys(errorState).reduce((b, a) => b || errorState[a], false);
@@ -217,16 +220,25 @@ class ProfileInfo extends Component {
           variables.avatar = this.state.profile.avatarFile;
         }
 
-        if (!variables.profileInfo.supervisor.gcID) {
-          delete variables.profileInfo.supervisor;
-        } else {
+        if (variables.profileInfo.supervisor) {
           variables.profileInfo.supervisor = {
             gcId: variables.profileInfo.supervisor.gcID,
           };
+        } else {
+          variables.profileInfo.supervisor = {};
+        }
+
+        if (variables.profileInfo.org) {
+          variables.profileInfo.org = {
+            orgId: variables.profileInfo.org.id,
+          };
+        } else {
+          variables.profileInfo.org = {};
         }
 
         const refetchQueries = [];
-        if (variables.profileInfo.supervisor) {
+        if (variables.profileInfo.supervisor &&
+          variables.profileInfo.supervisor.gcId) {
           refetchQueries.push({
             query: orgChartSupervisorQuery,
             variables: {
@@ -248,7 +260,6 @@ class ProfileInfo extends Component {
             },
           });
         }
-
         operations.push(mutateProfile({
           refetchQueries,
           context: {
@@ -287,6 +298,9 @@ class ProfileInfo extends Component {
     const capitalize = function capitalize(str) {
       return str.charAt(0).toUpperCase() + str.slice(1);
     };
+
+    const organization = (this.state.profile.org) ?
+      this.state.profile.org.organization : undefined;
 
     const canEdit = (accessToken !== '') && modifyProfile && (gcID === myGcID);
 
@@ -332,6 +346,32 @@ class ProfileInfo extends Component {
           </Button>
         </div>
       );
+    } else if (canEdit) {
+      editButtons = (
+        <div>
+          {editButtons}
+          <OrgTierCreate
+            gcID={myGcID}
+            accessToken={accessToken}
+          >
+            {(onClick => (
+              <Popup
+                trigger={
+                  <Button
+                    size="small"
+                    floated="right"
+                    icon="add"
+                    label={__('Team')}
+                    basic
+                    onClick={onClick}
+                  />
+                }
+                content={__('Create new team')}
+              />
+            ))}
+          </OrgTierCreate>
+        </div>
+      );
     }
     const { avatar: avatarUrl } = this.state.profile;
     const avClass = (this.state.avatarLoading === 0) ? 'avatar-loading' : '';
@@ -356,6 +396,9 @@ class ProfileInfo extends Component {
         style={{ color: '#aaa' }}
       />
     );
+    const noSupervisorDesc =
+      __('Select this if you cannot find your supervisor');
+
     return (
       <Segment>
         <Dimmer active={loading || this.state.saving} inverted>
@@ -411,6 +454,7 @@ class ProfileInfo extends Component {
                         supervisor: {
                           gcId: gcID,
                         },
+                        org: {},
                       },
                     },
                   });
@@ -488,7 +532,7 @@ class ProfileInfo extends Component {
                 </Item.Header>
               </span>
               <span className="fluid-input-holder">
-                <Item.Content>
+                <Item.Meta>
                   <ReactI18nEdit
                     edit={this.state.editMode}
                     lang={localizer.lang}
@@ -517,230 +561,79 @@ class ProfileInfo extends Component {
                     });
                   }}
                   />
-                </Item.Content>
+                </Item.Meta>
               </span>
-              <Item.Meta style={style.form.organization}>
-                <Query query={gql`
-                  query organizationQuery {
-                    organizations {
-                      id
-                      nameEn
-                      nameFr
-                      OrgTiers {
-                        id
-                        nameEn
-                        nameFr
-                      }
-                    }
-                  }`}
-                >
-                  {({
-                    orgLoading,
-                    orgError,
-                    data: orgData,
-                    refetch: orgRefetch,
-                  }) => {
-                    if (orgError) return `Error...${orgError.message}`;
-                    const lang = capitalize(localizer.lang.split('_', 1)[0]);
-                    const selectedOrg = this.state.profile.org.organization;
-                    if (this.state.editMode !== true) {
-                      if (selectedOrg[`name${lang}`]) {
-                        return selectedOrg[`name${lang}`];
-                      }
-                      return __('Unknown department');
-                    }
-                    const options = [];
-                    if (!this.props.profile.org.organization.id) {
-                      options.push({
-                        key: 'org-undefined',
-                        text: '',
-                        value: undefined,
-                      });
-                    }
-                    orgData.organizations.forEach(key =>
-                      options.push({
-                        key: `org-${key.id}`,
-                        text: key[`name${lang}`],
-                        value: key.id,
-                      }));
-                    const tierOptions = [];
-                    if (!this.props.profile.org.id) {
-                      tierOptions.push({
-                        key: 'orgtier-undefined',
-                        text: '',
-                        value: undefined,
-                      });
-                    }
-                    orgData.organizations
-                      .filter(key => key.id === selectedOrg.id)
-                      .forEach(key =>
-                      key.OrgTiers.forEach(tier =>
-                        tierOptions.push({
-                          key: `orgtier-${tier.id}`,
-                          text: tier[`name${lang}`],
-                          value: tier.id,
-                        })));
-
-                    const { mutateCreateOrgTier } = this.props;
-
-                    return (
-                      <Fragment>
-                        <Dropdown
-                          value={selectedOrg.id}
-                          options={options}
-                          closeOnBlur
-                          selection
-                          loading={orgLoading}
-                          onChange={(e, data1) => {
-                            const changeObj = {};
-                            changeObj.id = data1.value;
-                            const organization = Object.assign(
-                              {},
-                              this.state.profile.org.organization,
-                              changeObj,
-                            );
-                            this.setState({
-                              profile: Object.assign(
-                                {},
-                                this.state.profile,
-                                { org: { organization } },
-                              ),
-                            });
-                          }}
-                        />
-                        <Dropdown
-                          value={this.state.profile.org.id}
-                          options={tierOptions}
-                          closeOnBlur
-                          selection
-                          error={this.state.errorState.orgTier}
-                          loading={orgLoading}
-                          onChange={(e, data1) => {
-                            const changeObj = {};
-                            changeObj.id = data1.value;
-                            const org = Object.assign(
-                              {},
-                              this.state.profile.org,
-                              changeObj,
-                            );
-                            this.setState({
-                              errorState: Object.assign(
-                                this.state.errorState,
-                                { orgTier: false },
-                              ),
-                              profile: Object.assign(
-                                {},
-                                this.state.profile,
-                                { org },
-                              ),
-                            });
-                          }}
-                        />
-                        <Modal
-                          open={this.state.createOrgTierOpen}
-                          closeOnEscape={false}
-                          closeOnRootNodeClick={false}
-                          onClose={() =>
-                            this.setState({ createOrgTierOpen: false })
-                          }
-                        >
-                          <Header
-                            icon="add"
-                            content={__('Add new org tier to the selected')}
-                          />
-                          <Modal.Content>
-                            <Item.Group>
-                              <Item>
-                                <Item.Content>
-                                  <Item.Header>
-                                    <ReactI18nEdit
-                                      edit
-                                      values={[{
-                                        lang: 'en_CA',
-                                        value: this.state.newOrgTier.nameEn,
-                                        placeholder: __('Name of tier'),
-                                      }, {
-                                        lang: 'fr_CA',
-                                        value: this.state.newOrgTier.nameFr,
-                                        placeholder: __('Name of tier'),
-                                      }]}
-                                      onChange={(data) => {
-                                        const l = data.lang.split('_', 1)[0];
-                                        const changeObj = {};
-                                        changeObj[`name${capitalize(l)}`]
-                                          = data.value;
-                                        this.setState({
-                                          newOrgTier: Object.assign(
-                                            {},
-                                            this.state.newOrgTier,
-                                            changeObj,
-                                          ),
-                                        });
-                                      }}
-                                    />
-                                  </Item.Header>
-                                </Item.Content>
-                              </Item>
-                            </Item.Group>
-                          </Modal.Content>
-                          <Modal.Actions>
-                            <Button
-                              positive
-                              onClick={() => {
-                                mutateCreateOrgTier({
-                                  context: {
-                                    headers: {
-                                      Authorization:
-                                        `Bearer ${this.props.accessToken}`,
-                                    },
-                                  },
-                                  variables: {
-                                    ...this.state.newOrgTier,
-                                    organizationId: selectedOrg.id,
-                                    ownerGcId: myGcID,
-                                  },
-                                }).then(() => {
-                                  orgRefetch();
-                                  this.setState({
-                                    createOrgTierOpen: false,
-                                    newOrgTier: defaultNewOrgTier,
-                                  });
-                                });
-                              }}
-                            >
-                              <Icon name="save" /> {__('Save')}
-                            </Button>
-                            <Button
-                              negative
-                              onClick={() =>
-                                this.setState({
-                                  createOrgTierOpen: false,
-                                  newOrgTier: defaultNewOrgTier,
-                                })}
-                            >
-                              <Icon name="cancel" /> {__('Cancel')}
-                            </Button>
-                          </Modal.Actions>
-                        </Modal>
-                        <Popup
-                          trigger={
-                            <Button
-                              disabled={!(selectedOrg.id > 0)}
-                              icon="add"
-                              onClick={() => {
-                                this.setState({ createOrgTierOpen: true });
-                              }}
-                            />
-                          }
-                          content={__('Add new org tier to the selected')}
-                        />
-                      </Fragment>
-                    );
-                  }}
-                </Query>
+              <Item.Meta>
+                {(() => {
+                  if (organization) {
+                    return organization[
+                      `name${capitalize(localizer.lang.split('_', 1)[0])}`
+                    ];
+                  }
+                  return __('Unknown department');
+                  })()}
               </Item.Meta>
               <Item.Description style={{ marginTop: '20px' }}>
                 <List style={style.list.left}>
+                  <List.Item style={style.list.listItem}>
+                    <List.Icon size="large" name="user" />
+                    <List.Content>
+                      <List.Header>{__('Supervisor')} </List.Header>
+                      {(() => {
+                        const { supervisor } = this.state.profile;
+                        if (this.state.editMode) {
+                          return (
+                            <ProfileSearch
+                              defaultValue={
+                                (supervisor) ? supervisor.name : ''
+                              }
+                              onBlur={(e, obj) => {
+                                obj.setState({
+                                  value: obj.props.defaultValue || '',
+                                  skip: true,
+                                  isDefault: true,
+                                });
+                              }}
+                              resultPreProcessor={(results) => {
+                                for (let x = 0; x < results.length; x += 1) {
+                                  if (results[x].id === myGcID) {
+                                    results.splice(x, 1);
+                                    break;
+                                  }
+                                }
+                                results.unshift({
+                                  title: __('No supervisor'),
+                                  description: noSupervisorDesc,
+                                  id: null,
+                                });
+                              }}
+                              onResultSelect={(data) => {
+                                const sup = (this.state.profile.supervisor) ?
+                                  this.state.profile.supervisor.gcID : null;
+                                this.setState({
+                                  profile: Object.assign(
+                                    {},
+                                    this.state.profile,
+                                    {
+                                      supervisor: (data.id !== null) ? {
+                                        name: data.title,
+                                        gcID: data.id,
+                                      } : null,
+                                    },
+                                    (data.id !== sup) ? { org: null } : {},
+                                  ),
+                                });
+                              }}
+                            />
+                          );
+                        }
+                        if (supervisor && supervisor.name) {
+                          return supervisor.name;
+                        }
+                        return __('Not identified');
+                      })()}
+                    </List.Content>
+                  </List.Item>
                   <List.Item style={style.list.listItem}>
                     <List.Icon size="large" name="phone" />
                     <List.Content>
@@ -826,42 +719,30 @@ class ProfileInfo extends Component {
                 </List>
                 <List style={style.list.right}>
                   <List.Item style={style.list.listItem}>
-                    <List.Icon size="large" name="user" />
+                    <List.Icon size="large" name="group" />
                     <List.Content>
-                      <List.Header>{__('Supervisor')} </List.Header>
-                      {(() => {
-                        const { supervisor } = this.state.profile;
-                        if (this.state.editMode) {
-                          return (
-                            <ProfileSearch
-                              defaultValue={supervisor.name}
-                              onResultSelect={(data) => {
-                                this.setState({
-                                  profile: Object.assign(
-                                    {},
-                                    this.state.profile,
-                                    {
-                                      supervisor: {
-                                        name: data.title,
-                                        gcID: data.id,
-                                      },
-                                    },
-                                  ),
-                                });
-                              }}
-                            />
-                          );
-                        }
-                        if (supervisor && supervisor.name) {
-                          return supervisor.name;
-                        }
-                        return __('Not identified');
-                      })()}
+                      <List.Header>{__('Team')} </List.Header>
+                      <OrgTierChooser
+                        selectedOrgTier={this.state.profile.org}
+                        supervisor={this.state.profile.supervisor}
+                        editMode={this.state.editMode}
+                        accessToken={this.props.accessToken}
+                        gcID={myGcID}
+                        onTeamChange={(org) => {
+                          this.setState({
+                            profile: Object.assign(
+                              {},
+                              this.state.profile,
+                              { org },
+                            ),
+                          });
+                        }}
+                      />
                     </List.Content>
                   </List.Item>
-                  <List.Item>
+                  <List.Item style={style.list.listItem}>
                     <List.Icon size="large" name="point" />
-                    <List.Content>
+                    <List.Content style={style.list.address}>
                       <List.Header> {__('Address')} </List.Header>
                       <List.Description>
                         <div>
@@ -954,7 +835,7 @@ class ProfileInfo extends Component {
 }
 
 ProfileInfo.defaultProps = {
-  profile: { org: { organization: {} }, address: {} },
+  profile: { address: {} },
   error: undefined,
   accessToken: '',
   myGcID: '',
@@ -998,7 +879,6 @@ ProfileInfo.propTypes = {
     }),
   }),
   mutateProfile: PropTypes.func.isRequired,
-  mutateCreateOrgTier: PropTypes.func.isRequired,
   refetch: PropTypes.func.isRequired,
   accessToken: PropTypes.string,
   myGcID: PropTypes.string,

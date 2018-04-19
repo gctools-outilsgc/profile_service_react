@@ -28,11 +28,9 @@ import logoWhite from '../assets/logoWhite.png';
 import { loginAction, logoutAction, clearErrorAction } from '../store';
 
 const changeLanguage = () => {
-  if (localizer.lang === 'en_CA') {
-    localizer.setLanguage('fr_CA');
-  } else {
-    localizer.setLanguage('en_CA');
-  }
+  const lang = (localizer.lang === 'en_CA') ? 'fr_CA' : 'en_CA';
+  localizer.setLanguage(lang);
+  document.cookie = `lang=${lang};`;
 };
 
 const LanguageToggle = () => (
@@ -66,6 +64,14 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { name: false, id: false };
+  }
+  componentWillMount() {
+    const cookies = decodeURIComponent(document.cookie).split(';');
+    cookies
+      .filter(c => c.trim().indexOf('lang=') === 0)
+      .forEach((c) => {
+        localizer.setLanguage(c.split('=', 2)[1]);
+      });
   }
   render() {
     const {
@@ -211,10 +217,6 @@ App.propTypes = {
   onErrorClose: PropTypes.func.isRequired,
   showError: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
-
-// App.contextTypes = {
-//   router: PropTypes.object,
-// };
 
 const mapStToProps = ({ showError }) => ({ showError: showError || [] });
 

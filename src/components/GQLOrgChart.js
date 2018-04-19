@@ -63,6 +63,7 @@ query orgChartEmpQuery($gcID: String!) {
 
 export default compose(
   graphql(orgChartSupervisorQuery, {
+    skip: props => !props.gcID,
     props: p => ({
       error: p.data.error,
       loading: p.data.loading,
