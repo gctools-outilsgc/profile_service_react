@@ -33,3 +33,7 @@ body {
 .fluid-input-holder .header span{
   font-size: 2em;
 }
+
+.list .header{
+  padding-bottom: 4px;
+}

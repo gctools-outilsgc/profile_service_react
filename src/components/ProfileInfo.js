@@ -36,13 +36,16 @@ const style = {
     },
     left: {
       marginTop: '0px',
-      marginRight: '15px',
+      marginRight: '45px',
       float: 'left',
     },
     right: {
       marginTop: '0px',
       marginRight: '15px',
-      float: 'right',
+      float: 'left',
+    },
+    mobile: {
+      paddingLeft: '0.66em',
     },
   },
   form: {
@@ -768,7 +771,7 @@ class ProfileInfo extends Component {
                   </List.Item>
                   <List.Item style={style.list.listItem}>
                     <List.Icon size="large" name="mobile" />
-                    <List.Content>
+                    <List.Content style={style.list.mobile}>
                       <List.Header> {__('Mobile')} </List.Header>
                       <List.Description>
                         <ReactI18nEdit
