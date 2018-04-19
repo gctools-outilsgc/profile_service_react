@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-18 09:46-0300\n"
+"POT-Creation-Date: 2018-04-19 09:07-0300\n"
 "PO-Revision-Date: 2018-03-26 10:11-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en_CA\n"
@@ -124,5 +124,9 @@ msgstr ""
 
 #: 542:47 src/components/ProfileInfo.js
 msgid "Select this if you cannot find your supervisor"
+msgstr ""
+
+#: 344:25 src/components/ProfileInfo.js
+msgid "Create new team"
 msgstr ""
 

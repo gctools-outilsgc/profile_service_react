@@ -6,7 +6,8 @@ import {
   Item,
   Icon,
   Button,
-  List
+  List,
+  Popup
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import LocalizedComponent
@@ -15,6 +16,7 @@ import ReactI18nEdit from '@gctools-components/react-i18n-edit';
 
 import ProfileSearch from './ProfileSearch';
 import OrgTierChooser from './OrgTierChooser';
+import OrgTierCreate from './OrgTierCreate';
 import { orgChartSupervisorQuery, orgChartEmpQuery } from './GQLOrgChart';
 
 const style = {
@@ -324,6 +326,32 @@ class ProfileInfo extends Component {
           >
             <Icon name="cancel" />{__('Cancel')}
           </Button>
+        </div>
+      );
+    } else if (canEdit) {
+      editButtons = (
+        <div>
+          {editButtons}
+          <OrgTierCreate
+            gcID={myGcID}
+            accessToken={accessToken}
+          >
+            {(onClick => (
+              <Popup
+                trigger={
+                  <Button
+                    size="small"
+                    floated="right"
+                    icon="add"
+                    label={__('Team')}
+                    basic
+                    onClick={onClick}
+                  />
+                }
+                content={__('Create new team')}
+              />
+            ))}
+          </OrgTierCreate>
         </div>
       );
     }
