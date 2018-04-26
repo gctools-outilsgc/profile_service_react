@@ -19,3 +19,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# oidc configs not suitable for git
+src/oidcConfig.local.js
+src/oidcConfig.prod.js

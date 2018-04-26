@@ -19,6 +19,8 @@ import { connect } from 'react-redux';
 
 import Login from '@gctools-components/gc-login';
 
+import oidcConfig from 'oidcConfig'; // eslint-disable-line
+
 import Home from './Home';
 import Profile from './Profile';
 import ProfileSearch from '../components/ProfileSearch';
@@ -57,8 +59,6 @@ const style = {
     paddingRight: '13px',
   },
 };
-
-const url = window.location.origin;
 
 class App extends React.Component {
   constructor(props) {
@@ -134,16 +134,7 @@ class App extends React.Component {
               </Menu.Item>
               <Menu.Item>
                 <Login
-                  oidcConfig={{
-                    authority: 'https://dev.account.gccollab.ca/openid',
-                    client_id: '738632',
-                    client_secret:
-                    'd3141d5522b62b37ab1af4eb4d8ba61988c8d68cdd07bb27a7fc56cd',
-                    scope: 'openid modify_profile email profile',
-                    post_logout_redirect_uri: `${url}/#!logout`,
-                    redirect_uri: `${url}/#!callback`,
-                    silent_redirect_uri: `${url}/#!silent`,
-                  }}
+                  oidcConfig={oidcConfig}
                   onUserLoaded={doLogin}
                   onUserFetched={doLogin}
                   onLogoutClick={(e, oidc) => {

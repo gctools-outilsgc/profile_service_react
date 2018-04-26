@@ -99,6 +99,10 @@ module.exports = {
       // eslint-disable-next-line max-len
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
+      // OIDC conditional resolver
+      oidcConfig: (process.env.OIDC_ENV === 'local') ?
+        path.join(paths.appSrc, 'oidcConfig.local.js') :
+        path.join(paths.appSrc, 'oidcConfig.dev.js'),
     },
     plugins: [
       // Prevents users from importing files from outside of src/
