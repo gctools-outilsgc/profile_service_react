@@ -32,7 +32,7 @@ import { loginAction, logoutAction, clearErrorAction } from '../store';
 const changeLanguage = () => {
   const lang = (localizer.lang === 'en_CA') ? 'fr_CA' : 'en_CA';
   localizer.setLanguage(lang);
-  document.cookie = `lang=${lang};`;
+  document.cookie = `lang=${lang};path=/`;
 };
 
 const LanguageToggle = () => (
@@ -70,7 +70,10 @@ class App extends React.Component {
     cookies
       .filter(c => c.trim().indexOf('lang=') === 0)
       .forEach((c) => {
-        localizer.setLanguage(c.split('=', 2)[1]);
+        const lang = c.split('=', 2)[1];
+        if (localizer.hasLanguage(lang)) {
+          localizer.setLanguage(lang);
+        }
       });
   }
   render() {
