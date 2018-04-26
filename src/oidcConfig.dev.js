@@ -10,6 +10,3 @@ module.exports = {
   redirect_uri: `${url}/#!callback`,
   silent_redirect_uri: `${url}/#!silent`,
 };
-
-console.log('DEV');
-console.log(url);
