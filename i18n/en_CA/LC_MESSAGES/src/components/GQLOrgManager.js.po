@@ -14,7 +14,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
 
-#: 61:19 src/components/OrgTierChooser.js
-msgid "Team has not been identified."
+#: 91:37 src/components/GQLOrgManager.js
+msgid "Loading"
+msgstr ""
+
+#: 94:21 src/components/GQLOrgManager.js
+msgid "Specified profile does not exist."
 msgstr ""
 

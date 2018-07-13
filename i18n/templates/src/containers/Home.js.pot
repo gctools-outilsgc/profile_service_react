@@ -6,7 +6,7 @@ msgstr ""
 "Content-Type : text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding : 8bit\n"
 
-#: src/containers/Home.js 7:5
+#: src/containers/Home.js 13:9
 msgid "This is the home page"
 msgstr ""
 

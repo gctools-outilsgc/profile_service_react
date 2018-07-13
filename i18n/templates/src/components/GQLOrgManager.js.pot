@@ -6,11 +6,11 @@ msgstr ""
 "Content-Type : text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding : 8bit\n"
 
-#: src/components/ProfileSearch.js 85:27
-msgid "Search..."
+#: src/components/GQLOrgManager.js 91:37
+msgid "Loading"
 msgstr ""
 
-#: src/components/ProfileSearch.js 93:32
-msgid "No results found."
+#: src/components/GQLOrgManager.js 94:21
+msgid "Specified profile does not exist."
 msgstr ""
 

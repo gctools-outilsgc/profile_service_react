@@ -14,27 +14,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
 
-#: 56:21 src/components/OrgTierCreate.js
-msgid "Create new team"
+#: 91:37 src/components/GQLOrgManager.js
+msgid "Loading"
 msgstr ""
 
-#: 60:15 src/components/OrgTierCreate.js
-msgid "Create a team for the staff you supervise."
-msgstr ""
-
-#: 144:29 src/components/OrgTierCreate.js
-msgid "Name of team in English"
-msgstr ""
-
-#: 148:29 src/components/OrgTierCreate.js
-msgid "Name of tier in French"
-msgstr ""
-
-#: 212:40 src/components/OrgTierCreate.js
-msgid "Save"
-msgstr ""
-
-#: 224:38 src/components/OrgTierCreate.js
-msgid "Cancel"
+#: 94:21 src/components/GQLOrgManager.js
+msgid "Specified profile does not exist."
 msgstr ""
 

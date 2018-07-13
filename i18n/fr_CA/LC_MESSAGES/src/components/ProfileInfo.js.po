@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-19 13:16-0400\n"
-"PO-Revision-Date: 2018-03-26 10:11-0300\n"
+"POT-Creation-Date: 2018-07-13 09:39-0700\n"
+"PO-Revision-Date: 2018-07-13 09:39-0700\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr_CA\n"
 "Language-Team: fr_CA <LL@li.org>\n"
@@ -12,121 +12,109 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.5.3\n"
+"Generated-By: Babel 2.6.0\n"
 
-#: 25:25 src/components/ProfileInfo.js
-msgid "Loading"
-msgstr "Chargement"
-
-#: 32:48 src/components/ProfileInfo.js
+#: 315:29 src/components/ProfileInfo.js
 msgid "Edit"
-msgstr "Modifier"
+msgstr ""
 
-#: 42:35 src/components/ProfileInfo.js
+#: 327:33 src/components/ProfileInfo.js
+msgid "Save"
+msgstr ""
+
+#: 345:35 src/components/ProfileInfo.js
+msgid "Cancel"
+msgstr ""
+
+#: 364:27 src/components/ProfileInfo.js
+msgid "Team"
+msgstr ""
+
+#: 369:25 src/components/ProfileInfo.js
+msgid "Create new team"
+msgstr ""
+
+#: 395:20 src/components/ProfileInfo.js
+msgid "This person has no avatar image."
+msgstr ""
+
+#: 400:6 src/components/ProfileInfo.js
+msgid "Select this if you cannot find your supervisor"
+msgstr ""
+
+#: 405:27 src/components/ProfileInfo.js
+msgid "Loading"
+msgstr ""
+
+#: 408:11 src/components/ProfileInfo.js
+msgid "Specified profile does not exist."
+msgstr ""
+
+#: 463:37 src/components/ProfileInfo.js
+msgid "This is my supervisor"
+msgstr ""
+
+#: 481:13 src/components/ProfileInfo.js
+msgid "Change"
+msgstr ""
+
+#: 543:35 src/components/ProfileInfo.js
+msgid "Title"
+msgstr ""
+
+#: 573:25 src/components/ProfileInfo.js
+msgid "Unknown department"
+msgstr ""
+
+#: 581:36 src/components/ProfileInfo.js
+msgid "Supervisor"
+msgstr ""
+
+#: 605:41 src/components/ProfileInfo.js
+msgid "No supervisor"
+msgstr ""
+
+#: 633:31 src/components/ProfileInfo.js
+msgid "Not identified"
+msgstr ""
+
+#: 640:37 src/components/ProfileInfo.js
 msgid "Work"
-msgstr "Travail"
+msgstr ""
 
-#: 51:35 src/components/ProfileInfo.js
+#: 647:41 src/components/ProfileInfo.js
+msgid "Phone number"
+msgstr ""
+
+#: 668:37 src/components/ProfileInfo.js
 msgid "Mobile"
 msgstr ""
 
-#: 60:35 src/components/ProfileInfo.js
-msgid "Address"
-msgstr "Adresse"
-
-#: 69:34 src/components/ProfileInfo.js
-msgid "Email"
-msgstr "Courriel"
-
-#: 80:35 src/components/ProfileInfo.js
-msgid "Title"
-msgstr "Titre"
-
-#: 98:35 src/components/ProfileInfo.js
-msgid "Organization"
-msgstr "Organisation"
-
-#: 119:41 src/components/ProfileInfo.js
-msgid "Phone number"
-msgstr "Numéro de téléphone"
-
-#: 135:41 src/components/ProfileInfo.js
+#: 675:41 src/components/ProfileInfo.js
 msgid "Mobile phone number"
-msgstr "numéro de téléphone mobile"
+msgstr ""
 
-#: 67:47 src/components/ProfileInfo.js
-msgid "Cancel"
-msgstr "Annuler"
+#: 696:36 src/components/ProfileInfo.js
+msgid "Email"
+msgstr ""
 
-#: 75:45 src/components/ProfileInfo.js
-msgid "Save"
-msgstr "Sauvegarder"
+#: 746:37 src/components/ProfileInfo.js
+msgid "Address"
+msgstr ""
 
-#: 197:41 src/components/ProfileInfo.js
+#: 770:41 src/components/ProfileInfo.js
 msgid "City"
-msgstr "Ville"
+msgstr ""
 
-#: 205:41 src/components/ProfileInfo.js
+#: 785:41 src/components/ProfileInfo.js
 msgid "Province"
 msgstr ""
 
-#: 213:41 src/components/ProfileInfo.js
+#: 800:41 src/components/ProfileInfo.js
 msgid "Postal Code"
-msgstr "Code postal"
+msgstr ""
 
-#: 221:41 src/components/ProfileInfo.js
+#: 815:41 src/components/ProfileInfo.js
 msgid "Country"
-msgstr "Pays"
-
-#: 343:29 src/components/ProfileInfo.js
-msgid "Unknown department"
-msgstr "Ministère inconnu"
-
-#: 436:37 src/components/ProfileInfo.js
-msgid "Add new org tier to the selected"
-msgstr "Ajouter un nouveau niveau d'organisation à l'organisation sélectionnée"
-
-#: 457:53 src/components/ProfileInfo.js
-msgid "Name of tier"
-msgstr "Nom du niveau"
-
-#: 286:19 src/components/ProfileInfo.js
-msgid "Change"
-msgstr "Modifier"
-
-#: 280:20 src/components/ProfileInfo.js
-msgid "This person has no avatar image."
-msgstr "Cette personne n'a pas d'avatar."
-
-#: 291:11 src/components/ProfileInfo.js
-msgid "Specified profile does not exist."
-msgstr "Le profil spécifié n'existe pas."
-
-#: 705:36 src/components/ProfileInfo.js
-msgid "Supervisor"
-msgstr "Superviseur"
-
-#: 711:31 src/components/ProfileInfo.js
-msgid "Not identified"
-msgstr "Non identifié"
-
-#: 402:37 src/components/ProfileInfo.js
-msgid "This is my supervisor"
-msgstr "Ceci est mon superviseur"
-
-#: 847:36 src/components/ProfileInfo.js
-msgid "Team"
-msgstr "Équipe"
-
-#: 541:41 src/components/ProfileInfo.js
-msgid "No supervisor"
-msgstr "Aucun superviseur"
-
-#: 542:47 src/components/ProfileInfo.js
-msgid "Select this if you cannot find your supervisor"
-msgstr "Sélectionnez cette option si vous ne trouvez pas votre superviseur"
-
-#: 344:25 src/components/ProfileInfo.js
-msgid "Create new team"
-msgstr "Créer une nouvelle équipe"
+msgstr ""
 
