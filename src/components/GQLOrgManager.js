@@ -16,7 +16,7 @@ import LocalizedComponent
 
 import OrgTierDisplay from './OrgTierDisplay';
 
-const organizationTierQuery = gql`
+export const organizationTierQuery = gql`
 query organizationTierQuery($gcID: String!) {
   profiles(gcID: $gcID) {
     name
@@ -98,7 +98,7 @@ class OrgManager extends React.Component {
                       <OrgTierDisplay
                         team={element}
                         key={element.key}
-                        fn={mutate}
+                        onDeleteClick={mutate}
                         id={(String(gcID))}
                       />
                     ))}
