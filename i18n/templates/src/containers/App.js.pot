@@ -6,23 +6,31 @@ msgstr ""
 "Content-Type : text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding : 8bit\n"
 
-#: src/containers/App.js 40:5
-msgid "FR"
-msgstr ""
-
-#: src/containers/App.js 122:45
+#: src/containers/App.js 29:20
 msgid "GCProfile"
 msgstr ""
 
-#: src/containers/App.js 161:54
+#: src/containers/App.js 32:33
+msgid "Home"
+msgstr ""
+
+#: src/containers/App.js 22:5
+msgid "EN"
+msgstr ""
+
+#: src/containers/App.js 22:5
+msgid "FR"
+msgstr ""
+
+#: src/containers/App.js 124:48
 msgid "Login"
 msgstr ""
 
-#: src/containers/App.js 171:32
+#: src/containers/App.js 160:50
 msgid "Logout"
 msgstr ""
 
-#: src/containers/App.js 176:32
+#: src/containers/App.js 169:32
 msgid "View my profile"
 msgstr ""
 

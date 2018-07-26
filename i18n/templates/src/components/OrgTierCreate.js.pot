@@ -10,8 +10,12 @@ msgstr ""
 msgid "Create new team"
 msgstr ""
 
-#: src/components/OrgTierCreate.js 60:15
-msgid "Create a team for the staff you supervise."
+#: src/components/OrgTierCreate.js 212:40
+msgid "Save"
+msgstr ""
+
+#: src/components/OrgTierCreate.js 224:38
+msgid "Cancel"
 msgstr ""
 
 #: src/components/OrgTierCreate.js 144:29
@@ -22,11 +26,7 @@ msgstr ""
 msgid "Name of tier in French"
 msgstr ""
 
-#: src/components/OrgTierCreate.js 212:40
-msgid "Save"
-msgstr ""
-
-#: src/components/OrgTierCreate.js 224:38
-msgid "Cancel"
+#: src/components/OrgTierCreate.js 60:15
+msgid "Create a team for the staff you supervise."
 msgstr ""
 

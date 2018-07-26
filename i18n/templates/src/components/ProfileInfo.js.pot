@@ -6,107 +6,119 @@ msgstr ""
 "Content-Type : text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding : 8bit\n"
 
-#: src/components/ProfileInfo.js 315:29
-msgid "Edit"
-msgstr ""
-
-#: src/components/ProfileInfo.js 327:33
-msgid "Save"
-msgstr ""
-
-#: src/components/ProfileInfo.js 345:35
-msgid "Cancel"
-msgstr ""
-
-#: src/components/ProfileInfo.js 364:27
-msgid "Team"
-msgstr ""
-
-#: src/components/ProfileInfo.js 369:25
-msgid "Create new team"
-msgstr ""
-
-#: src/components/ProfileInfo.js 395:20
-msgid "This person has no avatar image."
-msgstr ""
-
-#: src/components/ProfileInfo.js 400:6
-msgid "Select this if you cannot find your supervisor"
-msgstr ""
-
-#: src/components/ProfileInfo.js 405:27
+#: src/components/ProfileInfo.js 25:25
 msgid "Loading"
 msgstr ""
 
-#: src/components/ProfileInfo.js 408:11
-msgid "Specified profile does not exist."
+#: src/components/ProfileInfo.js 32:48
+msgid "Edit"
 msgstr ""
 
-#: src/components/ProfileInfo.js 463:37
-msgid "This is my supervisor"
-msgstr ""
-
-#: src/components/ProfileInfo.js 481:13
-msgid "Change"
-msgstr ""
-
-#: src/components/ProfileInfo.js 543:35
-msgid "Title"
-msgstr ""
-
-#: src/components/ProfileInfo.js 573:25
-msgid "Unknown department"
-msgstr ""
-
-#: src/components/ProfileInfo.js 581:36
-msgid "Supervisor"
-msgstr ""
-
-#: src/components/ProfileInfo.js 605:41
-msgid "No supervisor"
-msgstr ""
-
-#: src/components/ProfileInfo.js 633:31
-msgid "Not identified"
-msgstr ""
-
-#: src/components/ProfileInfo.js 640:37
+#: src/components/ProfileInfo.js 42:35
 msgid "Work"
 msgstr ""
 
-#: src/components/ProfileInfo.js 647:41
-msgid "Phone number"
-msgstr ""
-
-#: src/components/ProfileInfo.js 668:37
+#: src/components/ProfileInfo.js 51:35
 msgid "Mobile"
 msgstr ""
 
-#: src/components/ProfileInfo.js 675:41
-msgid "Mobile phone number"
-msgstr ""
-
-#: src/components/ProfileInfo.js 696:36
-msgid "Email"
-msgstr ""
-
-#: src/components/ProfileInfo.js 746:37
+#: src/components/ProfileInfo.js 60:35
 msgid "Address"
 msgstr ""
 
-#: src/components/ProfileInfo.js 770:41
+#: src/components/ProfileInfo.js 69:34
+msgid "Email"
+msgstr ""
+
+#: src/components/ProfileInfo.js 80:35
+msgid "Title"
+msgstr ""
+
+#: src/components/ProfileInfo.js 98:35
+msgid "Organization"
+msgstr ""
+
+#: src/components/ProfileInfo.js 119:41
+msgid "Phone number"
+msgstr ""
+
+#: src/components/ProfileInfo.js 135:41
+msgid "Mobile phone number"
+msgstr ""
+
+#: src/components/ProfileInfo.js 67:47
+msgid "Cancel"
+msgstr ""
+
+#: src/components/ProfileInfo.js 75:45
+msgid "Save"
+msgstr ""
+
+#: src/components/ProfileInfo.js 197:41
 msgid "City"
 msgstr ""
 
-#: src/components/ProfileInfo.js 785:41
+#: src/components/ProfileInfo.js 205:41
 msgid "Province"
 msgstr ""
 
-#: src/components/ProfileInfo.js 800:41
+#: src/components/ProfileInfo.js 213:41
 msgid "Postal Code"
 msgstr ""
 
-#: src/components/ProfileInfo.js 815:41
+#: src/components/ProfileInfo.js 221:41
 msgid "Country"
+msgstr ""
+
+#: src/components/ProfileInfo.js 343:29
+msgid "Unknown department"
+msgstr ""
+
+#: src/components/ProfileInfo.js 436:37
+msgid "Add new org tier to the selected"
+msgstr ""
+
+#: src/components/ProfileInfo.js 457:53
+msgid "Name of tier"
+msgstr ""
+
+#: src/components/ProfileInfo.js 286:19
+msgid "Change"
+msgstr ""
+
+#: src/components/ProfileInfo.js 280:20
+msgid "This person has no avatar image."
+msgstr ""
+
+#: src/components/ProfileInfo.js 291:11
+msgid "Specified profile does not exist."
+msgstr ""
+
+#: src/components/ProfileInfo.js 705:36
+msgid "Supervisor"
+msgstr ""
+
+#: src/components/ProfileInfo.js 711:31
+msgid "Not identified"
+msgstr ""
+
+#: src/components/ProfileInfo.js 402:37
+msgid "This is my supervisor"
+msgstr ""
+
+#: src/components/ProfileInfo.js 847:36
+msgid "Team"
+msgstr ""
+
+#: src/components/ProfileInfo.js 541:41
+msgid "No supervisor"
+msgstr ""
+
+#: src/components/ProfileInfo.js 542:47
+msgid "Select this if you cannot find your supervisor"
+msgstr ""
+
+#: src/components/ProfileInfo.js 344:25
+msgid "Create new team"
 msgstr ""
 
