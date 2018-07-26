@@ -6,15 +6,15 @@ msgstr ""
 "Content-Type : text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding : 8bit\n"
 
-#: src/components/GQLOrgManager.js 91:37
+#: src/components/GQLProfileManager.js 96:37
 msgid "Loading"
 msgstr ""
 
-#: src/components/GQLOrgManager.js 94:21
+#: src/components/GQLProfileManager.js 99:21
 msgid "Specified profile does not exist."
 msgstr ""
 
-#: src/components/GQLOrgManager.js 103:35
-msgid "Team name"
+#: src/components/GQLProfileManager.js 106:35
+msgid "name"
 msgstr ""
 

@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-07-25 10:53-0700\n"
-"PO-Revision-Date: 2018-07-13 09:39-0700\n"
+"POT-Creation-Date: 2018-07-25 12:20-0700\n"
+"PO-Revision-Date: 2018-07-25 12:20-0700\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en_CA\n"
 "Language-Team: en_CA <LL@li.org>\n"
@@ -14,15 +14,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
 
-#: 91:37 src/components/GQLOrgManager.js
+#: 96:37 src/components/GQLProfileManager.js
 msgid "Loading"
 msgstr ""
 
-#: 94:21 src/components/GQLOrgManager.js
+#: 99:21 src/components/GQLProfileManager.js
 msgid "Specified profile does not exist."
 msgstr ""
 
-#: 103:35 src/components/GQLOrgManager.js
-msgid "Team name"
+#: 106:35 src/components/GQLProfileManager.js
+msgid "name"
 msgstr ""
 

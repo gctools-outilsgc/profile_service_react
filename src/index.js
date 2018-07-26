@@ -8,7 +8,7 @@ import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
 // import { HttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { InMemoryCache, defaultDataIdFromObject } from 'apollo-cache-inmemory';
 import { createLink } from 'apollo-absinthe-upload-link';
 
 import 'semantic-ui-css/semantic.min.css';
@@ -34,9 +34,21 @@ const link = ApolloLink.from([
   createLink({ uri: 'https://graphql.gccollab.ca/graphqlcore' }),
 ]);
 
+const cache = new InMemoryCache({
+  dataIdFromObject: (object) => {
+    console.log(object);
+    switch (object.__typename) {
+      /* case 'ProfileType': return `Profile-${object.gcID}`; */
+      case 'OrgTierType': return `OrgTier-${object.nameEn}`;
+      case 'ModifyOrgTier': return `OrgTier-${object.nameEn}`;
+      default: return defaultDataIdFromObject(object);
+    }
+  },
+});
+
 const apollo = new ApolloClient({
   link,
-  cache: new InMemoryCache(),
+  cache,
 });
 
 ReactDOM.render(
