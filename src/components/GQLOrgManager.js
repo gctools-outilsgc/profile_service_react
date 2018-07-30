@@ -44,6 +44,7 @@ const mutateTeamName = gql`
   mutation ($orgId: Int, $ModifyOrgTierInput: ModifyOrgTierInput!){
     modifyOrgTier(orgId: $orgId, dataToModify: $ModifyOrgTierInput) {
       nameEn
+      nameFr
    }
   }
 `;
@@ -87,6 +88,7 @@ class OrgManager extends React.Component {
           return data.profiles[0].OwnerOfOrgTier.map(({
             id,
             nameEn,
+            nameFr,
           }) => (
               <Mutation // eslint-disable-line 
                 mutation={mutateTeamName}
@@ -100,12 +102,13 @@ class OrgManager extends React.Component {
                     <Dimmer active={!loading && !gcID}>
                       {__('Specified profile does not exist.')}
                     </Dimmer>
-                    <h1>{nameEn}</h1>
+                    <h1>nameEn: {nameEn}</h1>
+                    <h1>nameFr: {nameFr}</h1>
                     <ReactI18nEdit
                       edit
                       values={[{
                         lang: '',
-                        value: nameEn || '',
+                        value: nameFr || '',
                         placeholder: __('Team name'),
                       }]}
                       showLabel={false}
@@ -114,7 +117,7 @@ class OrgManager extends React.Component {
                           variables: {
                             orgId: id,
                             ModifyOrgTierInput: {
-                              nameEn: info.value,
+                              nameFr: info.value,
                             },
                           },
                         });
