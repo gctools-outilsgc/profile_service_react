@@ -43,7 +43,7 @@ function OrgTierDisplay(props) {
                   variables: {
                     orgId: props.team.value,
                     ModifyOrgTierInput: {
-                      nameEn: data.value,
+                      nameFr: data.value,
                     },
                   },
                 });
@@ -67,7 +67,7 @@ function OrgTierDisplay(props) {
           }
           }
         >
-          delete
+          Disband Team
         </Button>
       </List.Header>
       <List>

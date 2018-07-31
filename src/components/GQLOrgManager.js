@@ -16,7 +16,8 @@ import LocalizedComponent
 
 // import OrgTierDisplay from './OrgTierDisplay';
 
-import ReactI18nEdit from '@gctools-components/react-i18n-edit';
+// import ReactI18nEdit from '@gctools-components/react-i18n-edit';
+import InputForm from './FormComponent';
 
 export const organizationTierQuery = gql`
 query organizationTierQuery($gcID: String!) {
@@ -84,7 +85,7 @@ class OrgManager extends React.Component {
                 tier.OrgMembers.map(member =>
                   <List.Item> {member.name} </List.Item>)),
             }));
-          let textInput; // eslint-disable-line 
+          let textInput = React.createRef(); // eslint-disable-line 
           return data.profiles[0].OwnerOfOrgTier.map(({
             id,
             nameEn,
@@ -104,7 +105,7 @@ class OrgManager extends React.Component {
                     </Dimmer>
                     <h1>nameEn: {nameEn}</h1>
                     <h1>nameFr: {nameFr}</h1>
-                    <ReactI18nEdit
+                    {/*  <ReactI18nEdit
                       edit
                       values={[{
                         lang: '',
@@ -123,33 +124,23 @@ class OrgManager extends React.Component {
                         });
                       }
                       }
-                    />
-                    {/* <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
+                    /> */}
+                    <InputForm
+                      handleSubmit={(value) => { // Added an arrow function
                         modifyOrgTier({
                           variables: {
                             orgId: id,
                             ModifyOrgTierInput: {
-                              nameEn: textInput.value,
+                              nameFr: value,
                             },
                           },
                         });
-                        textInput.value = textInput.value;
-                      }
-                      }
-                    >
-                      Name:
-                      <input
-                        type="text"
-                        ref={(node) => {
-                          textInput = node;
-                        }}
-                      />
-                      <button type="submit">
-                        submit
-                      </button>
-                    </form> */}
+                      }}
+                      id={id}
+                      value={nameFr}
+                      placeholder="french name"
+                      name="NameFr"
+                    />
                   </Segment>
                 )}
               </Mutation>
