@@ -4,7 +4,8 @@ import {
   List,
   Segment,
   Dimmer,
-  Loader
+  Loader,
+  Button
 } from 'semantic-ui-react';
 
 
@@ -17,7 +18,7 @@ import LocalizedComponent
 // import OrgTierDisplay from './OrgTierDisplay';
 
 // import ReactI18nEdit from '@gctools-components/react-i18n-edit';
-import InputForm from './FormComponent';
+import InputForm from './InputForm';
 
 export const organizationTierQuery = gql`
 query organizationTierQuery($gcID: String!) {
@@ -34,13 +35,13 @@ query organizationTierQuery($gcID: String!) {
   }
 }`;
 
-/* const deleteGQL = gql`
+const deleteGQL = gql`
     mutation ($orgTierId : Int){
       deleteOrgTier(orgTierId: $orgTierId) {
         successfulDelete
   }
 }
-  `; */
+  `;
 const mutateTeamName = gql`
   mutation ($orgId: Int, $ModifyOrgTierInput: ModifyOrgTierInput!){
     modifyOrgTier(orgId: $orgId, dataToModify: $ModifyOrgTierInput) {
@@ -85,65 +86,70 @@ class OrgManager extends React.Component {
                 tier.OrgMembers.map(member =>
                   <List.Item> {member.name} </List.Item>)),
             }));
-          let textInput = React.createRef(); // eslint-disable-line 
           return data.profiles[0].OwnerOfOrgTier.map(({
             id,
             nameEn,
             nameFr,
+            // OrgMembers,
           }) => (
-              <Mutation // eslint-disable-line 
-                mutation={mutateTeamName}
-                key={nameEn}
+            <Segment>
+              <Dimmer active={loading} inverted>
+                <Loader content={__('Loading')} />
+              </Dimmer>
+              <Dimmer active={!loading && !gcID}>
+                {__('Specified profile does not exist.')}
+              </Dimmer>
+              <Mutation
+                mutation={deleteGQL}
+                refetchQueries={[{
+                  query: organizationTierQuery,
+                  variables: { gcID: String(gcID) },
+                }]}
               >
-                {modifyOrgTier => (
-                  <Segment>
-                    <Dimmer active={loading} inverted>
-                      <Loader content={__('Loading')} />
-                    </Dimmer>
-                    <Dimmer active={!loading && !gcID}>
-                      {__('Specified profile does not exist.')}
-                    </Dimmer>
-                    <h1>nameEn: {nameEn}</h1>
-                    <h1>nameFr: {nameFr}</h1>
-                    {/*  <ReactI18nEdit
-                      edit
-                      values={[{
-                        lang: '',
-                        value: nameFr || '',
-                        placeholder: __('Team name'),
-                      }]}
-                      showLabel={false}
-                      onChange={(info) => {
-                        modifyOrgTier({
-                          variables: {
-                            orgId: id,
-                            ModifyOrgTierInput: {
-                              nameFr: info.value,
-                            },
-                          },
-                        });
-                      }
-                      }
-                    /> */}
-                    <InputForm
-                      handleSubmit={(value) => { // Added an arrow function
-                        modifyOrgTier({
-                          variables: {
-                            orgId: id,
-                            ModifyOrgTierInput: {
-                              nameFr: value,
-                            },
-                          },
-                        });
-                      }}
-                      id={id}
-                      value={nameFr}
-                      placeholder="french name"
-                      name="NameFr"
-                    />
-                  </Segment>
+                {deleteOrgTier => (
+                  <Button
+                    floated="right"
+                    size="small"
+                    negative
+                    onClick={() => {
+                      deleteOrgTier({
+                        variables: {
+                          orgTierId: id,
+                        },
+                      });
+                    }
+                    }
+                  >
+                    Disband Team
+                  </Button>
                 )}
               </Mutation>
+              <h1>nameEn: {nameEn}</h1>
+              <h1>id: {id}</h1>
+              <h1>nameFr: {nameFr}</h1>
+              <Mutation
+                mutation={mutateTeamName}
+              >
+                {modifyOrgTier => (
+                  <InputForm
+                    handleSubmit={(value) => { // Added an arrow function
+                      modifyOrgTier({
+                        variables: {
+                          orgId: id,
+                          ModifyOrgTierInput: {
+                            nameFr: value,
+                          },
+                        },
+                      });
+                    }}
+                    id={id}
+                    value={nameFr}
+                    placeholder="french name"
+                    name="NameFr"
+                  />
+                )}
+              </Mutation>
+            </Segment>
             ));
         }}
       </Query>
