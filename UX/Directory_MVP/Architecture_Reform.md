@@ -24,8 +24,8 @@
 
 ###  Create a new mutation that takes 3 arguments:
 - The ID of the profile to be changed => `employeeId`
-- the ID of the supervisor of the profile `supervisorId`
+- the ID of the supervisor of the profile => `supervisorId`
 - The information that wishes to be changed => `ModifyProfileInput`
 
-The mutation simply requires that the ID listed on the `supervisor ` attribute of the `ModifyProfileInput` is the same as the one passed as an argument. The **authentification token** serves to assert that you are the supervisor and that you are logged in.
+The mutation simply requires that the ID listed on the `supervisor ` attribute of the `ModifyProfileInput` is the same as the one passed as an argument. The **authentification token** asserts that you are the supervisor and that you are logged in.
 
