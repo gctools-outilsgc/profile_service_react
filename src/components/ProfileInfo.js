@@ -230,7 +230,7 @@ class ProfileInfo extends Component {
 
         if (variables.profileInfo.org) {
           variables.profileInfo.org = {
-            orgId: variables.profileInfo.org.id,
+            orgTierId: variables.profileInfo.org.id,
           };
         } else {
           variables.profileInfo.org = {};
