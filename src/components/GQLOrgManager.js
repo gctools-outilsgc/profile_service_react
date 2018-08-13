@@ -8,28 +8,31 @@ import {
   Button
 } from 'semantic-ui-react';
 
-
+import { connect } from 'react-redux';
 import gql from 'graphql-tag';
 import { Query, Mutation } from 'react-apollo';
 
 import LocalizedComponent
   from '@gctools-components/react-i18n-translation-webpack';
 
-// import OrgTierDisplay from './OrgTierDisplay';
-
-// import ReactI18nEdit from '@gctools-components/react-i18n-edit';
 import InputForm from './InputForm';
+import TeamManager from './TeamManager';
 
-export const organizationTierQuery = gql`
+const organizationTierQuery = gql`
 query organizationTierQuery($gcID: String!) {
   profiles(gcID: $gcID) {
     name
+    Employees {
+      name
+      gcID
+    }
     OwnerOfOrgTier {
       id
       nameEn
       nameFr
       OrgMembers {
         name
+        gcID
       }
     }
   }
@@ -45,10 +48,26 @@ const deleteGQL = gql`
 const mutateTeamName = gql`
   mutation ($orgId: Int, $ModifyOrgTierInput: ModifyOrgTierInput!){
     modifyOrgTier(orgId: $orgId, dataToModify: $ModifyOrgTierInput) {
+      orgTierid
       nameEn
       nameFr
    }
   }
+`;
+
+const mutateTeamMember = gql`
+mutation (
+  $employeeGcId: String!,
+  $profileInfo: ModifyEmployeeProfileInput!,
+  $gcId: String!) {
+  modifyEmployeeProfile(
+    employeeGcId: $employeeGcId,
+    profileInfo: $profileInfo,
+    gcId: $gcId
+    ) {
+    name
+  }
+}
 `;
 
 class OrgManager extends React.Component {
@@ -90,7 +109,7 @@ class OrgManager extends React.Component {
             id,
             nameEn,
             nameFr,
-            // OrgMembers,
+            OrgMembers,
           }) => (
             <Segment>
               <Dimmer active={loading} inverted>
@@ -124,31 +143,93 @@ class OrgManager extends React.Component {
                   </Button>
                 )}
               </Mutation>
-              <h1>nameEn: {nameEn}</h1>
               <h1>id: {id}</h1>
+              <h1>nameEn: {nameEn}</h1>
               <h1>nameFr: {nameFr}</h1>
-              <Mutation
-                mutation={mutateTeamName}
-              >
-                {modifyOrgTier => (
-                  <InputForm
-                    handleSubmit={(value) => { // Added an arrow function
-                      modifyOrgTier({
-                        variables: {
-                          orgId: id,
-                          ModifyOrgTierInput: {
-                            nameFr: value,
-                          },
-                        },
-                      });
-                    }}
-                    id={id}
-                    value={nameFr}
-                    placeholder="french name"
-                    name="NameFr"
-                  />
-                )}
-              </Mutation>
+
+              <Segment>
+                <Mutation
+                  mutation={mutateTeamName}
+                >
+                  {modifyOrgTier => (
+                    <div>
+                      <InputForm
+                        handleSubmit={(value) => { // Added an arrow function
+                          modifyOrgTier({
+                            variables: {
+                              orgId: id,
+                              ModifyOrgTierInput: {
+                                nameEn: value,
+                              },
+                            },
+                          });
+                        }}
+                        id={id}
+                        value={nameEn}
+                        placeholder="english name"
+                        name="NameEn"
+                      />
+                      <InputForm
+                        handleSubmit={(value) => { // Added an arrow function
+                          modifyOrgTier({
+                            variables: {
+                              orgId: id,
+                              ModifyOrgTierInput: {
+                                nameFr: value,
+                              },
+                            },
+                          });
+                        }}
+                        id={id}
+                        value={nameFr}
+                        placeholder="french name"
+                        name="NameFr"
+                      />
+                    </div>
+                  )}
+                </Mutation>
+              </Segment>
+
+              <Segment>
+                <h1>Team Members:</h1>
+                <Mutation
+                  mutation={mutateTeamMember}
+                  refetchQueries={[{
+                    query: organizationTierQuery,
+                    variables: { gcID: String(gcID) },
+                  }]}
+                  context={{
+                    headers: {
+                      Authorization:
+                        `Bearer ${this.props.accessToken}`,
+                    },
+                  }
+                  }
+                >
+                  {mutateTeam => (
+                    <TeamManager
+                      orgId={id}
+                      employees={data.profiles[0].Employees}
+                      teamMembers={OrgMembers}
+                      handleSave={(employeeId, add) => {
+                          mutateTeam({
+                            variables: {
+                              gcId: String(gcID),
+                              employeeGcId: employeeId,
+                              profileInfo: {
+                                org: {
+                                  orgTierId: add,
+                                },
+                              },
+                            },
+                          });
+                        }
+                        }
+                    />
+                  )}
+                </Mutation>
+              </Segment>
+
             </Segment>
             ));
         }}
@@ -164,6 +245,18 @@ OrgManager.defaultProps = {
 
 OrgManager.propTypes = {
   gcID: PropTypes.string.isRequired,
+  accessToken: PropTypes.string.isRequired,
 };
 
-export default LocalizedComponent(OrgManager);
+// Creating an HOC with the connect function from redux. Passing access token
+const mapStateToProps = ({ user }) => {
+  const props = {};
+  if (user) {
+    props.accessToken = user.access_token;
+    props.myGcID = user.profile.sub;
+    props.modifyProfile = user.profile.modify_profile === 'True';
+  }
+  return props;
+};
+
+export default connect(mapStateToProps)(LocalizedComponent(OrgManager));

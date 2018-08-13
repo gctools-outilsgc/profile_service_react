@@ -39,8 +39,8 @@ const cache = new InMemoryCache({
     console.log(object);
     switch (object.__typename) {
       /* case 'ProfileType': return `Profile-${object.gcID}`; */
-      case 'OrgTierType': return `OrgTier-${object.nameEn}`;
-      case 'ModifyOrgTier': return `OrgTier-${object.nameEn}`;
+      case 'OrgTierType': return `OrgTier-${object.id}`;
+      case 'ModifyOrgTier': return `OrgTier-${object.orgTierid}`;
       default: return defaultDataIdFromObject(object);
     }
   },
