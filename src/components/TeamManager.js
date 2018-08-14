@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import {
   Button,
   Label,
-  List
+  List,
+  Modal,
+  Divider
 } from 'semantic-ui-react';
 import LocalizedComponent
   from '@gctools-components/react-i18n-translation-webpack';
@@ -12,23 +14,44 @@ class TeamManager extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { cSelected: [] };
+    this.state = {
+      cSelected: [],
+      open: false,
+      removing: false,
+      adding: false,
+      singleSelection: props.singleSelection,
+    };
+
     this.onCheckboxBtnClick = this.onCheckboxBtnClick.bind(this);
     this.onAdd = this.onAdd.bind(this);
     this.onRemove = this.onRemove.bind(this);
+    this.Cancel = this.Cancel.bind(this);
+    this.Open = this.Open.bind(this);
   }
 
   onAdd() {
-    this.state.cSelected.forEach((id) => {
-      console.log(id);
-      this.props.handleSave(id, this.props.orgId);
-    });
+    if (this.state.singleSelection !== true) {
+      this.state.cSelected.forEach((id) => {
+        this.props.handleSave(id, this.props.orgId);
+      });
+    } else {
+      this.props.handleSave(this.state.rSelected, this.props.orgId);
+    }
+    this.Cancel();
   }
   onRemove() {
-    this.state.cSelected.forEach((id) => {
-      console.log(id);
-      this.props.handleSave(id, null);
-    });
+    if (this.state.singleSelection !== true) {
+      this.state.cSelected.forEach((id) => {
+        this.props.handleSave(id, null);
+      });
+    } else {
+      this.props.handleSave(this.state.rSelected, null);
+    }
+    this.Cancel();
+  }
+
+  onRadioBtnClick(rSelected) {
+    this.setState({ rSelected });
   }
 
   onCheckboxBtnClick(selected) {
@@ -41,48 +64,140 @@ class TeamManager extends Component {
     this.setState({ cSelected: [...this.state.cSelected] });
   }
 
+  Open(removing, adding) {
+    this.setState({
+      removing,
+      adding,
+      open: true,
+      cSelected: [],
+      rSelected: null,
+    });
+  }
+  Cancel() {
+    this.setState({
+      open: false,
+      cSelected: [],
+      rSelected: null,
+    });
+  }
   render() {
+    let modalButton;
+    let modalTitle;
+    let modalText;
+
+    if (this.state.adding === true && this.state.removing === false) {
+      modalButton = (
+        <Button
+          floated="right"
+          primary
+          onClick={() => this.onAdd()}
+          content="Add Selected"
+        />);
+      modalTitle = 'Add new members to your team';
+      modalText = 'sample add text';
+    } else if (this.state.adding === false && this.state.removing === true) {
+      modalButton = (
+        <Button
+          floated="right"
+          primary
+          onClick={() => this.onRemove()}
+          content="Remove Selected"
+        />);
+      modalTitle = 'Remove members from your team';
+      modalText = 'sample remove text';
+    }
+
     return (
-      <div>
+
+      <div style={{ overflow: 'auto' }}>
         <List>
-          {this.props.employees.map((employee) => {
-            let color = 'grey';
-            for (let i = 0; i < this.props.teamMembers.length; i += 1) {
-              if (employee.gcID === this.props.teamMembers[i].gcID) {
-                color = 'blue';
-              }
-            }
-            return (
-              <List.Item key={`employee-${employee.gcID}`}>
-                <Label as="a" color={color}>
-                  {employee.name}
-                  <Label.Detail> {employee.gcID}</Label.Detail>
-                </Label>
-                <Button.Group size="tiny" compact floated="right">
-                  <Button
-                    primary
-                    onClick={() => this.onCheckboxBtnClick(employee.gcID)}
-                    active={this.state.cSelected.includes(employee.gcID)}
-                    content="Select"
-                  />
-                </Button.Group>
-              </List.Item>
-            );
-          })}
-          <p>Selected: {JSON.stringify(this.state.cSelected)}</p>
+          {this.props.teamMembers.map(member => (
+            <List.Item key={`team-${member.gcID}`}>
+              <Label>
+                {member.name}
+                <Label.Detail> {member.gcID}</Label.Detail>
+              </Label>
+            </List.Item>
+          ))}
         </List>
 
+        <Divider />
+
         <Button
-          positive
-          onClick={() => this.onAdd()}
-          content="Add"
+          onClick={() => this.Open(true, false)}
+          content="Remove"
           floated="right"
         />
         <Button
-          negative
-          onClick={() => this.onRemove()}
-          content="Remove"
+          onClick={() => this.Open(false, true)}
+          content="Add"
+          floated="right"
         />
+
+        <Modal
+          open={this.state.open}
+          closeOnEscape={false}
+          closeOnDimmerClick={false}
+        >
+          <Modal.Header>{modalTitle}</Modal.Header>
+          <Modal.Content>
+            <Modal.Description>
+              <p>{modalText}</p>
+              <List>
+                {this.props.employees.map((employee) => {
+                  let color = 'grey';
+                  let display = false;
+                  for (let i = 0; i < this.props.teamMembers.length; i += 1) {
+                    if (employee.gcID === this.props.teamMembers[i].gcID
+                      && this.state.removing) {
+                      color = 'red';
+                      display = true;
+                      break;
+                    } else if (employee.gcID !== this.props.teamMembers[i].gcID
+                      && this.state.adding) {
+                      color = 'blue';
+                      display = true;
+                    }
+                  }
+                  if (this.props.teamMembers.length === 0
+                    && this.state.adding) {
+                    display = true;
+                  }
+                  if (display === true) {
+                    return (
+                      <List.Item key={`employee-${employee.gcID}`}>
+                        <Label as="a" color={color}>
+                          {employee.name}
+                          <Label.Detail> {employee.gcID}</Label.Detail>
+                        </Label>
+                        <Button
+                          floated="right"
+                          toggle
+                          size="tiny"
+                          onClick={() =>
+                            this.onRadioBtnClick(employee.gcID)}
+                          active={
+                            this.state.rSelected === employee.gcID}
+                          content="Select"
+                        />
+                      </List.Item>
+                    );
+                  }
+                  return null;
+                })}
+                <p>Selected: {JSON.stringify(this.state.rSelected)}</p>
+              </List>
+              <Modal.Actions style={{ overflow: 'auto' }}>
+                <Button
+                  floated="right"
+                  content="Cancel"
+                  onClick={() => this.Cancel()}
+                />
+                {modalButton}
+              </Modal.Actions>
+            </Modal.Description>
+          </Modal.Content>
+        </Modal>
 
       </div>
     );
@@ -90,6 +205,7 @@ class TeamManager extends Component {
 }
 
 TeamManager.defaultProps = {
+  singleSelection: true,
 };
 
 TeamManager.propTypes = {
@@ -109,6 +225,7 @@ TeamManager.propTypes = {
   })).isRequired,
   handleSave: PropTypes.func.isRequired,
   orgId: PropTypes.number.isRequired,
+  singleSelection: PropTypes.bool,
   /* placeholder: PropTypes.string,
   name: PropTypes.string, */
 };

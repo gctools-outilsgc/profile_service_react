@@ -19,18 +19,21 @@ class InputForm extends React.Component {
       <div>
         <h3>{this.props.name} :</h3>
         <Input
+          fluid
           type="text"
           value={this.state.value}
           onChange={this.handleChange}
           placeholder={this.props.placeholder}
+          action={
+            <Button
+              primary
+              onClick={() =>
+                this.props.handleSubmit(this.state.value)}
+            >
+              Submit
+            </Button>
+          }
         />
-        <Button
-          primary
-          onClick={() =>
-          this.props.handleSubmit(this.state.value)}
-        >
-          Submit
-        </Button>
       </div>
     );
   }

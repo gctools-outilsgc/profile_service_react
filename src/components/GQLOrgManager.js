@@ -143,9 +143,9 @@ class OrgManager extends React.Component {
                   </Button>
                 )}
               </Mutation>
-              <h1>id: {id}</h1>
-              <h1>nameEn: {nameEn}</h1>
-              <h1>nameFr: {nameFr}</h1>
+              <h3>id: {id}</h3>
+              <h3>nameEn: {nameEn}</h3>
+              <h3>nameFr: {nameFr}</h3>
 
               <Segment>
                 <Mutation
@@ -191,7 +191,7 @@ class OrgManager extends React.Component {
               </Segment>
 
               <Segment>
-                <h1>Team Members:</h1>
+                <h3>Team Members:</h3>
                 <Mutation
                   mutation={mutateTeamMember}
                   refetchQueries={[{
