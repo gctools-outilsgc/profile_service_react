@@ -140,24 +140,23 @@ class TeamManager extends Component {
           closeOnDimmerClick={false}
         >
           <Modal.Header>{modalTitle}</Modal.Header>
-          <Modal.Content>
+          <Modal.Content scrolling>
             <Modal.Description>
               <p>{modalText}</p>
               <List>
                 {this.props.employees.map((employee) => {
                   let color = 'grey';
                   let display = false;
-                  for (let i = 0; i < this.props.teamMembers.length; i += 1) {
-                    if (employee.gcID === this.props.teamMembers[i].gcID
-                      && this.state.removing) {
-                      color = 'red';
-                      display = true;
-                      break;
-                    } else if (employee.gcID !== this.props.teamMembers[i].gcID
-                      && this.state.adding) {
-                      color = 'blue';
-                      display = true;
-                    }
+                  const match = this.props.teamMembers.some(member =>
+                    employee.gcID === member.gcID);
+
+                  if (match && this.state.removing) {
+                    color = 'red';
+                    display = true;
+                  }
+                  if (!match && this.state.adding) {
+                    color = 'green';
+                    display = true;
                   }
                   if (this.props.teamMembers.length === 0
                     && this.state.adding) {
@@ -183,7 +182,7 @@ class TeamManager extends Component {
                       </List.Item>
                     );
                   }
-                  return null;
+                  return <List.Item />;
                 })}
                 <p>Selected: {JSON.stringify(this.state.rSelected)}</p>
               </List>

@@ -36,7 +36,6 @@ const link = ApolloLink.from([
 
 const cache = new InMemoryCache({
   dataIdFromObject: (object) => {
-    console.log(object);
     switch (object.__typename) {
       /* case 'ProfileType': return `Profile-${object.gcID}`; */
       case 'OrgTierType': return `OrgTier-${object.id}`;
