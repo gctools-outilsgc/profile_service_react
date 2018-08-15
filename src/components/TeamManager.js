@@ -22,7 +22,7 @@ class TeamManager extends Component {
       singleSelection: props.singleSelection,
     };
 
-    this.onCheckboxBtnClick = this.onCheckboxBtnClick.bind(this);
+    this.onSelectClick = this.onSelectClick.bind(this);
     this.onAdd = this.onAdd.bind(this);
     this.onRemove = this.onRemove.bind(this);
     this.Cancel = this.Cancel.bind(this);
@@ -50,18 +50,18 @@ class TeamManager extends Component {
     this.Cancel();
   }
 
-  onRadioBtnClick(rSelected) {
-    this.setState({ rSelected });
-  }
-
-  onCheckboxBtnClick(selected) {
-    const index = this.state.cSelected.indexOf(selected);
-    if (index < 0) {
-      this.state.cSelected.push(selected);
+  onSelectClick(selected) {
+    if (this.state.singleSelection) {
+      this.setState({ rSelected: selected });
     } else {
-      this.state.cSelected.splice(index, 1);
+      const index = this.state.cSelected.indexOf(selected);
+      if (index < 0) {
+        this.state.cSelected.push(selected);
+      } else {
+        this.state.cSelected.splice(index, 1);
+      }
+      this.setState({ cSelected: [...this.state.cSelected] });
     }
-    this.setState({ cSelected: [...this.state.cSelected] });
   }
 
   Open(removing, adding) {
@@ -174,9 +174,11 @@ class TeamManager extends Component {
                           toggle
                           size="tiny"
                           onClick={() =>
-                            this.onRadioBtnClick(employee.gcID)}
-                          active={
-                            this.state.rSelected === employee.gcID}
+                            this.onSelectClick(employee.gcID)}
+                          active={(this.state.singleSelection) ?
+                            this.state.rSelected === employee.gcID :
+                            this.state.cSelected.includes(employee.gcID)
+                          }
                           content="Select"
                         />
                       </List.Item>
@@ -185,6 +187,7 @@ class TeamManager extends Component {
                   return <List.Item />;
                 })}
                 <p>Selected: {JSON.stringify(this.state.rSelected)}</p>
+                <p>Selected: {JSON.stringify(this.state.cSelected)}</p>
               </List>
               <Modal.Actions style={{ overflow: 'auto' }}>
                 <Button
