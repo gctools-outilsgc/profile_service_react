@@ -17,6 +17,7 @@ import LocalizedComponent
 
 import InputForm from './InputForm';
 import TeamManager from './TeamManager';
+import TeamTransfer from './TeamTransfer';
 
 const organizationTierQuery = gql`
 query organizationTierQuery($gcID: String!) {
@@ -54,7 +55,15 @@ const mutateTeamName = gql`
    }
   }
 `;
-
+const transferOwnership = gql`
+  mutation ($orgId: Int, $ModifyOrgTierInput: ModifyOrgTierInput!){
+    modifyOrgTier(orgId: $orgId, dataToModify: $ModifyOrgTierInput) {
+      orgTierid
+      nameEn
+      nameFr
+   }
+  }
+`;
 const mutateTeamMember = gql`
 mutation (
   $employeeGcId: String!,
@@ -116,6 +125,30 @@ class OrgManager extends React.Component {
                         <Dimmer active={!loading && !gcID}>
                           {__('Specified profile does not exist.')}
                         </Dimmer>
+                        <Mutation
+                          mutation={transferOwnership}
+                          refetchQueries={[{
+                            query: organizationTierQuery,
+                            variables: { gcID: String(gcID) },
+                          }]}
+                        >
+                          {transferMutation => (
+                            <TeamTransfer
+                              gcID={(String(gcID))}
+                              handleTransfer={(value) => {
+                                transferMutation({
+                                  variables: {
+                                    orgId: id,
+                                    ModifyOrgTierInput: {
+                                      ownerGcId: value,
+                                    },
+                                  },
+                                });
+                              }
+                              }
+                            />
+                          )}
+                        </Mutation>
                         <Mutation
                           mutation={deleteGQL}
                           refetchQueries={[{
@@ -228,7 +261,7 @@ class OrgManager extends React.Component {
                           </Mutation>
                         </Segment>
                       </Tab.Pane>),
-                    };
+                  };
                 })}
               />
             </Segment>

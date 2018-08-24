@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-08-24 10:47-0700\n"
-"PO-Revision-Date: 2018-07-26 12:49-0700\n"
+"POT-Creation-Date: 2018-08-24 12:12-0700\n"
+"PO-Revision-Date: 2018-08-24 12:12-0700\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en_CA\n"
 "Language-Team: en_CA <LL@li.org>\n"
@@ -14,19 +14,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
 
-#: 98:39 src/components/GQLOrgManager.js
-msgid "Loading"
-msgstr ""
-
-#: 101:23 src/components/GQLOrgManager.js
-msgid "Specified profile does not exist."
-msgstr ""
-
-#: 109:37 src/components/GQLOrgManager.js
-msgid "Team name"
-msgstr ""
-
-#: 135:41 src/components/GQLOrgManager.js
+#: 62:27 src/components/TeamTransfer.js
 msgid "No supervisor"
 msgstr ""
 

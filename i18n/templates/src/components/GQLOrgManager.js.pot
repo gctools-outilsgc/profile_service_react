@@ -18,3 +18,7 @@ msgstr ""
 msgid "Team name"
 msgstr ""
 
+#: src/components/GQLOrgManager.js 135:41
+msgid "No supervisor"
+msgstr ""
+
