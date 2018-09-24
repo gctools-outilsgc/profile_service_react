@@ -1,16 +1,17 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { Dropdown } from 'semantic-ui-react';
 import {
   Container,
-  Menu,
-  Divider,
-  Image,
   Button,
+  Navbar,
+  NavbarBrand,
+  Nav,
+  NavItem,
   Modal,
-  Message,
-  Header,
-  Dropdown
-} from 'semantic-ui-react';
+  ModalHeader,
+  ModalBody
+} from 'reactstrap';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import LocalizedComponent
   from '@gctools-components/react-i18n-translation-webpack';
@@ -101,28 +102,24 @@ class App extends React.Component {
             open={showError.length > 0}
             onClose={onErrorClose}
             size="small"
-            basic
           >
-            <Header>Error</Header>
-            <Modal.Content>
-              <Message
+            <ModalHeader>Error</ModalHeader>
+            <div>
+              <ModalBody
                 error
-                header="There was some errors"
                 list={showError}
-              />
-            </Modal.Content>
+              >
+                There was some errors
+              </ModalBody>
+            </div>
           </Modal>
-          <Menu secondary style={style.menu}>
-            <Menu.Item>
-              <Image
-                src={logo}
-                style={style.logo.image}
-                verticalAlign="middle"
-              />
+          <Navbar style={style.menu}>
+            <NavbarBrand href="/">
+              <img alt="graphic logo" src={logo} style={style.logo.image} />
               <span style={style.logo.text}>{__('GCProfile')}</span>
-            </Menu.Item>
-            <Menu.Menu position="right">
-              <Menu.Item>
+            </NavbarBrand>
+            <Nav className="ml-auto" navbar>
+              <NavItem>
                 <Route render={({ history }) => (
                   <ProfileSearch
                     onResultSelect={(result) => {
@@ -134,8 +131,8 @@ class App extends React.Component {
                   />
                   )}
                 />
-              </Menu.Item>
-              <Menu.Item>
+              </NavItem>
+              <NavItem>
                 <Login
                   oidcConfig={oidcConfig}
                   onUserLoaded={doLogin}
@@ -186,13 +183,12 @@ class App extends React.Component {
                     />
                   )}
                 </Login>
-              </Menu.Item>
-              <Menu.Item>
+              </NavItem>
+              <NavItem>
                 <LanguageToggle />
-              </Menu.Item>
-            </Menu.Menu>
-          </Menu>
-          <Divider />
+              </NavItem>
+            </Nav>
+          </Navbar>
           <Switch>
             <Fragment>
               <Route exact path="/" component={Home} />

@@ -11,7 +11,7 @@ import { onError } from 'apollo-link-error';
 import { InMemoryCache, defaultDataIdFromObject } from 'apollo-cache-inmemory';
 import { createLink } from 'apollo-absinthe-upload-link';
 
-import 'semantic-ui-css/semantic.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './index.css';
 import App from './containers/App';

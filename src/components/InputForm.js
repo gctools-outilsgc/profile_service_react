@@ -1,7 +1,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input, Button } from 'semantic-ui-react';
+import { Input, Button } from 'reactstrap';
 
 class InputForm extends React.Component {
   constructor(props) {
@@ -17,23 +17,20 @@ class InputForm extends React.Component {
   render() {
     return (
       <div>
-        <h3>{this.props.name} :</h3>
+        <div>{this.props.name} :</div>
         <Input
-          fluid
           type="text"
           value={this.state.value}
           onChange={this.handleChange}
           placeholder={this.props.placeholder}
-          action={
-            <Button
-              primary
-              onClick={() =>
-                this.props.handleSubmit(this.state.value)}
-            >
-              Submit
-            </Button>
-          }
         />
+        <Button
+          primary
+          onClick={() =>
+            this.props.handleSubmit(this.state.value)}
+        >
+          Submit
+        </Button>
       </div>
     );
   }

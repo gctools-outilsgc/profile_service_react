@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import {
-  Segment,
   Dimmer,
-  Loader,
-  Item,
-  Icon,
-  Button,
-  List,
-  Popup
+  Loader
 } from 'semantic-ui-react';
+import { Row, Col, Button } from 'reactstrap';
 import PropTypes from 'prop-types';
 import LocalizedComponent
   from '@gctools-components/react-i18n-translation-webpack';
@@ -312,7 +307,7 @@ class ProfileInfo extends Component {
         basic
         onClick={() => this.setState({ editMode: true })}
       >
-        <Icon name="edit" />{__('Edit')}
+        {__('Edit')}
       </Button>
     );
     if (this.state.editMode) {
@@ -324,7 +319,7 @@ class ProfileInfo extends Component {
             primary
             onClick={this.onSave}
           >
-            <Icon name="save" />{__('Save')}
+            {__('Save')}
           </Button>
           <Button
             floated="right"
@@ -342,7 +337,7 @@ class ProfileInfo extends Component {
               });
             }}
           >
-            <Icon name="cancel" />{__('Cancel')}
+            {__('Cancel')}
           </Button>
         </div>
       );
@@ -355,19 +350,14 @@ class ProfileInfo extends Component {
             accessToken={accessToken}
           >
             {(onClick => (
-              <Popup
-                trigger={
-                  <Button
-                    size="small"
-                    floated="right"
-                    icon="add"
-                    label={__('Team')}
-                    basic
-                    onClick={onClick}
-                  />
-                }
-                content={__('Create new team')}
-              />
+              <Button
+                size="small"
+                floated="right"
+                basic
+                onClick={onClick}
+              >
+                {__('Team')}
+              </Button>
             ))}
           </OrgTierCreate>
         </div>
@@ -389,18 +379,15 @@ class ProfileInfo extends Component {
         onError={() => { this.setState({ avatarLoading: 2 }); }}
       />
     ) : (
-      <Icon
-        name="user"
-        size="huge"
-        aria-label={__('This person has no avatar image.')}
-        style={{ color: '#aaa' }}
-      />
+      <div className="placeholder-avatar">
+        <span>{__('This person has no avatar image.')}</span>
+      </div>
     );
     const noSupervisorDesc =
       __('Select this if you cannot find your supervisor');
 
     return (
-      <Segment>
+      <div>
         <Dimmer active={loading || this.state.saving} inverted>
           <Loader content={__('Loading')} />
         </Dimmer>
@@ -460,13 +447,13 @@ class ProfileInfo extends Component {
                   });
                 }}
               >
-                <Icon name="user" />{__('This is my supervisor')}
+                {__('This is my supervisor')}
               </Button>
             );
           }
           return null;
         })()}
-        <div style={style.imageExample} className={avClass}>
+        <div className={avClass}>
           {avatar}
         </div>
         <Button
@@ -506,11 +493,11 @@ class ProfileInfo extends Component {
             />
           </label>
         </Button>
-        <Item.Group>
-          <Item>
-            <Item.Content>
-              <span className="fluid-input-holder">
-                <Item.Header>
+        <Row>
+          <div>
+            <div>
+              <Col>
+                <div className="item-header-ph">
                   <ReactI18nEdit
                     edit={this.state.editMode}
                     values={[{
@@ -529,10 +516,9 @@ class ProfileInfo extends Component {
                     });
                   }}
                   />
-                </Item.Header>
-              </span>
-              <span className="fluid-input-holder">
-                <Item.Meta>
+                  <div>{this.state.profile.name}</div>
+                </div>
+                <div className="item-meta-ph">
                   <ReactI18nEdit
                     edit={this.state.editMode}
                     lang={localizer.lang}
@@ -561,24 +547,25 @@ class ProfileInfo extends Component {
                     });
                   }}
                   />
-                </Item.Meta>
-              </span>
-              <Item.Meta>
-                {(() => {
-                  if (organization) {
-                    return organization[
-                      `name${capitalize(localizer.lang.split('_', 1)[0])}`
-                    ];
-                  }
-                  return __('Unknown department');
-                  })()}
-              </Item.Meta>
-              <Item.Description style={{ marginTop: '20px' }}>
-                <List style={style.list.left}>
-                  <List.Item style={style.list.listItem}>
-                    <List.Icon size="large" name="user" />
-                    <List.Content>
-                      <List.Header>{__('Supervisor')} </List.Header>
+                </div>
+                <div className="item-meta-ph">
+                  {(() => {
+                    if (organization) {
+                      return organization[
+                        `name${capitalize(localizer.lang.split('_', 1)[0])}`
+                      ];
+                    }
+                    return __('Unknown department');
+                    })()}
+                </div>
+              </Col>
+              <div style={{ marginTop: '20px' }}>
+                <ul style={style.list.left}>
+                  <li style={style.list.listItem}>
+                    <div>
+                      <span className="list-header-ph">
+                        {__('Supervisor')}
+                      </span>
                       {(() => {
                         const { supervisor } = this.state.profile;
                         if (this.state.editMode) {
@@ -632,13 +619,12 @@ class ProfileInfo extends Component {
                         }
                         return __('Not identified');
                       })()}
-                    </List.Content>
-                  </List.Item>
-                  <List.Item style={style.list.listItem}>
-                    <List.Icon size="large" name="phone" />
-                    <List.Content>
-                      <List.Header> {__('Work')} </List.Header>
-                      <List.Description>
+                    </div>
+                  </li>
+                  <li style={style.list.listItem}>
+                    <div>
+                      <span className="list-header-ph"> {__('Work')} </span>
+                      <span className="list-desc-ph">
                         <ReactI18nEdit
                           edit={this.state.editMode}
                           values={[{
@@ -659,14 +645,13 @@ class ProfileInfo extends Component {
                             }
                           }}
                         />
-                      </List.Description>
-                    </List.Content>
-                  </List.Item>
-                  <List.Item style={style.list.listItem}>
-                    <List.Icon size="large" name="mobile" />
-                    <List.Content style={style.list.mobile}>
-                      <List.Header> {__('Mobile')} </List.Header>
-                      <List.Description>
+                      </span>
+                    </div>
+                  </li>
+                  <li style={style.list.listItem}>
+                    <div style={style.list.mobile}>
+                      <span className="list-header-ph"> {__('Mobile')} </span>
+                      <span className="list-desc-ph">
                         <ReactI18nEdit
                           edit={this.state.editMode}
                           values={[{
@@ -687,14 +672,13 @@ class ProfileInfo extends Component {
                             }
                           }}
                         />
-                      </List.Description>
-                    </List.Content>
-                  </List.Item>
-                  <List.Item style={style.list.listItem}>
-                    <List.Icon size="large" name="mail" />
-                    <List.Content>
-                      <List.Header>{__('Email')} </List.Header>
-                      <List.Description>
+                      </span>
+                    </div>
+                  </li>
+                  <li style={style.list.listItem}>
+                    <div>
+                      <span className="list-header-ph">{__('Email')} </span>
+                      <span className="list-desc-ph">
                         <ReactI18nEdit
                           edit={this.state.editMode}
                           values={[{
@@ -713,15 +697,14 @@ class ProfileInfo extends Component {
                             });
                           }}
                         />
-                      </List.Description>
-                    </List.Content>
-                  </List.Item>
-                </List>
-                <List style={style.list.right}>
-                  <List.Item style={style.list.listItem}>
-                    <List.Icon size="large" name="group" />
-                    <List.Content>
-                      <List.Header>{__('Team')} </List.Header>
+                      </span>
+                    </div>
+                  </li>
+                </ul>
+                <ul style={style.list.right}>
+                  <li style={style.list.listItem}>
+                    <div>
+                      <span className="list-header-ph">{__('Team')} </span>
                       <OrgTierChooser
                         selectedOrgTier={this.state.profile.org}
                         supervisor={this.state.profile.supervisor}
@@ -738,13 +721,12 @@ class ProfileInfo extends Component {
                           });
                         }}
                       />
-                    </List.Content>
-                  </List.Item>
-                  <List.Item style={style.list.listItem}>
-                    <List.Icon size="large" name="point" />
-                    <List.Content style={style.list.address}>
-                      <List.Header> {__('Address')} </List.Header>
-                      <List.Description>
+                    </div>
+                  </li>
+                  <li style={style.list.listItem}>
+                    <div style={style.list.address}>
+                      <span className="list-header-ph"> {__('Address')} </span>
+                      <span className="list-desc-ph">
                         <div>
                           <ReactI18nEdit
                             edit={this.state.editMode}
@@ -821,15 +803,15 @@ class ProfileInfo extends Component {
                           }
                           />
                         </div>
-                      </List.Description>
-                    </List.Content>
-                  </List.Item>
-                </List>
-              </Item.Description>
-            </Item.Content>
-          </Item>
-        </Item.Group>
-      </Segment>
+                      </span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </Row>
+      </div>
     );
   }
 }

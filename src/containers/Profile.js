@@ -1,27 +1,20 @@
 import React from 'react';
-import { Grid } from 'semantic-ui-react';
+
+import { Container, Row } from 'reactstrap';
 import PropTypes from 'prop-types';
 
 import ProfileInfo from '../components/GQLProfileInfo';
-import OrgChart from '../components/GQLOrgChart';
 import OrgManager from '../components/GQLOrgManager';
 
 const Profile = ({ match }) => (
-  <Grid stackable style={{ paddingBottom: '40px' }}>
-    <Grid.Row columns={2}>
-      <Grid.Column>
-        <ProfileInfo gcID={match.params.id} />
-      </Grid.Column>
-      <Grid.Column>
-        <OrgChart gcID={match.params.id} />
-      </Grid.Column>
-    </Grid.Row>
-    <Grid.Row>
-      <Grid.Column>
-        <OrgManager gcID={match.params.id} />
-      </Grid.Column>
-    </Grid.Row>
-  </Grid>
+  <Container>
+    <Row>
+      <ProfileInfo gcID={match.params.id} />
+    </Row>
+    <Row>
+      <OrgManager gcID={match.params.id} />
+    </Row>
+  </Container>
 );
 
 Profile.propTypes = {

@@ -1,12 +1,15 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { Dropdown } from 'semantic-ui-react';
+
 import {
   Modal,
-  Icon,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
   Button,
-  Header,
-  Dropdown
-} from 'semantic-ui-react';
+  Input
+} from 'reactstrap';
 
 import ReactI18nEdit from '@gctools-components/react-i18n-edit';
 
@@ -44,18 +47,20 @@ class OrgTierCreate extends React.Component {
     return (
       <Fragment>
         <Modal
-          open={this.state.createOrgTierOpen}
+          isOpen={this.state.createOrgTierOpen}
           closeOnEscape={false}
           closeOnRootNodeClick={false}
           onClose={() =>
             this.setState({ createOrgTierOpen: false })
           }
         >
-          <Header
+          <ModalHeader
             icon="add"
             content={__('Create new team')}
-          />
-          <Modal.Content>
+          >
+            {__('Create new team')}
+          </ModalHeader>
+          <ModalBody>
             <p>
               {__('Create a team for the staff you supervise.')}
             </p>
@@ -108,30 +113,37 @@ class OrgTierCreate extends React.Component {
                     this.state.newOrgTier.organization.id : null;
 
                   return (
-                    <Dropdown
-                      error={!(!orgError)}
-                      options={orgOptions}
-                      wrapSelection
-                      value={orgId}
-                      closeOnBlur
-                      selection
-                      loading={orgLoading}
-                      onChange={(e, data1) => {
-                        const oo = orgOptions;
-                        for (let x = 0; x < oo.length; x += 1) {
-                          if (oo[x].value === data1.value) {
-                            this.setState({
-                              newOrgTier: Object.assign(
-                                {},
-                                this.state.newOrgTier,
-                                { organization: oo[x].data },
-                              ),
-                            });
-                            break;
+                    <span>
+                      <Dropdown
+                        error={!(!orgError)}
+                        options={orgOptions}
+                        wrapSelection
+                        value={orgId}
+                        closeOnBlur
+                        selection
+                        loading={orgLoading}
+                        onChange={(e, data1) => {
+                          const oo = orgOptions;
+                          for (let x = 0; x < oo.length; x += 1) {
+                            if (oo[x].value === data1.value) {
+                              this.setState({
+                                newOrgTier: Object.assign(
+                                  {},
+                                  this.state.newOrgTier,
+                                  { organization: oo[x].data },
+                                ),
+                              });
+                              break;
+                            }
                           }
-                        }
-                      }}
-                    />
+                        }}
+                      />
+                      <Input type="select">
+                        {orgOptions.map(x => (
+                          <option value={x.value}>{x.text}</option>
+                        ))}
+                      </Input>
+                    </span>
                   );
                 }}
               </Query>
@@ -161,8 +173,8 @@ class OrgTierCreate extends React.Component {
                 });
               }}
             />
-          </Modal.Content>
-          <Modal.Actions>
+          </ModalBody>
+          <ModalFooter>
             <Mutation
               mutation={gql`
                 mutation createOrgTier(
@@ -209,7 +221,7 @@ class OrgTierCreate extends React.Component {
                     });
                   }}
                 >
-                  <Icon name="save" /> {__('Save')}
+                  {__('Save')}
                 </Button>
               )}
             </Mutation>
@@ -221,9 +233,9 @@ class OrgTierCreate extends React.Component {
                   newOrgTier: defaultNewOrgTier,
                 })}
             >
-              <Icon name="cancel" /> {__('Cancel')}
+              {__('Cancel')}
             </Button>
-          </Modal.Actions>
+          </ModalFooter>
         </Modal>
         {this.props.children(() => {
           this.setState({ createOrgTierOpen: true });

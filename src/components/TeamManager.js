@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
-  Label,
-  List,
   Modal,
-  Divider
-} from 'semantic-ui-react';
+  ModalHeader,
+  ModalBody,
+  ModalFooter
+} from 'reactstrap';
 import LocalizedComponent
   from '@gctools-components/react-i18n-translation-webpack';
 
@@ -91,8 +91,10 @@ class TeamManager extends Component {
           floated="right"
           primary
           onClick={() => this.onAdd()}
-          content="Add Selected"
-        />);
+        >
+          Add Selected
+        </Button>
+      );
       modalTitle = 'Add new members to your team';
       modalText = 'sample add text';
     } else if (this.state.adding === false && this.state.removing === true) {
@@ -101,8 +103,10 @@ class TeamManager extends Component {
           floated="right"
           primary
           onClick={() => this.onRemove()}
-          content="Remove Selected"
-        />);
+        >
+          Remove Selected
+        </Button>
+      );
       modalTitle = 'Remove members from your team';
       modalText = 'sample remove text';
     }
@@ -110,40 +114,40 @@ class TeamManager extends Component {
     return (
 
       <div style={{ overflow: 'auto' }}>
-        <List>
+        <ul>
           {this.props.teamMembers.map(member => (
-            <List.Item key={`team-${member.gcID}`}>
-              <Label>
+            <li key={`team-${member.gcID}`}>
+              <div>
                 {member.name}
-                <Label.Detail> {member.gcID}</Label.Detail>
-              </Label>
-            </List.Item>
+                <span> {member.gcID}</span>
+              </div>
+            </li>
           ))}
-        </List>
-
-        <Divider />
+        </ul>
 
         <Button
           onClick={() => this.Open(true, false)}
-          content="Remove"
           floated="right"
-        />
+        >
+          Remove
+        </Button>
         <Button
           onClick={() => this.Open(false, true)}
-          content="Add"
           floated="right"
-        />
+        >
+          Add
+        </Button>
 
         <Modal
-          open={this.state.open}
+          isOpen={this.state.open}
           closeOnEscape={false}
           closeOnDimmerClick={false}
         >
-          <Modal.Header>{modalTitle}</Modal.Header>
-          <Modal.Content scrolling>
-            <Modal.Description>
+          <ModalHeader>{modalTitle}</ModalHeader>
+          <ModalBody scrolling>
+            <div>
               <p>{modalText}</p>
-              <List>
+              <ul>
                 {this.props.employees.map((employee) => {
                   let color = 'grey';
                   let display = false;
@@ -164,11 +168,11 @@ class TeamManager extends Component {
                   }
                   if (display === true) {
                     return (
-                      <List.Item key={`employee-${employee.gcID}`}>
-                        <Label as="a" color={color}>
+                      <li key={`employee-${employee.gcID}`}>
+                        <div as="a" color={color}>
                           {employee.name}
-                          <Label.Detail> {employee.gcID}</Label.Detail>
-                        </Label>
+                          <span> {employee.gcID}</span>
+                        </div>
                         <Button
                           floated="right"
                           toggle
@@ -181,24 +185,25 @@ class TeamManager extends Component {
                           }
                           content="Select"
                         />
-                      </List.Item>
+                      </li>
                     );
                   }
-                  return <List.Item />;
+                  return <li />;
                 })}
                 <p>Selected: {JSON.stringify(this.state.rSelected)}</p>
                 <p>Selected: {JSON.stringify(this.state.cSelected)}</p>
-              </List>
-              <Modal.Actions style={{ overflow: 'auto' }}>
+              </ul>
+              <ModalFooter style={{ overflow: 'auto' }}>
                 <Button
                   floated="right"
-                  content="Cancel"
                   onClick={() => this.Cancel()}
-                />
+                >
+                  Cancel
+                </Button>
                 {modalButton}
-              </Modal.Actions>
-            </Modal.Description>
-          </Modal.Content>
+              </ModalFooter>
+            </div>
+          </ModalBody>
         </Modal>
 
       </div>
