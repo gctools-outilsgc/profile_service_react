@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Button,
-  Modal
-} from 'semantic-ui-react';
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button
+} from 'reactstrap';
 import LocalizedComponent
   from '@gctools-components/react-i18n-translation-webpack';
 import ProfileSearch from './ProfileSearch';
@@ -27,20 +30,21 @@ class TeamTransfer extends Component {
           onClick={() => this.setState({
             open: true,
           })}
-          content="Transfer"
           floated="right"
           size="small"
-        />
+        >
+          Transfer
+        </Button>
 
         <Modal
-          open={this.state.open}
+          isOpen={this.state.open}
           closeOnEscape={false}
           closeOnDimmerClick={false}
           size="large"
         >
-          <Modal.Header>Transfering Ownership</Modal.Header>
-          <Modal.Content scrolling>
-            <Modal.Description>
+          <ModalHeader>Transfering Ownership</ModalHeader>
+          <ModalBody scrolling>
+            <div>
               <p>Select the platform user that will receive your team.</p>
               <ProfileSearch
                 defaultValue={
@@ -90,14 +94,15 @@ class TeamTransfer extends Component {
               />
               <h3>User name:{this.state.selectedUserName}</h3>
               <h3>ID: {this.state.selectedUserId}</h3>
-              <Modal.Actions style={{ overflow: 'auto' }}>
+              <ModalFooter style={{ overflow: 'auto' }}>
                 <Button
                   floated="right"
-                  content="Cancel"
                   onClick={() => this.setState({
                     open: false,
                   })}
-                />
+                >
+                  Cancel
+                </Button>
                 <Button
                   disabled={this.state.selectedUserId === ''}
                   primary
@@ -111,10 +116,12 @@ class TeamTransfer extends Component {
                       selectedUserId: '',
                     });
                   }}
-                />
-              </Modal.Actions>
-            </Modal.Description>
-          </Modal.Content>
+                >
+                  Transfer
+                </Button>
+              </ModalFooter>
+            </div>
+          </ModalBody>
         </Modal>
 
       </div>

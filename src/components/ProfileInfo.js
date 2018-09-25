@@ -1,8 +1,4 @@
 import React, { Component } from 'react';
-import {
-  Dimmer,
-  Loader
-} from 'semantic-ui-react';
 import { Row, Col, Button } from 'reactstrap';
 import PropTypes from 'prop-types';
 import LocalizedComponent
@@ -12,6 +8,7 @@ import ReactI18nEdit from '@gctools-components/react-i18n-edit';
 import ProfileSearch from './ProfileSearch';
 import OrgTierChooser from './OrgTierChooser';
 import OrgTierCreate from './OrgTierCreate';
+import LoadingOverlay from './LoadingOverlay';
 import { orgChartSupervisorQuery, orgChartEmpQuery } from './GQLOrgChart';
 
 const style = {
@@ -388,12 +385,14 @@ class ProfileInfo extends Component {
 
     return (
       <div>
-        <Dimmer active={loading || this.state.saving} inverted>
-          <Loader content={__('Loading')} />
-        </Dimmer>
-        <Dimmer active={!loading && !gcID}>
-          {__('Specified profile does not exist.')}
-        </Dimmer>
+        <LoadingOverlay
+          active={loading || this.state.saving}
+          message={__('Loading')}
+        />
+        <LoadingOverlay
+          active={!loading && !gcID}
+          message={__('Specified profile does not exist.')}
+        />
         {editButtons}
         {(() => {
           if ((gcID !== myGcID) &&
