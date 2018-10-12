@@ -122,7 +122,7 @@ class App extends React.Component {
               <NavItem>
                 <Route render={({ history }) => (
                   <ProfileSearch
-                    onResultSelect={(result) => {
+                    onSuggestionSelected={(result) => {
                       const newPath = `/profile/${result.id}`;
                       if (newPath !== history.location.pathname) {
                         history.push(newPath);

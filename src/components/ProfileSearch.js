@@ -1,49 +1,62 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Search } from 'semantic-ui-react';
-import LocalizedComponent
-  from '@gctools-components/react-i18n-translation-webpack';
-import gql from 'graphql-tag';
+import Autosuggest from 'react-autosuggest';
 import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
+import PropTypes from 'prop-types';
 
+
+function getSuggestionValue(suggestion) {
+  return suggestion.title;
+}
+
+function renderSuggestion(suggestion) {
+  return (
+    <span>{suggestion.id} - {suggestion.title}</span>
+  );
+}
 
 class ProfileSearch extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
+
     this.state = {
-      value: props.defaultValue || '',
-      isDefault: true,
+      value: '',
+      suggestions: [],
     };
-    this.handleResultSelect = this.handleResultSelect.bind(this);
-    this.handleSearchChange = this.handleSearchChange.bind(this);
-    this.searchDelay = false;
+    this.onChange = this.onChange.bind(this);
+    this.onSuggestionsFetchRequested =
+    this.onSuggestionsFetchRequested.bind(this);
+    this.onSuggestionsClearRequested =
+    this.onSuggestionsClearRequested.bind(this);
+    this.onSuggestionSelected = this.onSuggestionSelected.bind(this);
   }
 
-  componentWillReceiveProps(next) {
-    const { isDefault } = this.state;
-    if (isDefault && (next.defaultValue !== this.state.value)) {
-      this.setState({ value: next.defaultValue });
-    }
+  onChange(event, { newValue }) {
+    this.setState({
+      value: newValue,
+    });
   }
 
-  handleResultSelect(e, { result }) {
+  onSuggestionsFetchRequested({ value }) {
+    this.setState({
+      suggestions: value,
+    });
+  }
+
+  onSuggestionsClearRequested() {
+    this.setState({
+      suggestions: [],
+    });
+  }
+
+  onSuggestionSelected(event, { suggestion }) {
     this.setState({
       value: this.props.defaultValue || '',
       skip: true,
-      isDefault: true,
     });
-    setTimeout(() => this.props.onResultSelect(result), 0);
-  }
+    setTimeout(() => this.props.onSuggestionSelected(suggestion), 0);
 
-  handleSearchChange(e, { value }) {
-    this.setState({ value, skip: true, isDefault: false });
-    if (this.searchDelay) {
-      clearTimeout(this.searchDelay);
-    }
-    this.searchDelay = setTimeout(() => {
-      this.setState({ skip: false });
-      this.searchDelay = false;
-    }, 200);
+    return suggestion;
   }
 
   render() {
@@ -52,65 +65,80 @@ class ProfileSearch extends React.Component {
     };
 
     const title = `title${capitalize(localizer.lang.split('_', 1)[0])}`;
+    const { suggestions, value } = this.state;
+    let noSuggestions = '';
+
     return (
       <Query
         query={gql`
-          query profileSearchQuery($name: String!) {
-            profiles(name: $name) {
-              gcID
-              name
-              avatar
-              ${title}
-            }
-          }`}
+        query profileSearchQuery($name: String!) {
+          profiles(name: $name) {
+            gcID
+            name
+            avatar
+            ${title}
+          }
+        }`}
         skip={this.state.skip || !this.state.value}
         variables={{ name: this.state.value }}
       >
         {({
-          loading,
-          data,
-        }) => {
-          const { value, isDefault } = this.state;
-          const results = (data.profiles) ? data.profiles.map(a =>
-            ({
-              title: a.name,
-              description: a[title],
-              image: a.avatar,
-              id: a.gcID,
-            })) : [];
-          this.props.resultPreProcessor(results);
+        data,
+      }) => {
+        const results = (data.profiles) ? data.profiles.map(a =>
+          ({
+            title: a.name,
+            description: a[title],
+            image: a.avatar,
+            id: a.gcID,
+          })) : [];
 
-          return (
-            <Search
-              placeholder={__('Search...')}
-              icon="user"
-              loading={loading && !isDefault && value !== ''}
-              onResultSelect={this.handleResultSelect}
-              onSearchChange={this.handleSearchChange}
-              onBlur={e => this.props.onBlur(e, this)}
-              results={results}
-              value={value}
-              noResultsMessage={__('No results found.')}
+          const resultsToRender = results.filter(result => result.id);
+          const numRows = resultsToRender.length;
+          if (numRows === 0 && value !== '') {
+            noSuggestions = 'No suggestions';
+          } else {
+            noSuggestions = '';
+          }
+
+        this.props.resultPreProcessor(suggestions);
+
+        const inputProps = {
+          placeholder: 'Search...',
+          value,
+          onChange: this.onChange,
+        };
+
+        return (
+          <div>
+            <Autosuggest
+              onSuggestionSelected={this.onSuggestionSelected}
+              suggestions={results}
+              onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+              onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+              getSuggestionValue={getSuggestionValue}
+              renderSuggestion={renderSuggestion}
+              inputProps={inputProps}
             />
-          );
-        }}
+            { noSuggestions }
+          </div>
+        );
+    }}
       </Query>
     );
   }
 }
 
 ProfileSearch.defaultProps = {
-  onResultSelect: () => {},
+  onSuggestionSelected: 34,
   defaultValue: undefined,
-  onBlur: () => {},
   resultPreProcessor: () => {},
 };
 
 ProfileSearch.propTypes = {
-  onResultSelect: PropTypes.func,
+  onSuggestionSelected: PropTypes.func,
   defaultValue: PropTypes.string,
-  onBlur: PropTypes.func,
   resultPreProcessor: PropTypes.func,
 };
 
-export default LocalizedComponent(ProfileSearch);
+export default ProfileSearch;
