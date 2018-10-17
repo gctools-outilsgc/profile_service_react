@@ -25,8 +25,6 @@ import oidcConfig from 'oidcConfig'; // eslint-disable-line
 import Home from './Home';
 import Profile from './Profile';
 import ProfileSearch from '../components/ProfileSearch';
-import logo from '../assets/logo.png';
-import logoWhite from '../assets/logoWhite.png';
 
 import { loginAction, logoutAction, clearErrorAction } from '../store';
 
@@ -52,7 +50,7 @@ const style = {
       marginRight: '10px',
     },
     text: {
-      fontSize: '24px',
+      fontSize: '22px',
     },
   },
   content: {
@@ -97,7 +95,7 @@ class App extends React.Component {
 
     return (
       <BrowserRouter>
-        <Container>
+        <div>
           <Modal
             open={showError.length > 0}
             onClose={onErrorClose}
@@ -113,57 +111,56 @@ class App extends React.Component {
               </ModalBody>
             </div>
           </Modal>
-          <Navbar style={style.menu}>
-            <NavbarBrand href="/">
-              <img alt="graphic logo" src={logo} style={style.logo.image} />
-              <span style={style.logo.text}>{__('GCProfile')}</span>
-            </NavbarBrand>
-            <Nav className="ml-auto" navbar>
-              <NavItem>
-                <Route render={({ history }) => (
-                  <ProfileSearch
-                    onResultSelect={(result) => {
+          <Navbar color="white" className="shadow-sm" style={style.menu}>
+            <Container>
+              <NavbarBrand href="/">
+                <span style={style.logo.text}>{__('GCProfile')}</span>
+              </NavbarBrand>
+              <Nav className="ml-auto">
+                <NavItem className="mr-2">
+                  <Route render={({ history }) => (
+                    <ProfileSearch
+                      onResultSelect={(result) => {
                       const newPath = `/profile/${result.id}`;
                       if (newPath !== history.location.pathname) {
                         history.push(newPath);
                       }
                     }}
-                  />
+                    />
                   )}
-                />
-              </NavItem>
-              <NavItem>
-                <Login
-                  oidcConfig={oidcConfig}
-                  onUserLoaded={doLogin}
-                  onUserFetched={doLogin}
-                  onLogoutClick={(e, oidc) => {
+                  />
+                </NavItem>
+                <NavItem className="mr-2">
+                  <Login
+                    oidcConfig={oidcConfig}
+                    onUserLoaded={doLogin}
+                    onUserFetched={doLogin}
+                    onLogoutClick={(e, oidc) => {
                     oidc.logout();
                     doLogout();
                   }}
-                >
-                  {({ onClick }) => (
-                    <Route render={({ history }) => (
-                      <Dropdown
-                        icon={null}
-                        pointing="top"
-                        trigger={(
-                          <Button
-                            onClick={(e) => {
+                  >
+                    {({ onClick }) => (
+                      <Route render={({ history }) => (
+                        <Dropdown
+                          icon={null}
+                          pointing="top"
+                          trigger={(
+                            <Button
+                              onClick={(e) => {
                               if (!this.state.name) {
                                 e.stopPropagation();
                                 onClick(e);
                               }
                             }}
-                            label={this.state.name || __('Login')}
-                            icon={
-                              <img src={logoWhite} alt="GCTools" width="20" />
-                            }
-                            primary
-                            compact
-                          />
+                              label={this.state.name || __('Login')}
+                              primary
+                              compact
+                            >
+                              {this.state.name || __('Login')}
+                            </Button>
                         )}
-                        options={(this.state.name) ? [{
+                          options={(this.state.name) ? [{
                           key: 'logout',
                           text: __('Logout'),
                           icon: 'sign out',
@@ -179,23 +176,27 @@ class App extends React.Component {
                             }
                           },
                         }] : null}
-                      />)}
-                    />
+                        />)}
+                      />
                   )}
-                </Login>
-              </NavItem>
-              <NavItem>
-                <LanguageToggle />
-              </NavItem>
-            </Nav>
+                  </Login>
+                </NavItem>
+                <NavItem>
+                  <LanguageToggle />
+                </NavItem>
+              </Nav>
+            </Container>
           </Navbar>
-          <Switch>
-            <Fragment>
-              <Route exact path="/" component={Home} />
-              <Route path="/profile/:id" component={Profile} />
-            </Fragment>
-          </Switch>
-        </Container>
+          <Container>
+            <Switch>
+              <Fragment>
+                <Route exact path="/" component={Home} />
+                <Route path="/profile/:id" component={Profile} />
+              </Fragment>
+            </Switch>
+          </Container>
+
+        </div>
       </BrowserRouter>
     );
   }

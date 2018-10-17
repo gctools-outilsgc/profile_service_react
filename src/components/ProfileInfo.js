@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Button } from 'reactstrap';
+import { Row, Col, Button, Card, CardBody } from 'reactstrap';
 import PropTypes from 'prop-types';
 import LocalizedComponent
   from '@gctools-components/react-i18n-translation-webpack';
@@ -11,41 +11,6 @@ import OrgTierCreate from './OrgTierCreate';
 import LoadingOverlay from './LoadingOverlay';
 import { orgChartSupervisorQuery, orgChartEmpQuery } from './GQLOrgChart';
 
-const style = {
-  imageExample: {
-    textAlign: 'center',
-    height: '80px',
-    width: '80px',
-    margin: '0 auto',
-  },
-  list: {
-    listItem: {
-      marginBottom: '10px',
-    },
-    left: {
-      marginTop: '0px',
-      marginRight: '20px',
-      float: 'left',
-    },
-    right: {
-      marginTop: '0px',
-      marginRight: '5px',
-      float: 'left',
-    },
-    mobile: {
-      paddingLeft: '0.66em',
-    },
-    address: {
-      paddingLeft: '1em',
-    },
-  },
-  form: {
-    organization: {
-      marginBottom: '50px',
-    },
-  },
-};
-
 const defaultNewOrgTier = { nameEn: '', nameFr: '' };
 
 const initialState = {
@@ -55,6 +20,12 @@ const initialState = {
   newOrgTier: defaultNewOrgTier,
   avatarLoading: 0,
   errorState: {},
+};
+
+const style = {
+  card: {
+    width: '100%',
+  },
 };
 
 class ProfileInfo extends Component {
@@ -364,8 +335,8 @@ class ProfileInfo extends Component {
     const avClass = (this.state.avatarLoading === 0) ? 'avatar-loading' : '';
     const avatar = (this.state.avatarLoading < 2) ? (
       <img
-        width={80}
-        height={80}
+        width={120}
+        height={120}
         src={
           ((typeof avatarUrl !== 'undefined') || (!loading && !gcID)) ?
             avatarUrl || 'b'
@@ -374,6 +345,7 @@ class ProfileInfo extends Component {
         alt={(this.state.avatarLoading === 0) ? '' : 'avatar'}
         onLoad={() => { this.setState({ avatarLoading: 1 }); }}
         onError={() => { this.setState({ avatarLoading: 2 }); }}
+        className="mx-auto d-block rounded-circle"
       />
     ) : (
       <div className="placeholder-avatar">
@@ -384,7 +356,7 @@ class ProfileInfo extends Component {
       __('Select this if you cannot find your supervisor');
 
     return (
-      <div>
+      <Card style={style.card}>
         <LoadingOverlay
           active={loading || this.state.saving}
           message={__('Loading')}
@@ -393,8 +365,10 @@ class ProfileInfo extends Component {
           active={!loading && !gcID}
           message={__('Specified profile does not exist.')}
         />
-        {editButtons}
-        {(() => {
+        <CardBody>
+          <div>
+            <span className="float-right">
+              {(() => {
           if ((gcID !== myGcID) &&
             (gcID !== mySupervisor) &&
             (accessToken !== '')) {
@@ -452,25 +426,33 @@ class ProfileInfo extends Component {
           }
           return null;
         })()}
-        <div className={avClass}>
-          {avatar}
-        </div>
-        <Button
-          size="small"
-          basic
-          style={{
+              {editButtons}
+            </span>
+          </div>
+          <Row>
+            <Col sm="12" md="1" className="border-right">
+              <h1 className="h6 align-middle">My Profile</h1>
+            </Col>
+            <Col xs="2">
+              <div className={avClass}>
+                {avatar}
+              </div>
+              <Button
+                size="small"
+                basic
+                style={{
             margin: '0 auto',
             display: (this.state.editMode) ? 'block' : 'none',
           }}
-        >
-          <label htmlFor="avatarUpload">
-            {__('Change')}
-            <input
-              type="file"
-              id="avatarUpload"
-              style={{ display: 'none' }}
-              required
-              onChange={({ target }) => {
+              >
+                <label htmlFor="avatarUpload">
+                  {__('Change')}
+                  <input
+                    type="file"
+                    id="avatarUpload"
+                    style={{ display: 'none' }}
+                    required
+                    onChange={({ target }) => {
                 if (target.validity.valid) {
                   const reader = new FileReader();
                   reader.onloadend = () => {
@@ -489,23 +471,21 @@ class ProfileInfo extends Component {
                   reader.readAsDataURL(target.files[0]);
                 }
               }}
-            />
-          </label>
-        </Button>
-        <Row>
-          <div>
-            <div>
-              <Col>
-                <div className="item-header-ph">
-                  <ReactI18nEdit
-                    edit={this.state.editMode}
-                    values={[{
+                  />
+                </label>
+              </Button>
+            </Col>
+            <Col xs="9">
+              <div className="text-primary h2 mb-0">
+                <ReactI18nEdit
+                  edit={this.state.editMode}
+                  values={[{
                     lang: '',
                     value: this.state.profile.name || '',
                     placeholder: 'name',
                   }]}
-                    showLabel={false}
-                    onChange={(data) => {
+                  showLabel={false}
+                  onChange={(data) => {
                     this.setState({
                       profile: Object.assign(
                         {},
@@ -514,14 +494,13 @@ class ProfileInfo extends Component {
                       ),
                     });
                   }}
-                  />
-                  <div>{this.state.profile.name}</div>
-                </div>
-                <div className="item-meta-ph">
-                  <ReactI18nEdit
-                    edit={this.state.editMode}
-                    lang={localizer.lang}
-                    values={[
+                />
+              </div>
+              <div className="item-meta-ph font-weight-bold h4">
+                <ReactI18nEdit
+                  edit={this.state.editMode}
+                  lang={localizer.lang}
+                  values={[
                     {
                       lang: 'en_CA',
                       value: this.state.profile.titleEn || '',
@@ -533,7 +512,7 @@ class ProfileInfo extends Component {
                       placeholder: __('Title'),
                     },
                   ]}
-                    onChange={(data) => {
+                  onChange={(data) => {
                     const changeObj = {};
                     changeObj[`title${capitalize(data.lang.split('_', 1)[0])}`]
                       = data.value;
@@ -545,10 +524,10 @@ class ProfileInfo extends Component {
                       ),
                     });
                   }}
-                  />
-                </div>
-                <div className="item-meta-ph">
-                  {(() => {
+                />
+              </div>
+              <div className="item-meta-ph h5">
+                {(() => {
                     if (organization) {
                       return organization[
                         `name${capitalize(localizer.lang.split('_', 1)[0])}`
@@ -556,16 +535,199 @@ class ProfileInfo extends Component {
                     }
                     return __('Unknown department');
                     })()}
-                </div>
-              </Col>
-              <div style={{ marginTop: '20px' }}>
-                <ul style={style.list.left}>
-                  <li style={style.list.listItem}>
-                    <div>
-                      <span className="list-header-ph">
-                        {__('Supervisor')}
+              </div>
+              <ul className="list-unstyled mt-3">
+                <li>
+                  <div>
+                    <div className="font-weight-bold">{__('Email')} </div>
+                    <span className="list-desc-ph">
+                      <ReactI18nEdit
+                        edit={this.state.editMode}
+                        values={[{
+                            lang: '',
+                            value: this.state.profile.email || '',
+                            placeholder: __('Email'),
+                          }]}
+                        showLabel={false}
+                        onChange={(data) => {
+                            this.setState({
+                              profile: Object.assign(
+                                {},
+                                this.state.profile,
+                                { email: data.value },
+                              ),
+                            });
+                          }}
+                      />
+                    </span>
+                  </div>
+                </li>
+                <li className="float-left mr-3">
+                  <div>
+                    <div className="font-weight-bold">{__('Work')}</div>
+                    <span className="list-desc-ph">
+                      <ReactI18nEdit
+                        edit={this.state.editMode}
+                        values={[{
+                            lang: '',
+                            value: this.state.profile.officePhone || '',
+                            placeholder: __('Phone number'),
+                          }]}
+                        showLabel={false}
+                        onChange={(data) => {
+                            if (data.value.length <= 15) {
+                              this.setState({
+                                profile: Object.assign(
+                                  {},
+                                  this.state.profile,
+                                  { officePhone: data.value },
+                                ),
+                              });
+                            }
+                          }}
+                      />
+                    </span>
+                  </div>
+                </li>
+                <li className="float-left mr-3">
+                  <div>
+                    <div className="font-weight-bold">{__('Mobile')}</div>
+                    <span className="list-desc-ph">
+                      <ReactI18nEdit
+                        edit={this.state.editMode}
+                        values={[{
+                            lang: '',
+                            value: this.state.profile.mobilePhone || '',
+                            placeholder: __('Mobile phone number'),
+                          }]}
+                        showLabel={false}
+                        onChange={(data) => {
+                            if (data.value.length <= 15) {
+                              this.setState({
+                                profile: Object.assign(
+                                  {},
+                                  this.state.profile,
+                                  { mobilePhone: data.value },
+                                ),
+                              });
+                            }
+                          }}
+                      />
+                    </span>
+                  </div>
+                </li>
+                <li className="float-left">
+                  <div>
+                    <div className="font-weight-bold">{__('Address')}</div>
+                    <span className="list-desc-ph">
+                      <span>
+                        <ReactI18nEdit
+                          edit={this.state.editMode}
+                          values={[{
+                            lang: '',
+                            value:
+                              this.state.profile.address.streetAddress || '',
+                            placeholder: __('Address'),
+                          }]}
+                          showLabel={false}
+                          error={this.state.errorState.streetAddress}
+                          onChange={data =>
+                            this.onAddressChange(data, 'streetAddress')
+                          }
+                        />
                       </span>
-                      {(() => {
+                      <span>
+                        <ReactI18nEdit
+                          edit={this.state.editMode}
+                          values={[{
+                            lang: '',
+                            value: this.state.profile.address.city || '',
+                            placeholder: __('City'),
+                          }]}
+                          showLabel={false}
+                          error={this.state.errorState.city}
+                          onChange={
+                            data => this.onAddressChange(data, 'city')
+                          }
+                        />
+                      </span>
+                      <span>
+                        <ReactI18nEdit
+                          edit={this.state.editMode}
+                          values={[{
+                            lang: '',
+                            value: this.state.profile.address.province || '',
+                            placeholder: __('Province'),
+                          }]}
+                          showLabel={false}
+                          error={this.state.errorState.province}
+                          onChange={data =>
+                            this.onAddressChange(data, 'province')
+                          }
+                        />
+                      </span>
+                      <span>
+                        <ReactI18nEdit
+                          edit={this.state.editMode}
+                          values={[{
+                            lang: '',
+                            value: this.state.profile.address.postalCode || '',
+                            placeholder: __('Postal Code'),
+                          }]}
+                          showLabel={false}
+                          error={this.state.errorState.postalCode}
+                          onChange={data =>
+                            this.onAddressChange(data, 'postalCode')
+                          }
+                        />
+                      </span>
+                      <span>
+                        <ReactI18nEdit
+                          edit={this.state.editMode}
+                          values={[{
+                            lang: '',
+                            value: this.state.profile.address.country || '',
+                            placeholder: __('Country'),
+                          }]}
+                          showLabel={false}
+                          error={this.state.errorState.country}
+                          onChange={data =>
+                            this.onAddressChange(data, 'country')
+                          }
+                        />
+                      </span>
+                    </span>
+                  </div>
+                </li>
+              </ul>
+              <div style={{ marginTop: '55px' }}>
+                <div className="mt-3">
+                  <div>
+                    <div className="font-weight-bold">{__('Team')}</div>
+                    <OrgTierChooser
+                      selectedOrgTier={this.state.profile.org}
+                      supervisor={this.state.profile.supervisor}
+                      editMode={this.state.editMode}
+                      accessToken={this.props.accessToken}
+                      gcID={myGcID}
+                      onTeamChange={(org) => {
+                          this.setState({
+                            profile: Object.assign(
+                              {},
+                              this.state.profile,
+                              { org },
+                            ),
+                          });
+                        }}
+                    />
+                  </div>
+                </div>
+                <div className="mt-3">
+                  <div>
+                    <div className="font-weight-bold">
+                      {__('Supervisor')}
+                    </div>
+                    {(() => {
                         const { supervisor } = this.state.profile;
                         if (this.state.editMode) {
                           return (
@@ -618,199 +780,13 @@ class ProfileInfo extends Component {
                         }
                         return __('Not identified');
                       })()}
-                    </div>
-                  </li>
-                  <li style={style.list.listItem}>
-                    <div>
-                      <span className="list-header-ph"> {__('Work')} </span>
-                      <span className="list-desc-ph">
-                        <ReactI18nEdit
-                          edit={this.state.editMode}
-                          values={[{
-                            lang: '',
-                            value: this.state.profile.officePhone || '',
-                            placeholder: __('Phone number'),
-                          }]}
-                          showLabel={false}
-                          onChange={(data) => {
-                            if (data.value.length <= 15) {
-                              this.setState({
-                                profile: Object.assign(
-                                  {},
-                                  this.state.profile,
-                                  { officePhone: data.value },
-                                ),
-                              });
-                            }
-                          }}
-                        />
-                      </span>
-                    </div>
-                  </li>
-                  <li style={style.list.listItem}>
-                    <div style={style.list.mobile}>
-                      <span className="list-header-ph"> {__('Mobile')} </span>
-                      <span className="list-desc-ph">
-                        <ReactI18nEdit
-                          edit={this.state.editMode}
-                          values={[{
-                            lang: '',
-                            value: this.state.profile.mobilePhone || '',
-                            placeholder: __('Mobile phone number'),
-                          }]}
-                          showLabel={false}
-                          onChange={(data) => {
-                            if (data.value.length <= 15) {
-                              this.setState({
-                                profile: Object.assign(
-                                  {},
-                                  this.state.profile,
-                                  { mobilePhone: data.value },
-                                ),
-                              });
-                            }
-                          }}
-                        />
-                      </span>
-                    </div>
-                  </li>
-                  <li style={style.list.listItem}>
-                    <div>
-                      <span className="list-header-ph">{__('Email')} </span>
-                      <span className="list-desc-ph">
-                        <ReactI18nEdit
-                          edit={this.state.editMode}
-                          values={[{
-                            lang: '',
-                            value: this.state.profile.email || '',
-                            placeholder: __('Email'),
-                          }]}
-                          showLabel={false}
-                          onChange={(data) => {
-                            this.setState({
-                              profile: Object.assign(
-                                {},
-                                this.state.profile,
-                                { email: data.value },
-                              ),
-                            });
-                          }}
-                        />
-                      </span>
-                    </div>
-                  </li>
-                </ul>
-                <ul style={style.list.right}>
-                  <li style={style.list.listItem}>
-                    <div>
-                      <span className="list-header-ph">{__('Team')} </span>
-                      <OrgTierChooser
-                        selectedOrgTier={this.state.profile.org}
-                        supervisor={this.state.profile.supervisor}
-                        editMode={this.state.editMode}
-                        accessToken={this.props.accessToken}
-                        gcID={myGcID}
-                        onTeamChange={(org) => {
-                          this.setState({
-                            profile: Object.assign(
-                              {},
-                              this.state.profile,
-                              { org },
-                            ),
-                          });
-                        }}
-                      />
-                    </div>
-                  </li>
-                  <li style={style.list.listItem}>
-                    <div style={style.list.address}>
-                      <span className="list-header-ph"> {__('Address')} </span>
-                      <span className="list-desc-ph">
-                        <div>
-                          <ReactI18nEdit
-                            edit={this.state.editMode}
-                            values={[{
-                            lang: '',
-                            value:
-                              this.state.profile.address.streetAddress || '',
-                            placeholder: __('Address'),
-                          }]}
-                            showLabel={false}
-                            error={this.state.errorState.streetAddress}
-                            onChange={data =>
-                            this.onAddressChange(data, 'streetAddress')
-                          }
-                          />
-                        </div>
-                        <div>
-                          <ReactI18nEdit
-                            edit={this.state.editMode}
-                            values={[{
-                            lang: '',
-                            value: this.state.profile.address.city || '',
-                            placeholder: __('City'),
-                          }]}
-                            showLabel={false}
-                            error={this.state.errorState.city}
-                            onChange={
-                            data => this.onAddressChange(data, 'city')
-                          }
-                          />
-                        </div>
-                        <div>
-                          <ReactI18nEdit
-                            edit={this.state.editMode}
-                            values={[{
-                            lang: '',
-                            value: this.state.profile.address.province || '',
-                            placeholder: __('Province'),
-                          }]}
-                            showLabel={false}
-                            error={this.state.errorState.province}
-                            onChange={data =>
-                            this.onAddressChange(data, 'province')
-                          }
-                          />
-                        </div>
-                        <div>
-                          <ReactI18nEdit
-                            edit={this.state.editMode}
-                            values={[{
-                            lang: '',
-                            value: this.state.profile.address.postalCode || '',
-                            placeholder: __('Postal Code'),
-                          }]}
-                            showLabel={false}
-                            error={this.state.errorState.postalCode}
-                            onChange={data =>
-                            this.onAddressChange(data, 'postalCode')
-                          }
-                          />
-                        </div>
-                        <div>
-                          <ReactI18nEdit
-                            edit={this.state.editMode}
-                            values={[{
-                            lang: '',
-                            value: this.state.profile.address.country || '',
-                            placeholder: __('Country'),
-                          }]}
-                            showLabel={false}
-                            error={this.state.errorState.country}
-                            onChange={data =>
-                            this.onAddressChange(data, 'country')
-                          }
-                          />
-                        </div>
-                      </span>
-                    </div>
-                  </li>
-                </ul>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </Row>
-      </div>
+            </Col>
+          </Row>
+        </CardBody>
+      </Card>
     );
   }
 }

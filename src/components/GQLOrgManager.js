@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  Dimmer,
-  Loader
-} from 'semantic-ui-react';
 
 import {
+  Row,
+  Col,
   Button,
   Nav,
   NavItem,
   NavLink,
   TabContent,
-  TabPane
+  TabPane,
+  Card,
+  CardBody
 } from 'reactstrap';
 
 import { connect } from 'react-redux';
@@ -24,14 +24,32 @@ import LocalizedComponent
 import InputForm from './InputForm';
 import TeamManager from './TeamManager';
 import TeamTransfer from './TeamTransfer';
+import OrgTierChooser from './OrgTierChooser';
 
 const organizationTierQuery = gql`
 query organizationTierQuery($gcID: String!) {
   profiles(gcID: $gcID) {
     name
+    gcID
     Employees {
       name
       gcID
+    }
+    supervisor {
+      gcID
+      name
+    }
+    org {
+      id
+      nameEn
+      nameFr
+      organization {
+        id
+        nameEn
+        nameFr
+        acronymEn
+        acronymFr
+      }
     }
     OwnerOfOrgTier {
       id
@@ -91,14 +109,23 @@ class OrgManager extends React.Component {
 
     this.toggle = this.toggle.bind(this);
     this.state = {
-      activeTab: '1',
+      activeTab1: '1',
+      activeTab2: '1',
     };
   }
 
   toggle(tab) {
-    if (this.state.activeTab !== tab) {
+    if (this.state.activeTab1 !== tab) {
       this.setState({
-        activeTab: tab,
+        activeTab1: tab,
+      });
+    }
+  }
+
+  toggle2(tab) {
+    if (this.state.activeTab2 !== tab) {
+      this.setState({
+        activeTab2: tab,
       });
     }
   }
@@ -141,12 +168,6 @@ class OrgManager extends React.Component {
             OrgMembers,
           }) => (
             <TabPane tabId={id}>
-              <Dimmer active={loading} inverted>
-                <Loader content={__('Loading')} />
-              </Dimmer>
-              <Dimmer active={!loading && !gcID}>
-                {__('Specified profile does not exist.')}
-              </Dimmer>
               <Mutation
                 mutation={transferOwnership}
                 refetchQueries={[{
@@ -284,13 +305,85 @@ class OrgManager extends React.Component {
               </div>
             </TabPane>));
           return (
-            <div>
-              <h2>Your Teams</h2>
-              <Nav vertical>{teamList}</Nav>
-              <TabContent activeTab={this.state.activeTab}>
-                {tabPanel}
-              </TabContent>
-            </div>
+            <Card style={{ width: '100%' }}>
+              <CardBody>
+                <Row>
+                  <Col sm="12" md="1" className="border-right">
+                    <h2 className="h5">Teams</h2>
+                  </Col>
+                  <Col>
+                    <Nav tabs>
+                      <NavItem>
+                        <NavLink
+                          href="#!"
+                          onClick={() => { this.toggle2('1'); }}
+                        >
+                          My Team
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          href="#!"
+                          onClick={() => { this.toggle2('2'); }}
+                        >
+                          Teams I Supervise
+                        </NavLink>
+                      </NavItem>
+                    </Nav>
+                    <TabContent activeTab={this.state.activeTab2}>
+                      <TabPane tabId="1">
+                        <Row>
+                          <Col>
+                            <div className="d-flex">
+                              <div className="mr-auto p-2 font-weight-bold">
+                                Supervisor
+                              </div>
+                              <Button>
+                                R
+                              </Button>
+                              <Button>
+                                E
+                              </Button>
+                            </div>
+                            {data.profiles[0].supervisor.name}
+                          </Col>
+                          <Col>
+                            <div className="d-flex">
+                              <div className="mr-auto p-2 font-weight-bold">
+                                Team picker here
+                              </div>
+                              <Button>
+                                L
+                              </Button>
+                              <Button>
+                                E
+                              </Button>
+                            </div>
+                            <OrgTierChooser
+                              selectedOrgTier={data.profiles[0].org}
+                              supervisor={data.profiles[0].supervisor}
+                              gcID={data.profiles[0].gcID}
+                            />
+                          </Col>
+                        </Row>
+                      </TabPane>
+                      <TabPane tabId="2">
+                        <Row>
+                          <Col xs="3">
+                            <Nav vertical>{teamList}</Nav>
+                          </Col>
+                          <Col xs="9">
+                            <TabContent activeTab={this.state.activeTab1}>
+                              {tabPanel}
+                            </TabContent>
+                          </Col>
+                        </Row>
+                      </TabPane>
+                    </TabContent>
+                  </Col>
+                </Row>
+              </CardBody>
+            </Card>
           );
         }}
       </Query>

@@ -11,7 +11,7 @@ const Profile = ({ match }) => (
     <Row>
       <ProfileInfo gcID={match.params.id} />
     </Row>
-    <Row>
+    <Row className="mt-3">
       <OrgManager gcID={match.params.id} />
     </Row>
   </Container>

@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown } from 'semantic-ui-react';
 
 import {
   Modal,
@@ -41,6 +40,15 @@ class OrgTierCreate extends React.Component {
     return valid;
   }
 
+  change(event) {
+    this.setState({
+      newOrgTier: Object.assign(
+        {},
+        this.state.newOrgTier,
+        { organization: event.target.value },
+      ),
+    });
+  }
   render() {
     const { accessToken } = this.props;
     const lang = capitalize(localizer.lang.split('_', 1)[0]);
@@ -114,31 +122,19 @@ class OrgTierCreate extends React.Component {
 
                   return (
                     <span>
-                      <Dropdown
-                        error={!(!orgError)}
-                        options={orgOptions}
-                        wrapSelection
-                        value={orgId}
-                        closeOnBlur
-                        selection
-                        loading={orgLoading}
-                        onChange={(e, data1) => {
-                          const oo = orgOptions;
-                          for (let x = 0; x < oo.length; x += 1) {
-                            if (oo[x].value === data1.value) {
-                              this.setState({
-                                newOrgTier: Object.assign(
-                                  {},
-                                  this.state.newOrgTier,
-                                  { organization: oo[x].data },
-                                ),
-                              });
-                              break;
-                            }
-                          }
+                      <span>{orgError} {orgId}</span>
+                      <Input
+                        type="select"
+                        onChange={(e) => {
+                          this.setState({
+                            newOrgTier: Object.assign(
+                              {},
+                              this.state.newOrgTier,
+                              { organization: e.value },
+                            ),
+                          });
                         }}
-                      />
-                      <Input type="select">
+                      >
                         {orgOptions.map(x => (
                           <option value={x.value}>{x.text}</option>
                         ))}
