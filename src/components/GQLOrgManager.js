@@ -345,7 +345,7 @@ class OrgManager extends React.Component {
                                 E
                               </Button>
                             </div>
-                            {data.profiles[0].supervisor.name}
+                            Supervisor picker here
                           </Col>
                           <Col>
                             <div className="d-flex">
@@ -359,9 +359,8 @@ class OrgManager extends React.Component {
                                 E
                               </Button>
                             </div>
+
                             <OrgTierChooser
-                              selectedOrgTier={data.profiles[0].org}
-                              supervisor={data.profiles[0].supervisor}
                               gcID={data.profiles[0].gcID}
                             />
                           </Col>
