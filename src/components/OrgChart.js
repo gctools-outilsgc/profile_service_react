@@ -1,3 +1,5 @@
+/*
+Comment out until this gets updated
 import React from 'react';
 import { Segment, Dimmer, Loader } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
@@ -165,3 +167,4 @@ OrgChart.propTypes = {
 };
 
 export default OrgChart;
+*/
