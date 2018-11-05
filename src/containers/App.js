@@ -27,6 +27,7 @@ import Profile from './Profile';
 import ProfileSearch from '../components/ProfileSearch';
 
 import { loginAction, logoutAction, clearErrorAction } from '../store';
+import '../Search.css';
 
 const changeLanguage = () => {
   const lang = (localizer.lang === 'en_CA') ? 'fr_CA' : 'en_CA';
