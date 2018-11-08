@@ -13,3 +13,7 @@ msgstr ""
 #: src/components/ProfileSearch.js 72:27
 msgid "Search..."
 msgstr ""
+#: src/components/ProfileSearch.js 85:27
+msgid "Search"
+msgstr ""
+
