@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
-import { Row, Col, Button, Card, CardBody } from 'reactstrap';
+import {
+  Row,
+  Col,
+  Button,
+  Card,
+  CardBody,
+  Modal,
+  ModalBody,
+  ModalHeader
+} from 'reactstrap';
 import PropTypes from 'prop-types';
 import LocalizedComponent
   from '@gctools-components/react-i18n-translation-webpack';
 import ReactI18nEdit from '@gctools-components/react-i18n-edit';
 
-import ProfileSearch from './ProfileSearch';
-import OrgTierChooser from './OrgTierChooser';
 import OrgTierCreate from './OrgTierCreate';
 import LoadingOverlay from './LoadingOverlay';
 import { orgChartSupervisorQuery, orgChartEmpQuery } from './GQLOrgChart';
@@ -15,6 +22,7 @@ const defaultNewOrgTier = { nameEn: '', nameFr: '' };
 
 const initialState = {
   editMode: false,
+  editOpen: false,
   saving: false,
   createOrgTierOpen: false,
   newOrgTier: defaultNewOrgTier,
@@ -35,6 +43,7 @@ class ProfileInfo extends Component {
       profile: Object.assign({}, props.profile),
     });
     this.onSave = this.onSave.bind(this);
+    this.toggleEdit = this.toggleEdit.bind(this);
   }
 
   componentWillMount() {
@@ -247,6 +256,12 @@ class ProfileInfo extends Component {
     }
   }
 
+  toggleEdit() {
+    this.setState({
+      editOpen: !this.state.editOpen,
+    });
+  }
+
   render() {
     const {
       loading,
@@ -273,7 +288,7 @@ class ProfileInfo extends Component {
         size="small"
         disabled={!canEdit}
         basic
-        onClick={() => this.setState({ editMode: true })}
+        onClick={this.toggleEdit}
       >
         {__('Edit')}
       </Button>
@@ -312,6 +327,241 @@ class ProfileInfo extends Component {
     } else if (canEdit) {
       editButtons = (
         <div>
+          <Modal
+            isOpen={this.state.editOpen}
+            toggle={this.toggleEdit}
+            style={{ maxWidth: '960px' }}
+          >
+            <ModalBody>
+              <ModalHeader>Basic Info</ModalHeader>
+              <Row>
+                <div className="w-50 mx-auto basic-form-holder">
+                  <div>
+                    <ReactI18nEdit
+                      edit
+                      values={[{
+                    lang: '',
+                    value: this.state.profile.name || '',
+                    placeholder: 'Name',
+                  }]}
+                      showLabel={false}
+                      onChange={(data) => {
+                    this.setState({
+                      profile: Object.assign(
+                        {},
+                        this.state.profile,
+                        { name: data.value },
+                      ),
+                    });
+                  }}
+                    />
+                    <ReactI18nEdit
+                      edit
+                      lang={localizer.lang}
+                      values={[
+                    {
+                      lang: 'en_CA',
+                      value: this.state.profile.titleEn || '',
+                      placeholder: __('Title'),
+                    },
+                    {
+                      lang: 'fr_CA',
+                      value: this.state.profile.titleFr || '',
+                      placeholder: __('Title'),
+                    },
+                  ]}
+                      onChange={(data) => {
+                    const changeObj = {};
+                    changeObj[`title${capitalize(data.lang.split('_', 1)[0])}`]
+                      = data.value;
+                    this.setState({
+                      profile: Object.assign(
+                        {},
+                        this.state.profile,
+                        changeObj,
+                      ),
+                    });
+                  }}
+                    />
+                    <ReactI18nEdit
+                      edit
+                      values={[{
+                            lang: '',
+                            value: this.state.profile.email || '',
+                            placeholder: __('Email'),
+                          }]}
+                      showLabel={false}
+                      type="email"
+                      onChange={(data) => {
+                            this.setState({
+                              profile: Object.assign(
+                                {},
+                                this.state.profile,
+                                { email: data.value },
+                              ),
+                            });
+                          }}
+                    />
+                  </div>
+                  <Row className="mt-3 border-top pt-2">
+                    <Col sm="6">
+                      <ReactI18nEdit
+                        edit
+                        values={[{
+                            lang: '',
+                            value: this.state.profile.officePhone || '',
+                            placeholder: __('Phone number'),
+                          }]}
+                        showLabel={false}
+                        type="tel"
+                        onChange={(data) => {
+                            if (data.value.length <= 15) {
+                              this.setState({
+                                profile: Object.assign(
+                                  {},
+                                  this.state.profile,
+                                  { officePhone: data.value },
+                                ),
+                              });
+                            }
+                          }}
+                      />
+                    </Col>
+                    <Col sm="6">
+                      <ReactI18nEdit
+                        edit
+                        values={[{
+                            lang: '',
+                            value: this.state.profile.mobilePhone || '',
+                            placeholder: __('Mobile phone number'),
+                          }]}
+                        showLabel={false}
+                        type="tel"
+                        onChange={(data) => {
+                            if (data.value.length <= 15) {
+                              this.setState({
+                                profile: Object.assign(
+                                  {},
+                                  this.state.profile,
+                                  { mobilePhone: data.value },
+                                ),
+                              });
+                            }
+                          }}
+                      />
+                    </Col>
+
+                    <Col sm="12" className="mt-3 border-top">
+                      <Row className="list-desc-ph pt-2">
+                        <Col sm="6">
+                          <ReactI18nEdit
+                            edit
+                            values={[{
+                            lang: '',
+                            value:
+                              this.state.profile.address.streetAddress || '',
+                            placeholder: __('Address'),
+                          }]}
+                            showLabel={false}
+                            error={this.state.errorState.streetAddress}
+                            onChange={data =>
+                            this.onAddressChange(data, 'streetAddress')
+                          }
+                          />
+                        </Col>
+                        <Col sm="6">
+                          <ReactI18nEdit
+                            edit
+                            values={[{
+                            lang: '',
+                            value: this.state.profile.address.city || '',
+                            placeholder: __('City'),
+                          }]}
+                            showLabel={false}
+                            error={this.state.errorState.city}
+                            onChange={
+                            data => this.onAddressChange(data, 'city')
+                          }
+                          />
+                        </Col>
+                        <Col sm="6">
+                          <ReactI18nEdit
+                            edit
+                            values={[{
+                            lang: '',
+                            value: this.state.profile.address.province || '',
+                            placeholder: __('Province'),
+                          }]}
+                            showLabel={false}
+                            error={this.state.errorState.province}
+                            onChange={data =>
+                            this.onAddressChange(data, 'province')
+                          }
+                          />
+                        </Col>
+                        <Col sm="6">
+                          <ReactI18nEdit
+                            edit
+                            values={[{
+                            lang: '',
+                            value: this.state.profile.address.postalCode || '',
+                            placeholder: __('Postal Code'),
+                          }]}
+                            showLabel={false}
+                            error={this.state.errorState.postalCode}
+                            onChange={data =>
+                            this.onAddressChange(data, 'postalCode')
+                          }
+                          />
+                        </Col>
+                        <Col sm="6">
+                          <ReactI18nEdit
+                            edit
+                            values={[{
+                            lang: '',
+                            value: this.state.profile.address.country || '',
+                            placeholder: __('Country'),
+                          }]}
+                            showLabel={false}
+                            error={this.state.errorState.country}
+                            onChange={data =>
+                            this.onAddressChange(data, 'country')
+                          }
+                          />
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                  <Button
+                    floated="right"
+                    size="small"
+                    primary
+                    onClick={this.onSave}
+                  >
+                    {__('Save')}
+                  </Button>
+                  <Button
+                    floated="right"
+                    size="small"
+                    basic
+                    onClick={() => {
+              this.setState({
+                editOpen: false,
+                profile: Object.assign(
+                  {},
+                  this.props.profile,
+                  { avatarFile: undefined },
+                ),
+                errorState: {},
+              });
+            }}
+                  >
+                    {__('Cancel')}
+                  </Button>
+                </div>
+              </Row>
+            </ModalBody>
+          </Modal>
           {editButtons}
           <OrgTierCreate
             gcID={myGcID}
@@ -352,8 +602,6 @@ class ProfileInfo extends Component {
         <span>{__('This person has no avatar image.')}</span>
       </div>
     );
-    const noSupervisorDesc =
-      __('Select this if you cannot find your supervisor');
 
     return (
       <Card style={style.card}>
@@ -426,13 +674,13 @@ class ProfileInfo extends Component {
           }
           return null;
         })()}
-              {editButtons}
             </span>
           </div>
+          <Row className="pl-3 pr-3">
+            <h1 className="h5">My Profile</h1>
+            <div className="ml-auto">{editButtons}</div>
+          </Row>
           <Row>
-            <Col sm="12" md="1" className="border-right">
-              <h1 className="h6 align-middle">My Profile</h1>
-            </Col>
             <Col xs="2">
               <div className={avClass}>
                 {avatar}
@@ -475,7 +723,7 @@ class ProfileInfo extends Component {
                 </label>
               </Button>
             </Col>
-            <Col xs="9">
+            <Col xs="10">
               <div className="text-primary h2 mb-0">
                 <ReactI18nEdit
                   edit={this.state.editMode}
@@ -485,18 +733,9 @@ class ProfileInfo extends Component {
                     placeholder: 'name',
                   }]}
                   showLabel={false}
-                  onChange={(data) => {
-                    this.setState({
-                      profile: Object.assign(
-                        {},
-                        this.state.profile,
-                        { name: data.value },
-                      ),
-                    });
-                  }}
                 />
               </div>
-              <div className="item-meta-ph font-weight-bold h4">
+              <div className="item-meta-ph h5 mb-0">
                 <ReactI18nEdit
                   edit={this.state.editMode}
                   lang={localizer.lang}
@@ -512,18 +751,6 @@ class ProfileInfo extends Component {
                       placeholder: __('Title'),
                     },
                   ]}
-                  onChange={(data) => {
-                    const changeObj = {};
-                    changeObj[`title${capitalize(data.lang.split('_', 1)[0])}`]
-                      = data.value;
-                    this.setState({
-                      profile: Object.assign(
-                        {},
-                        this.state.profile,
-                        changeObj,
-                      ),
-                    });
-                  }}
                 />
               </div>
               <div className="item-meta-ph h5">
@@ -537,7 +764,7 @@ class ProfileInfo extends Component {
                     })()}
               </div>
               <ul className="list-unstyled mt-3">
-                <li>
+                <li className="mb-2">
                   <div>
                     <div className="font-weight-bold">{__('Email')} </div>
                     <span className="list-desc-ph">
@@ -549,20 +776,11 @@ class ProfileInfo extends Component {
                             placeholder: __('Email'),
                           }]}
                         showLabel={false}
-                        onChange={(data) => {
-                            this.setState({
-                              profile: Object.assign(
-                                {},
-                                this.state.profile,
-                                { email: data.value },
-                              ),
-                            });
-                          }}
                       />
                     </span>
                   </div>
                 </li>
-                <li className="float-left mr-3">
+                <li className="float-left mr-4">
                   <div>
                     <div className="font-weight-bold">{__('Work')}</div>
                     <span className="list-desc-ph">
@@ -574,22 +792,11 @@ class ProfileInfo extends Component {
                             placeholder: __('Phone number'),
                           }]}
                         showLabel={false}
-                        onChange={(data) => {
-                            if (data.value.length <= 15) {
-                              this.setState({
-                                profile: Object.assign(
-                                  {},
-                                  this.state.profile,
-                                  { officePhone: data.value },
-                                ),
-                              });
-                            }
-                          }}
                       />
                     </span>
                   </div>
                 </li>
-                <li className="float-left mr-3">
+                <li className="float-left mr-4">
                   <div>
                     <div className="font-weight-bold">{__('Mobile')}</div>
                     <span className="list-desc-ph">
@@ -600,18 +807,6 @@ class ProfileInfo extends Component {
                             value: this.state.profile.mobilePhone || '',
                             placeholder: __('Mobile phone number'),
                           }]}
-                        showLabel={false}
-                        onChange={(data) => {
-                            if (data.value.length <= 15) {
-                              this.setState({
-                                profile: Object.assign(
-                                  {},
-                                  this.state.profile,
-                                  { mobilePhone: data.value },
-                                ),
-                              });
-                            }
-                          }}
                       />
                     </span>
                   </div>
@@ -620,7 +815,7 @@ class ProfileInfo extends Component {
                   <div>
                     <div className="font-weight-bold">{__('Address')}</div>
                     <span className="list-desc-ph">
-                      <span>
+                      <span className="mr-1">
                         <ReactI18nEdit
                           edit={this.state.editMode}
                           values={[{
@@ -629,14 +824,10 @@ class ProfileInfo extends Component {
                               this.state.profile.address.streetAddress || '',
                             placeholder: __('Address'),
                           }]}
-                          showLabel={false}
                           error={this.state.errorState.streetAddress}
-                          onChange={data =>
-                            this.onAddressChange(data, 'streetAddress')
-                          }
                         />
                       </span>
-                      <span>
+                      <span className="mr-1">
                         <ReactI18nEdit
                           edit={this.state.editMode}
                           values={[{
@@ -644,14 +835,10 @@ class ProfileInfo extends Component {
                             value: this.state.profile.address.city || '',
                             placeholder: __('City'),
                           }]}
-                          showLabel={false}
                           error={this.state.errorState.city}
-                          onChange={
-                            data => this.onAddressChange(data, 'city')
-                          }
                         />
                       </span>
-                      <span>
+                      <span className="mr-1">
                         <ReactI18nEdit
                           edit={this.state.editMode}
                           values={[{
@@ -659,14 +846,10 @@ class ProfileInfo extends Component {
                             value: this.state.profile.address.province || '',
                             placeholder: __('Province'),
                           }]}
-                          showLabel={false}
                           error={this.state.errorState.province}
-                          onChange={data =>
-                            this.onAddressChange(data, 'province')
-                          }
                         />
                       </span>
-                      <span>
+                      <span className="mr-1">
                         <ReactI18nEdit
                           edit={this.state.editMode}
                           values={[{
@@ -674,14 +857,10 @@ class ProfileInfo extends Component {
                             value: this.state.profile.address.postalCode || '',
                             placeholder: __('Postal Code'),
                           }]}
-                          showLabel={false}
                           error={this.state.errorState.postalCode}
-                          onChange={data =>
-                            this.onAddressChange(data, 'postalCode')
-                          }
                         />
                       </span>
-                      <span>
+                      <span className="mr-1">
                         <ReactI18nEdit
                           edit={this.state.editMode}
                           values={[{
@@ -689,100 +868,13 @@ class ProfileInfo extends Component {
                             value: this.state.profile.address.country || '',
                             placeholder: __('Country'),
                           }]}
-                          showLabel={false}
                           error={this.state.errorState.country}
-                          onChange={data =>
-                            this.onAddressChange(data, 'country')
-                          }
                         />
                       </span>
                     </span>
                   </div>
                 </li>
               </ul>
-              <div style={{ marginTop: '55px' }}>
-                <div className="mt-3">
-                  <div>
-                    <div className="font-weight-bold">{__('Team')}</div>
-                    <OrgTierChooser
-                      selectedOrgTier={this.state.profile.org}
-                      supervisor={this.state.profile.supervisor}
-                      editMode={this.state.editMode}
-                      accessToken={this.props.accessToken}
-                      gcID={myGcID}
-                      onTeamChange={(org) => {
-                          this.setState({
-                            profile: Object.assign(
-                              {},
-                              this.state.profile,
-                              { org },
-                            ),
-                          });
-                        }}
-                    />
-                  </div>
-                </div>
-                <div className="mt-3">
-                  <div>
-                    <div className="font-weight-bold">
-                      {__('Supervisor')}
-                    </div>
-                    {(() => {
-                        const { supervisor } = this.state.profile;
-                        if (this.state.editMode) {
-                          return (
-                            <ProfileSearch
-                              defaultValue={
-                                (supervisor) ? supervisor.name : ''
-                              }
-                              onBlur={(e, obj) => {
-                                obj.setState({
-                                  value: obj.props.defaultValue || '',
-                                  skip: true,
-                                  isDefault: true,
-                                });
-                              }}
-                              resultPreProcessor={(results) => {
-                                for (let x = 0; x < results.length; x += 1) {
-                                  if (results[x].id === myGcID) {
-                                    results.splice(x, 1);
-                                    break;
-                                  }
-                                }
-                                results.unshift({
-                                  title: __('No supervisor'),
-                                  description: noSupervisorDesc,
-                                  id: null,
-                                });
-                              }}
-                              onResultSelect={(data) => {
-                                const sup = (this.state.profile.supervisor) ?
-                                  this.state.profile.supervisor.gcID : null;
-                                this.setState({
-                                  profile: Object.assign(
-                                    {},
-                                    this.state.profile,
-                                    {
-                                      supervisor: (data.id !== null) ? {
-                                        name: data.title,
-                                        gcID: data.id,
-                                      } : null,
-                                    },
-                                    (data.id !== sup) ? { org: null } : {},
-                                  ),
-                                });
-                              }}
-                            />
-                          );
-                        }
-                        if (supervisor && supervisor.name) {
-                          return supervisor.name;
-                        }
-                        return __('Not identified');
-                      })()}
-                  </div>
-                </div>
-              </div>
             </Col>
           </Row>
         </CardBody>

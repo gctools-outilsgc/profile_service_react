@@ -42,6 +42,7 @@ body {
 .ui.input.form-control {
   padding: 0;
   border: none;
+  width: 100%;
 }
 .ui.input.form-control input {
   display: block;
@@ -55,4 +56,9 @@ body {
   background-clip: padding-box;
   border: 1px solid #ced4da;
   border-radius: .25rem;
+}
+
+.basic-form-holder .input-group label {
+  width: 100%;
+  margin-bottom: 8px;
 }

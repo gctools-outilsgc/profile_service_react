@@ -11,7 +11,10 @@ import {
   TabContent,
   TabPane,
   Card,
-  CardBody
+  CardBody,
+  Modal,
+  ModalHeader,
+  ModalBody
 } from 'reactstrap';
 
 import { connect } from 'react-redux';
@@ -25,6 +28,7 @@ import InputForm from './InputForm';
 import TeamManager from './TeamManager';
 import TeamTransfer from './TeamTransfer';
 import OrgTierChooser from './OrgTierChooser';
+import ProfileSearch from './ProfileSearch';
 
 const organizationTierQuery = gql`
 query organizationTierQuery($gcID: String!) {
@@ -102,15 +106,24 @@ mutation (
   }
 }
 `;
+const modifyProfileMutation = gql`
+mutation changeTeam($gcID: String!, $profileInfo: ModifyProfileInput!) {
+  modifyProfile(gcId: $gcID, profileInfo: $profileInfo) {
+    gcID
+  }
+}
+`;
 
 class OrgManager extends React.Component {
   constructor(props) {
     super(props);
 
     this.toggle = this.toggle.bind(this);
+    this.toggleEdit = this.toggleEdit.bind(this);
     this.state = {
       activeTab1: '1',
       activeTab2: '1',
+      editOpen: false,
     };
   }
 
@@ -130,11 +143,20 @@ class OrgManager extends React.Component {
     }
   }
 
+  toggleEdit() {
+    this.setState({
+      editOpen: !this.state.editOpen,
+    });
+  }
+
   render() {
     const {
       gcID,
+      accessToken,
+      myGcID,
       // editMode,
     } = this.props;
+    const canEdit = (accessToken !== '') && (gcID === myGcID);
     return (
       <Query
         variables={{ gcID: (String(gcID)) }}
@@ -148,6 +170,8 @@ class OrgManager extends React.Component {
         }) => {
           if (error) return `Error...${error.message}`;
           if (loading) return 'loading...';
+          const supTest = data.profiles[0].supervisor;
+          const orgTest = data.profiles[0].org;
           const teamList = data.profiles[0].OwnerOfOrgTier.map(({
             id,
             nameEn,
@@ -275,7 +299,7 @@ class OrgManager extends React.Component {
                   context={{
                               headers: {
                                 Authorization:
-                                  `Bearer ${this.props.accessToken}`,
+                                  `Bearer ${accessToken}`,
                               },
                             }
                             }
@@ -307,10 +331,8 @@ class OrgManager extends React.Component {
           return (
             <Card style={{ width: '100%' }}>
               <CardBody>
+                <h2 className="h5">Teams</h2>
                 <Row>
-                  <Col sm="12" md="1" className="border-right">
-                    <h2 className="h5">Teams</h2>
-                  </Col>
                   <Col>
                     <Nav tabs>
                       <NavItem>
@@ -334,37 +356,108 @@ class OrgManager extends React.Component {
                       <TabPane tabId="1">
                         <Row>
                           <Col>
-                            <div className="d-flex">
-                              <div className="mr-auto p-2 font-weight-bold">
+                            <div>
+                              <div className="font-weight-bold">
                                 Supervisor
                               </div>
-                              <Button>
-                                R
-                              </Button>
-                              <Button>
-                                E
-                              </Button>
+                              {supTest ? supTest.name : 'None'}
                             </div>
-                            Supervisor picker here
                           </Col>
                           <Col>
-                            <div className="d-flex">
-                              <div className="mr-auto p-2 font-weight-bold">
+                            <div>
+                              <div className="font-weight-bold">
                                 Team picker here
                               </div>
-                              <Button>
-                                L
-                              </Button>
-                              <Button>
-                                E
-                              </Button>
+                              {orgTest ? orgTest.nameEn : 'None'}
                             </div>
-
-                            <OrgTierChooser
-                              gcID={data.profiles[0].gcID}
-                            />
                           </Col>
                         </Row>
+                        <Button
+                          onClick={this.toggleEdit}
+                          disabled={!canEdit}
+                        >
+                          Edit
+                        </Button>
+                        <Modal
+                          isOpen={this.state.editOpen}
+                          toggle={this.toggleEdit}
+                          style={{ maxWidth: '960px' }}
+                        >
+                          <ModalHeader>
+                            Modify Team
+                          </ModalHeader>
+                          <ModalBody>
+                            <Mutation
+                              mutation={modifyProfileMutation}
+                              refetchQueries={[{
+                                        query: organizationTierQuery,
+                                        variables: { gcID: String(gcID) },
+                                      }]}
+                              context={{
+                                        headers: {
+                                          Authorization:
+                                            `Bearer ${accessToken}`,
+                                        },
+                                      }
+                                      }
+                            >
+                              {modifyProfile => (
+                                <ProfileSearch
+                                  onResultSelect={(s) => {
+                                  console.log(s.id);
+                                  modifyProfile({
+                                    variables: {
+                                      gcID: String(gcID),
+                                      profileInfo: {
+                                        supervisor: {
+                                          gcId: s.id,
+                                        },
+                                      },
+                                    },
+                                  });
+                                }}
+                                />
+                            )}
+                            </Mutation>
+                            <br />
+                            <Mutation
+                              mutation={modifyProfileMutation}
+                              refetchQueries={[{
+                                        query: organizationTierQuery,
+                                        variables: { gcID: String(gcID) },
+                                      }]}
+                              context={{
+                                        headers: {
+                                          Authorization:
+                                            `Bearer ${accessToken}`,
+                                        },
+                                      }
+                                      }
+                            >
+                              {modifyProfile => (
+                                <OrgTierChooser
+                                  editMode
+                                  selectedOrgTier={orgTest}
+                                  supervisor={supTest}
+                                  gcID={gcID}
+                                  onTeamChange={(t) => {
+                                    console.log(t);
+                                    modifyProfile({
+                                        variables: {
+                                          gcID: String(gcID),
+                                          profileInfo: {
+                                            org: {
+                                              orgTierId: t,
+                                            },
+                                          },
+                                        },
+                                      });
+                                    }}
+                                />
+                                )}
+                            </Mutation>
+                          </ModalBody>
+                        </Modal>
                       </TabPane>
                       <TabPane tabId="2">
                         <Row>
@@ -393,11 +486,13 @@ class OrgManager extends React.Component {
 
 OrgManager.defaultProps = {
   // editMode: false,
+  myGcID: '',
 };
 
 OrgManager.propTypes = {
   gcID: PropTypes.string.isRequired,
   accessToken: PropTypes.string.isRequired,
+  myGcID: PropTypes.string,
 };
 
 // Creating an HOC with the connect function from redux. Passing access token

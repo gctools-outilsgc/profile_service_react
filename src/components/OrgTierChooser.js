@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown } from 'semantic-ui-react';
+import { Input } from 'reactstrap';
 
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
@@ -13,6 +13,22 @@ const capitalize = function capitalize(str) {
 };
 
 class OrgTierChooser extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      newTeamVal: props.selectedOrgTier,
+    };
+    this.handleTeamChange = this.handleTeamChange.bind(this);
+  }
+
+  handleTeamChange(e) {
+    const team = e.target.value;
+    this.props.onTeamChange(team);
+    this.setState({
+      newTeamVal: team,
+    });
+  }
+
   render() {
     const {
       supervisor,
@@ -89,23 +105,18 @@ class OrgTierChooser extends React.Component {
               }));
 
           return (
-            <Dropdown
-              style={{ minWidth: '150px', width: '150px' }}
-              disabled={!supervisor}
-              value={(selectedOrgTier) ? selectedOrgTier.id : null}
-              options={tierOptions}
-              closeOnBlur
-              selection
-              loading={loading && !(!supervisor)}
-              onChange={(e, data1) => {
-                for (let x = 0; x < tierOptions.length; x += 1) {
-                  if (tierOptions[x].value === data1.value) {
-                    this.props.onTeamChange(tierOptions[x].data);
-                    break;
-                  }
-                }
-              }}
-            />
+            <div>
+              <Input
+                type="select"
+                onChange={this.handleTeamChange}
+                disabled={!supervisor || loading}
+                value={this.state.newTeamVal.id}
+              >
+                {tierOptions.map(x => (
+                  <option value={x.value}>{x.text}</option>
+              ))}
+              </Input>
+            </div>
           );
         }}
       </Query>
