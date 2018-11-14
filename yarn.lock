@@ -7112,6 +7112,11 @@ react-router@^4.2.0, react-router@^4.3.1:
     prop-types "^15.6.1"
     warning "^4.0.1"
 
+react-step-wizard@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/react-step-wizard/-/react-step-wizard-4.4.0.tgz#b899de307550e0f39c5b66b1d891267d6c4a52e0"
+  integrity sha512-8K78Q/pWXCQ1PKmZGVHdG4a2I8UwPY3rXLpn0vRyIsnJEmUbSFMJ1vtEj+NYA7ec0s3WDlKTRPSXVSYjlzd3lg==
+
 react-test-renderer@^16.5.2:
   version "16.5.2"
   resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-16.5.2.tgz#92e9d2c6f763b9821b2e0b22f994ee675068b5ae"

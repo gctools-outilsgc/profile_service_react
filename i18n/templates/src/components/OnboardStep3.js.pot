@@ -1,0 +1,36 @@
+msgid ""
+msgstr ""
+"Language : en\n"
+"Plural-Forms : nplurals=2; plural=(n != 1);\n"
+"MIME-Version : 1.0\n"
+"Content-Type : text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding : 8bit\n"
+
+#: src/components/OnboardStep3.js 36:41
+msgid "Phone number"
+msgstr ""
+
+#: src/components/OnboardStep3.js 53:41
+msgid "Mobile phone number"
+msgstr ""
+
+#: src/components/OnboardStep3.js 75:25
+msgid "Address"
+msgstr ""
+
+#: src/components/OnboardStep3.js 89:25
+msgid "City"
+msgstr ""
+
+#: src/components/OnboardStep3.js 103:25
+msgid "Province"
+msgstr ""
+
+#: src/components/OnboardStep3.js 117:25
+msgid "Postal Code"
+msgstr ""
+
+#: src/components/OnboardStep3.js 131:25
+msgid "Country"
+msgstr ""
+

@@ -82,7 +82,7 @@ class ProfileSearch extends React.Component {
 
           return (
             <Search
-              placeholder={__('Search')}
+              placeholder="search"
               icon="search"
               loading={loading && !isDefault && value !== ''}
               onResultSelect={this.handleResultSelect}

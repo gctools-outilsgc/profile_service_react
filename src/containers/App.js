@@ -24,6 +24,7 @@ import oidcConfig from 'oidcConfig'; // eslint-disable-line
 
 import Home from './Home';
 import Profile from './Profile';
+import Onboard from './Onboard';
 import ProfileSearch from '../components/ProfileSearch';
 
 import { loginAction, logoutAction, clearErrorAction } from '../store';
@@ -193,6 +194,7 @@ class App extends React.Component {
               <Fragment>
                 <Route exact path="/" component={Home} />
                 <Route path="/profile/:id" component={Profile} />
+                <Route path="/onboard" component={Onboard} />
               </Fragment>
             </Switch>
           </Container>
