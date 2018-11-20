@@ -5,7 +5,7 @@ import LocalizedComponent
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 
-import { Button, Form } from 'reactstrap';
+import { Button, Form, Row, Col } from 'reactstrap';
 import ReactI18nEdit from '@gctools-components/react-i18n-edit';
 /* eslint react/prop-types: 0 */
 
@@ -54,8 +54,8 @@ class OnboardStep2 extends Component {
         }
       >
         {modifyProfile => (
-          <div>
-            <h1>Step 2</h1>
+          <div className="basic-form-holder">
+            <h1 className="h4 text-primary">{__('Step 2 Title 1')}</h1>
             <Form
               onSubmit={(e) => {
               e.preventDefault();
@@ -73,72 +73,100 @@ class OnboardStep2 extends Component {
               this.props.nextStep();
             }}
             >
-              <ReactI18nEdit
-                edit
-                values={[{
+              <Row className="border-bottom pb-2 mb-2 mt-3">
+                <Col sm="12">
+                  <h2 className="h4 border-bottom text-primary">
+                    {__('Step2T1')}
+                  </h2>
+                  <p>{__('Step2D1')}</p>
+                </Col>
+                <Col>
+                  <ReactI18nEdit
+                    edit
+                    values={[{
                 lang: '',
                 value: this.state.name || '',
                 placeholder: 'Name',
               }]}
-                showLabel={false}
-                onChange={(e) => {
+                    showLabel={false}
+                    onChange={(e) => {
                 this.setState({
                   name: e.value,
                 });
               }}
-              />
-              <ReactI18nEdit
-                edit
-                values={[{
+                  />
+                </Col>
+                <Col>
+                  <ReactI18nEdit
+                    edit
+                    values={[{
                 lang: '',
                 value: this.state.email || '',
                 placeholder: 'Email',
               }]}
-                showLabel={false}
-                onChange={(e) => {
+                    showLabel={false}
+                    onChange={(e) => {
                 this.setState({
                   email: e.value,
                 });
               }}
-              />
-              <ReactI18nEdit
-                edit
-                lang={localizer.lang}
-                values={[
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col sm="12">
+                  <h2 className="h4 text-primary">
+                    {__('Step2T2')}
+                  </h2>
+                  <p>{__('Step2D2')}</p>
+                </Col>
+                <Col>
+                  <ReactI18nEdit
+                    edit
+                    lang={localizer.lang}
+                    values={[
                 {
                   lang: 'en_CA',
                   value: this.state.titleEn || '',
                   placeholder: __('Title'),
                 },
               ]}
-                onChange={(e) => {
+                    onChange={(e) => {
                 this.setState({
                   titleEn: e.value,
                 });
               }}
-              />
-              <ReactI18nEdit
-                edit
-                lang={localizer.lang}
-                values={[
+                  />
+                </Col>
+                <Col>
+                  <ReactI18nEdit
+                    edit
+                    lang={localizer.lang}
+                    values={[
                 {
                   lang: 'fr_CA',
                   value: this.state.titleFr || '',
                   placeholder: __('Title'),
                 },
               ]}
-                onChange={(e) => {
+                    onChange={(e) => {
                 this.setState({
                   titleFr: e.value,
                 });
               }}
-              />
-              <Button onClick={this.props.previousStep}>
-                Back
-              </Button>
-              <Button type="submit">
-                Next
-              </Button>
+                  />
+                </Col>
+              </Row>
+              <Row className="m-2 border-top">
+                <div className="ml-auto mt-3">
+                  <Button
+                    type="submit"
+                    color="primary"
+                  >
+                    {__('Next')}
+                  </Button>
+                </div>
+              </Row>
             </Form>
           </div>
       )}

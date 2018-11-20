@@ -10,3 +10,27 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
+#: src/components/OnboardStep2.js 58:45
+msgid "Step 2 Title 1"
+msgstr ""
+
+#: src/components/OnboardStep2.js 79:21
+msgid "Step2T1"
+msgstr ""
+
+#: src/components/OnboardStep2.js 81:22
+msgid "Step2D1"
+msgstr ""
+
+#: src/components/OnboardStep2.js 119:21
+msgid "Step2T2"
+msgstr ""
+
+#: src/components/OnboardStep2.js 121:22
+msgid "Step2D2"
+msgstr ""
+
+#: src/components/OnboardStep2.js 166:21
+msgid "Next"
+msgstr ""
+

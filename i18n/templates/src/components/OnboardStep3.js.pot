@@ -34,3 +34,19 @@ msgstr ""
 msgid "Country"
 msgstr ""
 
+#: src/components/OnboardStep3.js 86:15
+msgid "Step3T1"
+msgstr ""
+
+#: src/components/OnboardStep3.js 90:20
+msgid "Step3D1"
+msgstr ""
+
+#: src/components/OnboardStep3.js 221:19
+msgid "Back"
+msgstr ""
+
+#: src/components/OnboardStep3.js 228:19
+msgid "Next"
+msgstr ""
+

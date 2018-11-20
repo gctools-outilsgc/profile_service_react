@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import LocalizedComponent
   from '@gctools-components/react-i18n-translation-webpack';
 
-import { Card, CardBody } from 'reactstrap';
+// import { Card, CardBody } from 'reactstrap';
 
 import OnboardMod from '../components/GQLOnboard';
 
@@ -13,11 +13,11 @@ class Onboard extends Component {
 
   render() {
     return (
-      <Card>
-        <CardBody>
+      <div className="w-75 m-auto">
+        <div>
           <OnboardMod />
-        </CardBody>
-      </Card>
+        </div>
+      </div>
     );
   }
 }

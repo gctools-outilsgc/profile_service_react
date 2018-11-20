@@ -9,7 +9,8 @@ import LocalizedComponent
   from '@gctools-components/react-i18n-translation-webpack';
 
 import StepWizard from 'react-step-wizard';
-import OnboardStep1 from './/OnboardStep1';
+import OnboardNav from './OnboardNav';
+import OnboardStep1 from './OnboardStep1';
 import OnboardStep2 from './OnboardStep2';
 import OnboardStep3 from './OnboardStep3';
 import OnboardStep4 from './OnboardStep4';
@@ -97,7 +98,10 @@ class OnboardMod extends Component {
           const userInfo = data.profiles[0];
                 return (
                   <div>
-                    <StepWizard transitions={customTransitions}>
+                    <StepWizard
+                      transitions={customTransitions}
+                      nav={<OnboardNav />}
+                    >
                       <OnboardStep1 />
                       <OnboardStep2
                         gcID={userInfo.gcID}
@@ -109,8 +113,13 @@ class OnboardMod extends Component {
                         token={accessToken}
                       />
                       <OnboardStep4 />
-                      <OnboardStep5 />
-                      <OnboardStep6 />
+                      <OnboardStep5
+                        userObject={userInfo}
+                        token={accessToken}
+                      />
+                      <OnboardStep6
+                        forwardID={userInfo.gcID}
+                      />
                     </StepWizard>
                   </div>
                 );

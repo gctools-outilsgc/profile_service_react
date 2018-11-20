@@ -11,6 +11,7 @@ class Home extends Component {
     return (
       <div>
         {__('This is the home page')}
+        <a href="/onboard">Onboard</a>
       </div>
     );
   }

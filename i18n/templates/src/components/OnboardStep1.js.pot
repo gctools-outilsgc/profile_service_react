@@ -1,0 +1,20 @@
+msgid ""
+msgstr ""
+"Language : en\n"
+"Plural-Forms : nplurals=2; plural=(n != 1);\n"
+"MIME-Version : 1.0\n"
+"Content-Type : text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding : 8bit\n"
+
+#: src/components/OnboardStep1.js 17:11
+msgid "Welcome"
+msgstr ""
+
+#: src/components/OnboardStep1.js 19:12
+msgid "welcome body"
+msgstr ""
+
+#: src/components/OnboardStep1.js 26:15
+msgid "Get Started"
+msgstr ""
+

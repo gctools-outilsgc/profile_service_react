@@ -5,7 +5,7 @@ import LocalizedComponent
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 
-import { Button, Form } from 'reactstrap';
+import { Button, Form, Row, Col } from 'reactstrap';
 import ReactI18nEdit from '@gctools-components/react-i18n-edit';
 /* eslint react/prop-types: 0 */
 
@@ -80,118 +80,155 @@ class OnboardStep3 extends Component {
         }
 
         }
+            className="basic-form-holder"
           >
-            <h1>Step 3</h1>
-            <ReactI18nEdit
-              edit
-              values={[{
+            <h1 className="border-bottom h4 text-primary">
+              {__('Step3T1')}
+            </h1>
+            <Row>
+              <Col>
+                <p>{__('Step3D1')}</p>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <ReactI18nEdit
+                  edit
+                  values={[{
+          lang: '',
+          value: this.state.streetAddress || '',
+          placeholder: __('Address'),
+        }]}
+                  showLabel={false}
+                  onChange={(e) => {
+          this.setState({
+            streetAddress: e.value,
+          });
+        }}
+                />
+              </Col>
+              <Col>
+                <ReactI18nEdit
+                  edit
+                  values={[{
+          lang: '',
+          value: this.state.city || '',
+          placeholder: __('City'),
+        }]}
+                  showLabel={false}
+                  onChange={(e) => {
+          this.setState({
+            city: e.value,
+          });
+        }}
+                />
+              </Col>
+              <Col>
+                <ReactI18nEdit
+                  edit
+                  values={[{
+          lang: '',
+          value: this.state.province || '',
+          placeholder: __('Province'),
+        }]}
+                  showLabel={false}
+                  onChange={(e) => {
+          this.setState({
+            province: e.value,
+          });
+        }}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <ReactI18nEdit
+                  edit
+                  values={[{
+          lang: '',
+          value: this.state.postalCode || '',
+          placeholder: __('Postal Code'),
+        }]}
+                  showLabel={false}
+                  onChange={(e) => {
+          this.setState({
+            postalCode: e.value,
+          });
+        }}
+                />
+              </Col>
+              <Col>
+                <ReactI18nEdit
+                  edit
+                  values={[{
+          lang: '',
+          value: this.state.country || '',
+          placeholder: __('Country'),
+        }]}
+                  showLabel={false}
+                  onChange={(e) => {
+          this.setState({
+            country: e.value,
+          });
+        }}
+                />
+              </Col>
+              <Col>
+                <ReactI18nEdit
+                  edit
+                  values={[{
                           lang: '',
                           value: this.state.officePhone || '',
                           placeholder: __('Phone number'),
                         }]}
-              showLabel={false}
-              type="tel"
-              onChange={(e) => {
+                  showLabel={false}
+                  type="tel"
+                  onChange={(e) => {
                           if (e.value.length <= 15) {
                             this.setState({
                               officePhone: e.value,
                             });
                           }
                         }}
-            />
-            <ReactI18nEdit
-              edit
-              values={[{
+                />
+              </Col>
+              <Col>
+                <ReactI18nEdit
+                  edit
+                  values={[{
                           lang: '',
                           value: this.state.mobilePhone || '',
                           placeholder: __('Mobile phone number'),
                         }]}
-              showLabel={false}
-              type="tel"
-              onChange={(e) => {
+                  showLabel={false}
+                  type="tel"
+                  onChange={(e) => {
                           if (e.value.length <= 15) {
                             this.setState({
                               mobilePhone: e.value,
                             });
                           }
                         }}
-            />
-            <ReactI18nEdit
-              edit
-              values={[{
-          lang: '',
-          value: this.state.streetAddress || '',
-          placeholder: __('Address'),
-        }]}
-              showLabel={false}
-              onChange={(e) => {
-          this.setState({
-            streetAddress: e.value,
-          });
-        }}
-            />
-            <ReactI18nEdit
-              edit
-              values={[{
-          lang: '',
-          value: this.state.city || '',
-          placeholder: __('City'),
-        }]}
-              showLabel={false}
-              onChange={(e) => {
-          this.setState({
-            city: e.value,
-          });
-        }}
-            />
-            <ReactI18nEdit
-              edit
-              values={[{
-          lang: '',
-          value: this.state.province || '',
-          placeholder: __('Province'),
-        }]}
-              showLabel={false}
-              onChange={(e) => {
-          this.setState({
-            province: e.value,
-          });
-        }}
-            />
-            <ReactI18nEdit
-              edit
-              values={[{
-          lang: '',
-          value: this.state.postalCode || '',
-          placeholder: __('Postal Code'),
-        }]}
-              showLabel={false}
-              onChange={(e) => {
-          this.setState({
-            postalCode: e.value,
-          });
-        }}
-            />
-            <ReactI18nEdit
-              edit
-              values={[{
-          lang: '',
-          value: this.state.country || '',
-          placeholder: __('Country'),
-        }]}
-              showLabel={false}
-              onChange={(e) => {
-          this.setState({
-            country: e.value,
-          });
-        }}
-            />
-            <Button onClick={this.handleClick}>
-        Back
-            </Button>
-            <Button type="submit">
-        Next
-            </Button>
+                />
+              </Col>
+            </Row>
+            <Row className="m-2 border-top">
+              <div className="ml-auto mt-3">
+                <Button
+                  onClick={this.handleClick}
+                  color="primary"
+                >
+                  {__('Back')}
+                </Button>
+                <Button
+                  type="submit"
+                  color="primary"
+                  className="ml-3"
+                >
+                  {__('Next')}
+                </Button>
+              </div>
+            </Row>
           </Form>
       )}
 

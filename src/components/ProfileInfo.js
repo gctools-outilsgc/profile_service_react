@@ -285,9 +285,9 @@ class ProfileInfo extends Component {
     let editButtons = (
       <Button
         floated="right"
-        size="small"
+        size="sm"
         disabled={!canEdit}
-        basic
+        color="primary"
         onClick={this.toggleEdit}
       >
         {__('Edit')}
@@ -676,11 +676,10 @@ class ProfileInfo extends Component {
         })()}
             </span>
           </div>
-          <Row className="pl-3 pr-3">
+          <Row className="ml-3 mr-3 border-bottom">
             <h1 className="h5">My Profile</h1>
-            <div className="ml-auto">{editButtons}</div>
           </Row>
-          <Row>
+          <Row className="m-3">
             <Col xs="2">
               <div className={avClass}>
                 {avatar}
@@ -876,6 +875,9 @@ class ProfileInfo extends Component {
                 </li>
               </ul>
             </Col>
+          </Row>
+          <Row className="border-top ml-3 mr-3">
+            <div className="ml-auto pt-2">{editButtons}</div>
           </Row>
         </CardBody>
       </Card>

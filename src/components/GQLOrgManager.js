@@ -42,6 +42,8 @@ query organizationTierQuery($gcID: String!) {
     supervisor {
       gcID
       name
+      titleEn
+      titleFr
     }
     org {
       id
@@ -334,7 +336,7 @@ class OrgManager extends React.Component {
                 <h2 className="h5">Teams</h2>
                 <Row>
                   <Col>
-                    <Nav tabs>
+                    <Nav tabs className="m-2">
                       <NavItem>
                         <NavLink
                           href="#!"
@@ -354,30 +356,37 @@ class OrgManager extends React.Component {
                     </Nav>
                     <TabContent activeTab={this.state.activeTab2}>
                       <TabPane tabId="1">
-                        <Row>
+                        <Row className="m-2">
                           <Col>
                             <div>
                               <div className="font-weight-bold">
                                 Supervisor
                               </div>
                               {supTest ? supTest.name : 'None'}
+                              {supTest ? supTest.titleEn : ''}
                             </div>
                           </Col>
                           <Col>
                             <div>
                               <div className="font-weight-bold">
-                                Team picker here
+                                Team
                               </div>
                               {orgTest ? orgTest.nameEn : 'None'}
                             </div>
                           </Col>
                         </Row>
-                        <Button
-                          onClick={this.toggleEdit}
-                          disabled={!canEdit}
-                        >
+                        <Row className="border-top ml-3 mr-3">
+                          <div className="ml-auto pt-2">
+                            <Button
+                              onClick={this.toggleEdit}
+                              disabled={!canEdit}
+                              size="sm"
+                              color="primary"
+                            >
                           Edit
-                        </Button>
+                            </Button>
+                          </div>
+                        </Row>
                         <Modal
                           isOpen={this.state.editOpen}
                           toggle={this.toggleEdit}
