@@ -63,6 +63,10 @@ body {
   margin-bottom: 8px;
 }
 
+.onboard-profile input{
+  width: 100%;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -75,4 +79,37 @@ body {
 
 .fadeIn {
   animation-name: fadeIn;
+}
+
+.onboard-nav ul li {
+  width: 20%;
+  padding: 5px 0;
+}
+
+.onboard-nav ul li .display-num {
+  border: 1px solid transparent;
+  border-radius: 50%;
+  padding: 3px 10px;
+  margin-right: 8px;
+  background-color: #000A3D;
+  color: white;
+}
+
+.onboard-nav ul li .display-text {
+  color: grey;
+}
+
+.onboard-nav ul li.ob-active {
+  background-color: #FEC04F;
+  color: black;
+  border-radius: 3px;
+}
+
+.onboard-nav ul li.ob-active .display-num {
+  background-color: white;
+  color: black;
+}
+
+.onboard-nav ul li.ob-active .display-text {
+  color: black;
 }

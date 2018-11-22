@@ -87,7 +87,7 @@ class OnboardStep5 extends Component {
       const supTest = data.profiles[0].supervisor;
       return (
         <div>
-          <h1 className="h4 border-bottom">
+          <h1 className="h4 border-bottom mb-2 pb-2">
             {__('Step5T1')}
           </h1>
           <Row className="mb-3">
@@ -113,7 +113,7 @@ class OnboardStep5 extends Component {
               }
                   >
                     {modifyProfile => (
-                      <div>
+                      <div className="onboard-profile">
                           Supervisor
                         <ProfileSearch
                           id="sup"

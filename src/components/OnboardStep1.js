@@ -13,11 +13,11 @@ class OnboardStep1 extends Component {
   render() {
     return (
       <div>
-        <h1 className="h4 border-bottom">
+        <h1 className="h4 mb-2 pb-1 border-bottom">
           {__('Welcome')}
         </h1>
         <p>{__('welcome body')}</p>
-        <Row className="m-2 border-top">
+        <Row className="m-1 border-top">
           <div className="ml-auto mt-3">
             <Button
               onClick={this.props.nextStep}

@@ -16,7 +16,7 @@ class OnboardStep6 extends Component {
     } = this.props;
     return (
       <div>
-        <h1 className="h4 border-bottom">
+        <h1 className="h4 border-bottom mb-2 pb-2">
           {__('Step6T1')}
         </h1>
         <p>{__('Step6D1')}</p>

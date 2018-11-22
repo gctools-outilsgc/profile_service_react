@@ -13,21 +13,23 @@ class OnboardStep4 extends Component {
   render() {
     return (
       <div>
-        <h1 className="h4">Avatar</h1>
-        <Row className="m-2 border-top">
+        <h1 className="h4 border-bottom mb-2 pb-2">
+          {__('Step4T1')}
+        </h1>
+        <Row className="m-2">
           <div className="ml-auto mt-3">
             <Button
               onClick={this.props.previousStep}
               color="primary"
             >
-              Back
+              {__('Back')}
             </Button>
             <Button
               onClick={this.props.nextStep}
               color="primary"
               className="ml-3"
             >
-              Next Step
+              {__('Next')}
             </Button>
           </div>
         </Row>

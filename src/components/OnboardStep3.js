@@ -82,7 +82,7 @@ class OnboardStep3 extends Component {
         }
             className="basic-form-holder"
           >
-            <h1 className="border-bottom h4 text-primary">
+            <h1 className="border-bottom mb-2 pb-2 h4 text-primary">
               {__('Step3T1')}
             </h1>
             <Row>

@@ -5,21 +5,44 @@ import React from 'react';
 
 const OnboardNav = (props) => {
   const dots = [];
+  const words = [
+    '',
+    'personal info',
+    'personal info',
+    'contact info',
+    'avatar',
+    'team',
+  ];
   for (let i = 1; i <= props.totalSteps; i += 1) {
     const isActive = props.currentStep === i;
-    dots.push((
-      <li
-        key={`step-${i}`}
-        className={`list-inline-item ${isActive ? 'bg-warning' : ''}`}
-      >
-        Step {i}
-      </li>
-    ));
+    const displayNum = i - 1;
+    switch (i) {
+      case 1:
+      case 6:
+        dots.push('');
+        break;
+      default:
+        dots.push((
+          <li
+            key={`step-${i}`}
+            className={`nav-item ${isActive ? 'ob-active' : ''}`}
+          >
+            <div className="d-flex justify-content-center">
+              <div className="display-num align-self-center">
+                {displayNum}
+              </div>
+              <div className="display-text align-self-center">
+                {words[i]}
+              </div>
+            </div>
+          </li>
+        ));
+    }
   }
 
   return (
-    <div className="mb-4 d-flex justify-content-center">
-      <ul className="list-inline">
+    <div className="mb-4 onboard-nav">
+      <ul className="nav justify-content-center">
         {dots}
       </ul>
     </div>

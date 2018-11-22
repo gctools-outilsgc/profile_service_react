@@ -55,7 +55,9 @@ class OnboardStep2 extends Component {
       >
         {modifyProfile => (
           <div className="basic-form-holder">
-            <h1 className="h4 text-primary">{__('Step 2 Title 1')}</h1>
+            <h1 className="sr-only">
+              Hidden Heading?
+            </h1>
             <Form
               onSubmit={(e) => {
               e.preventDefault();
@@ -75,7 +77,7 @@ class OnboardStep2 extends Component {
             >
               <Row className="border-bottom pb-2 mb-2 mt-3">
                 <Col sm="12">
-                  <h2 className="h4 border-bottom text-primary">
+                  <h2 className="h4 mb-2 pb-2 border-bottom text-primary">
                     {__('Step2T1')}
                   </h2>
                   <p>{__('Step2D1')}</p>
