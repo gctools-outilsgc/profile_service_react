@@ -13,7 +13,7 @@ class Onboard extends Component {
 
   render() {
     return (
-      <div className="w-75 m-auto">
+      <div className="onboard-container m-auto">
         <div>
           <OnboardMod />
         </div>

@@ -8,8 +8,8 @@ const OnboardNav = (props) => {
   const words = [
     '',
     'personal info',
-    'personal info',
-    'contact info',
+    'personal',
+    'contact',
     'avatar',
     'team',
   ];

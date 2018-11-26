@@ -91,7 +91,7 @@ class OnboardStep3 extends Component {
               </Col>
             </Row>
             <Row>
-              <Col>
+              <Col md="4">
                 <ReactI18nEdit
                   edit
                   values={[{
@@ -107,7 +107,7 @@ class OnboardStep3 extends Component {
         }}
                 />
               </Col>
-              <Col>
+              <Col md="4">
                 <ReactI18nEdit
                   edit
                   values={[{
@@ -123,7 +123,7 @@ class OnboardStep3 extends Component {
         }}
                 />
               </Col>
-              <Col>
+              <Col md="4">
                 <ReactI18nEdit
                   edit
                   values={[{
@@ -141,7 +141,7 @@ class OnboardStep3 extends Component {
               </Col>
             </Row>
             <Row>
-              <Col>
+              <Col md="3">
                 <ReactI18nEdit
                   edit
                   values={[{
@@ -157,7 +157,7 @@ class OnboardStep3 extends Component {
         }}
                 />
               </Col>
-              <Col>
+              <Col md="3">
                 <ReactI18nEdit
                   edit
                   values={[{
@@ -173,7 +173,7 @@ class OnboardStep3 extends Component {
         }}
                 />
               </Col>
-              <Col>
+              <Col md="3">
                 <ReactI18nEdit
                   edit
                   values={[{
@@ -192,7 +192,7 @@ class OnboardStep3 extends Component {
                         }}
                 />
               </Col>
-              <Col>
+              <Col md="3">
                 <ReactI18nEdit
                   edit
                   values={[{

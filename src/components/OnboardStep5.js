@@ -94,7 +94,7 @@ class OnboardStep5 extends Component {
             <Col>{__('Step5D1')}</Col>
           </Row>
           <Row>
-            <Col>
+            <Col md="6" className="mt-2">
               {(() => {
               if (this.state.supEdit) {
                 return (
@@ -152,7 +152,7 @@ class OnboardStep5 extends Component {
                 );
             })()}
             </Col>
-            <Col>
+            <Col md="6" className="mt-2">
               {(() => {
               if (this.state.orgEdit) {
                 return (

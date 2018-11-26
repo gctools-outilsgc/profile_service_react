@@ -192,7 +192,11 @@ class App extends React.Component {
           <Container>
             <Switch>
               <Fragment>
-                <Route exact path="/" component={Home} />
+                <Route
+                  exact
+                  path="/"
+                  component={Home}
+                />
                 <Route path="/profile/:id" component={Profile} />
                 <Route path="/onboard" component={Onboard} />
               </Fragment>

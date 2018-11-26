@@ -83,7 +83,7 @@ body {
 
 .onboard-nav ul li {
   width: 20%;
-  padding: 5px 0;
+  padding: 5px 2%;
 }
 
 .onboard-nav ul li .display-num {
@@ -112,4 +112,14 @@ body {
 
 .onboard-nav ul li.ob-active .display-text {
   color: black;
+}
+
+.onboard-container {
+  width: 75%;
+}
+
+@media (max-width: 992px) { 
+  .onboard-container {
+    width: 100%;
+  }
 }

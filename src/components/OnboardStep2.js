@@ -82,7 +82,7 @@ class OnboardStep2 extends Component {
                   </h2>
                   <p>{__('Step2D1')}</p>
                 </Col>
-                <Col>
+                <Col md="6">
                   <ReactI18nEdit
                     edit
                     values={[{
@@ -98,7 +98,7 @@ class OnboardStep2 extends Component {
               }}
                   />
                 </Col>
-                <Col>
+                <Col md="6">
                   <ReactI18nEdit
                     edit
                     values={[{
@@ -122,7 +122,7 @@ class OnboardStep2 extends Component {
                   </h2>
                   <p>{__('Step2D2')}</p>
                 </Col>
-                <Col>
+                <Col md="6">
                   <ReactI18nEdit
                     edit
                     lang={localizer.lang}
@@ -140,7 +140,7 @@ class OnboardStep2 extends Component {
               }}
                   />
                 </Col>
-                <Col>
+                <Col md="6">
                   <ReactI18nEdit
                     edit
                     lang={localizer.lang}
