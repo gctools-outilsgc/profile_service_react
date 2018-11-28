@@ -18,3 +18,11 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
+#: src/components/OnboardStep4.js 20:14
+msgid "Step4D1"
+msgstr ""
+
+#: src/components/OnboardStep4.js 21:14
+msgid "Step4D2"
+msgstr ""
+

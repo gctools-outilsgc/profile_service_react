@@ -50,3 +50,11 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
+#: src/components/OnboardStep3.js 179:17
+msgid "Step3T2"
+msgstr ""
+
+#: src/components/OnboardStep3.js 91:19
+msgid "Step3SubT2"
+msgstr ""
+

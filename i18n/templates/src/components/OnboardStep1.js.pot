@@ -18,3 +18,35 @@ msgstr ""
 msgid "Get Started"
 msgstr ""
 
+#: src/components/OnboardStep1.js 20:11
+msgid "Step1Sub1"
+msgstr ""
+
+#: src/components/OnboardStep1.js 24:15
+msgid "Step1List1"
+msgstr ""
+
+#: src/components/OnboardStep1.js 25:15
+msgid "Step1List2"
+msgstr ""
+
+#: src/components/OnboardStep1.js 26:15
+msgid "Step1List3"
+msgstr ""
+
+#: src/components/OnboardStep1.js 27:15
+msgid "Step1List4"
+msgstr ""
+
+#: src/components/OnboardStep1.js 30:11
+msgid "Step1Sub2"
+msgstr ""
+
+#: src/components/OnboardStep1.js 32:12
+msgid "Step1Sub2Desc"
+msgstr ""
+
+#: src/components/OnboardStep1.js 33:12
+msgid "Step1Sub2Desc2"
+msgstr ""
+

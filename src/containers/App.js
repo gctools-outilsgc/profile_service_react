@@ -88,6 +88,7 @@ class App extends React.Component {
     const doLogin = (user) => {
       this.setState({ name: user.profile.name, id: user.profile.sub });
       onLogin(user);
+      console.log('put the onboarding function here');
     };
 
     const doLogout = () => {

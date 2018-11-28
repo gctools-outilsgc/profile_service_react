@@ -22,3 +22,15 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
+#: src/components/OnboardStep5.js 96:18
+msgid "Step5D2"
+msgstr ""
+
+#: src/components/OnboardStep5.js 120:27
+msgid "Supervisor"
+msgstr ""
+
+#: src/components/OnboardStep5.js 178:25
+msgid "Teams"
+msgstr ""
+

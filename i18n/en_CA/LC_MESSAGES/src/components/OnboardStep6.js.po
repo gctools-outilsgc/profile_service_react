@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-11-20 16:21-0500\n"
+"POT-Creation-Date: 2018-11-28 14:33-0500\n"
 "PO-Revision-Date: 2018-11-20 16:21-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en_CA\n"
@@ -16,13 +16,25 @@ msgstr ""
 
 #: 20:11 src/components/OnboardStep6.js
 msgid "Step6T1"
-msgstr ""
+msgstr "You’re done!"
 
 #: 22:12 src/components/OnboardStep6.js
 msgid "Step6D1"
-msgstr ""
+msgstr "Congratulations! Your GCprofile has been successfully created."
 
 #: 29:15 src/components/OnboardStep6.js
 msgid "View my Profile"
 msgstr ""
+
+#: 23:12 src/components/OnboardStep6.js
+msgid "Step6D2"
+msgstr "The information you submitted will appear on your profile for others to see."
+
+#: 24:12 src/components/OnboardStep6.js
+msgid "Step6D3"
+msgstr "You can add, remove or edit information on your GCprofile at any time."
+
+#: 25:12 src/components/OnboardStep6.js
+msgid "Step6D4"
+msgstr "You can now search for others on GCprofile and start collaborating!"
 

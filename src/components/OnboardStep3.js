@@ -82,12 +82,15 @@ class OnboardStep3 extends Component {
         }
             className="basic-form-holder"
           >
-            <h1 className="border-bottom mb-2 pb-2 h4 text-primary">
+            <h1 className="mb-2 pb-2 h3 text-primary">
               {__('Step3T1')}
             </h1>
+            <p>{__('Step3D1')}</p>
             <Row>
               <Col>
-                <p>{__('Step3D1')}</p>
+                <h2 className="border-bottom mb-4 pb-2 h4 text-primary">
+                  {__('Step3SubT2')}
+                </h2>
               </Col>
             </Row>
             <Row>
@@ -140,7 +143,7 @@ class OnboardStep3 extends Component {
                 />
               </Col>
             </Row>
-            <Row>
+            <Row className="mb-2">
               <Col md="3">
                 <ReactI18nEdit
                   edit
@@ -173,6 +176,11 @@ class OnboardStep3 extends Component {
         }}
                 />
               </Col>
+            </Row>
+            <h2 className="border-bottom mb-4 pb-2 h4 text-primary">
+              {__('Step3T2')}
+            </h2>
+            <Row>
               <Col md="3">
                 <ReactI18nEdit
                   edit

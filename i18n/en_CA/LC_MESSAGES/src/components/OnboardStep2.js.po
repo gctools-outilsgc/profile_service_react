@@ -24,11 +24,11 @@ msgstr ""
 
 #: 79:21 src/components/OnboardStep2.js
 msgid "Step2T1"
-msgstr ""
+msgstr "Your basic contact information"
 
 #: 81:22 src/components/OnboardStep2.js
 msgid "Step2D1"
-msgstr ""
+msgstr "We used some information from your GCaccount information to get started. Please check to make sure that everything is up-to-date and add any missing information!"
 
 #: 119:21 src/components/OnboardStep2.js
 msgid "Step2T2"
@@ -40,5 +40,5 @@ msgstr ""
 
 #: 166:21 src/components/OnboardStep2.js
 msgid "Next"
-msgstr ""
+msgstr "Continue"
 

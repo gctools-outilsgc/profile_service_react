@@ -87,11 +87,14 @@ class OnboardStep5 extends Component {
       const supTest = data.profiles[0].supervisor;
       return (
         <div>
-          <h1 className="h4 border-bottom mb-2 pb-2">
+          <h1 className="h3 border-bottom mb-2 pb-2">
             {__('Step5T1')}
           </h1>
-          <Row className="mb-3">
-            <Col>{__('Step5D1')}</Col>
+          <Row className="mb-2">
+            <Col>
+              <p>{__('Step5D1')}</p>
+              <p>{__('Step5D2')}</p>
+            </Col>
           </Row>
           <Row>
             <Col md="6" className="mt-2">
@@ -114,7 +117,7 @@ class OnboardStep5 extends Component {
                   >
                     {modifyProfile => (
                       <div className="onboard-profile">
-                          Supervisor
+                        {__('Supervisor')}
                         <ProfileSearch
                           id="sup"
                           onResultSelect={(s) => {
@@ -172,7 +175,7 @@ class OnboardStep5 extends Component {
                   >
                     {modifyProfile => (
                       <div>
-                        Pick a Team
+                        {__('Teams')}
                         <OrgTierChooser
                           id="idTest"
                           editMode

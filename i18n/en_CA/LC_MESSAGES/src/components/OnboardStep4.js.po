@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-11-21 09:37-0500\n"
+"POT-Creation-Date: 2018-11-28 14:19-0500\n"
 "PO-Revision-Date: 2018-11-21 09:37-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en_CA\n"
@@ -16,7 +16,7 @@ msgstr ""
 
 #: 17:11 src/components/OnboardStep4.js
 msgid "Step4T1"
-msgstr ""
+msgstr "Your avatar"
 
 #: 25:15 src/components/OnboardStep4.js
 msgid "Back"
@@ -24,5 +24,13 @@ msgstr ""
 
 #: 32:15 src/components/OnboardStep4.js
 msgid "Next"
-msgstr ""
+msgstr "Continue"
+
+#: 20:14 src/components/OnboardStep4.js
+msgid "Step4D1"
+msgstr "Let's put a face to that name! A photo will help others recognize you, builds trust, and makes your profile more personable. Your avatar doesn’t need to be a headshot, but keep it professional! "
+
+#: 21:14 src/components/OnboardStep4.js
+msgid "Step4D2"
+msgstr "Note: you can upload any image size, it will automatically be resized to fit."
 

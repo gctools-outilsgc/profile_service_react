@@ -75,7 +75,7 @@ class OnboardStep2 extends Component {
               this.props.nextStep();
             }}
             >
-              <Row className="border-bottom pb-2 mb-2 mt-3">
+              <Row className="pb-2 mb-3 mt-3">
                 <Col sm="12">
                   <h2 className="h4 mb-2 pb-2 border-bottom text-primary">
                     {__('Step2T1')}
@@ -116,12 +116,6 @@ class OnboardStep2 extends Component {
                 </Col>
               </Row>
               <Row>
-                <Col sm="12">
-                  <h2 className="h4 text-primary">
-                    {__('Step2T2')}
-                  </h2>
-                  <p>{__('Step2D2')}</p>
-                </Col>
                 <Col md="6">
                   <ReactI18nEdit
                     edit

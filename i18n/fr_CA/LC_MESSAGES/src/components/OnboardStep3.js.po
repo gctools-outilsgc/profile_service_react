@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-11-20 16:15-0500\n"
+"POT-Creation-Date: 2018-11-28 14:12-0500\n"
 "PO-Revision-Date: 2018-11-13 14:20-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr_CA\n"
@@ -56,5 +56,13 @@ msgstr ""
 
 #: 228:19 src/components/OnboardStep3.js
 msgid "Next"
+msgstr ""
+
+#: 179:17 src/components/OnboardStep3.js
+msgid "Step3T2"
+msgstr ""
+
+#: 91:19 src/components/OnboardStep3.js
+msgid "Step3SubT2"
 msgstr ""
 

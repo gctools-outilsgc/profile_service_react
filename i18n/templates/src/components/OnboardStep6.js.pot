@@ -18,3 +18,15 @@ msgstr ""
 msgid "View my Profile"
 msgstr ""
 
+#: src/components/OnboardStep6.js 23:12
+msgid "Step6D2"
+msgstr ""
+
+#: src/components/OnboardStep6.js 24:12
+msgid "Step6D3"
+msgstr ""
+
+#: src/components/OnboardStep6.js 25:12
+msgid "Step6D4"
+msgstr ""
+

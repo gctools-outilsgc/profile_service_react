@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-11-20 16:18-0500\n"
+"POT-Creation-Date: 2018-11-28 14:29-0500\n"
 "PO-Revision-Date: 2018-11-20 16:18-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en_CA\n"
@@ -16,11 +16,13 @@ msgstr ""
 
 #: 91:13 src/components/OnboardStep5.js
 msgid "Step5T1"
-msgstr ""
+msgstr "Your team"
 
 #: 94:18 src/components/OnboardStep5.js
 msgid "Step5D1"
 msgstr ""
+"Teams are created by supervisors to show who is working together and what"
+" they are working on."
 
 #: 226:17 src/components/OnboardStep5.js
 msgid "Back"
@@ -28,5 +30,19 @@ msgstr ""
 
 #: 233:17 src/components/OnboardStep5.js
 msgid "Next"
+msgstr "Save"
+
+#: 96:18 src/components/OnboardStep5.js
+msgid "Step5D2"
+msgstr ""
+"Find your supervisor and request to join a team. You can skip this step "
+"if your supervisor doesn’t have a GCprofile or a team yet."
+
+#: 120:27 src/components/OnboardStep5.js
+msgid "Supervisor"
+msgstr ""
+
+#: 178:25 src/components/OnboardStep5.js
+msgid "Teams"
 msgstr ""
 

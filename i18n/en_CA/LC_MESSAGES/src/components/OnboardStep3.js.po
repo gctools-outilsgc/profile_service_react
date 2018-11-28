@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-11-20 16:15-0500\n"
+"POT-Creation-Date: 2018-11-28 14:12-0500\n"
 "PO-Revision-Date: 2018-11-13 14:20-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en_CA\n"
@@ -16,7 +16,7 @@ msgstr ""
 
 #: 36:41 src/components/OnboardStep3.js
 msgid "Phone number"
-msgstr ""
+msgstr "Work phone number"
 
 #: 53:41 src/components/OnboardStep3.js
 msgid "Mobile phone number"
@@ -24,7 +24,7 @@ msgstr ""
 
 #: 75:25 src/components/OnboardStep3.js
 msgid "Address"
-msgstr ""
+msgstr "Street number and name"
 
 #: 89:25 src/components/OnboardStep3.js
 msgid "City"
@@ -44,11 +44,11 @@ msgstr ""
 
 #: 86:15 src/components/OnboardStep3.js
 msgid "Step3T1"
-msgstr ""
+msgstr "Your contact information"
 
 #: 90:20 src/components/OnboardStep3.js
 msgid "Step3D1"
-msgstr ""
+msgstr "Add your contact details to let others know how to reach you!"
 
 #: 221:19 src/components/OnboardStep3.js
 msgid "Back"
@@ -56,5 +56,13 @@ msgstr ""
 
 #: 228:19 src/components/OnboardStep3.js
 msgid "Next"
-msgstr ""
+msgstr "Continue"
+
+#: 179:17 src/components/OnboardStep3.js
+msgid "Step3T2"
+msgstr "Your phone number"
+
+#: 91:19 src/components/OnboardStep3.js
+msgid "Step3SubT2"
+msgstr "Your work address"
 
