@@ -16,25 +16,25 @@ msgstr ""
 
 #: 20:11 src/components/OnboardStep6.js
 msgid "Step6T1"
-msgstr ""
+msgstr "Vous avez terminé!"
 
 #: 22:12 src/components/OnboardStep6.js
 msgid "Step6D1"
-msgstr ""
+msgstr "Félicitations! Votre GCprofil a été créé avec succès."
 
 #: 29:15 src/components/OnboardStep6.js
 msgid "View my Profile"
-msgstr ""
+msgstr "Consulter votre profil"
 
 #: 23:12 src/components/OnboardStep6.js
 msgid "Step6D2"
-msgstr ""
+msgstr "Les renseignements que vous avez soumis apparaîtront dans votre profil pour que d’autres puissent les voir."
 
 #: 24:12 src/components/OnboardStep6.js
 msgid "Step6D3"
-msgstr ""
+msgstr "Vous pouvez ajouter, supprimer ou modifier des renseignements dans votre GCprofil en tout temps."
 
 #: 25:12 src/components/OnboardStep6.js
 msgid "Step6D4"
-msgstr ""
+msgstr "Vous pouvez maintenant chercher d’autres personnes dans GCprofil et commencer à collaborer!"
 

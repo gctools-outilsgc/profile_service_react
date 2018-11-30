@@ -16,53 +16,53 @@ msgstr ""
 
 #: 36:41 src/components/OnboardStep3.js
 msgid "Phone number"
-msgstr ""
+msgstr "Numéro de téléphone au travail"
 
 #: 53:41 src/components/OnboardStep3.js
 msgid "Mobile phone number"
-msgstr ""
+msgstr "Numéro de téléphone cellulaire"
 
 #: 75:25 src/components/OnboardStep3.js
 msgid "Address"
-msgstr ""
+msgstr "Numéro et nom de rue"
 
 #: 89:25 src/components/OnboardStep3.js
 msgid "City"
-msgstr ""
+msgstr "Ville"
 
 #: 103:25 src/components/OnboardStep3.js
 msgid "Province"
-msgstr ""
+msgstr "Province"
 
 #: 117:25 src/components/OnboardStep3.js
 msgid "Postal Code"
-msgstr ""
+msgstr "Code postal"
 
 #: 131:25 src/components/OnboardStep3.js
 msgid "Country"
-msgstr ""
+msgstr "Pays"
 
 #: 86:15 src/components/OnboardStep3.js
 msgid "Step3T1"
-msgstr ""
+msgstr "Vos coordonnées"
 
 #: 90:20 src/components/OnboardStep3.js
 msgid "Step3D1"
-msgstr ""
+msgstr "Ajoutez vos coordonnées pour indiquer aux autres comment vous joindre! "
 
 #: 221:19 src/components/OnboardStep3.js
 msgid "Back"
-msgstr ""
+msgstr "Retour"
 
 #: 228:19 src/components/OnboardStep3.js
 msgid "Next"
-msgstr ""
+msgstr "Continuer"
 
 #: 179:17 src/components/OnboardStep3.js
 msgid "Step3T2"
-msgstr ""
+msgstr "Votre numéro de téléphone"
 
 #: 91:19 src/components/OnboardStep3.js
 msgid "Step3SubT2"
-msgstr ""
+msgstr "Votre adresse de travail"
 

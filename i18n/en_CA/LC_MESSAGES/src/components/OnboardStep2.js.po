@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-11-20 16:12-0500\n"
+"POT-Creation-Date: 2018-11-28 15:15-0500\n"
 "PO-Revision-Date: 2018-11-13 12:31-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en_CA\n"
@@ -28,7 +28,10 @@ msgstr "Your basic contact information"
 
 #: 81:22 src/components/OnboardStep2.js
 msgid "Step2D1"
-msgstr "We used some information from your GCaccount information to get started. Please check to make sure that everything is up-to-date and add any missing information!"
+msgstr ""
+"We used some information from your GCaccount information to get started. "
+"Please check to make sure that everything is up-to-date and add any "
+"missing information!"
 
 #: 119:21 src/components/OnboardStep2.js
 msgid "Step2T2"
@@ -41,4 +44,20 @@ msgstr ""
 #: 166:21 src/components/OnboardStep2.js
 msgid "Next"
 msgstr "Continue"
+
+#: 91:29 src/components/OnboardStep2.js
+msgid "Full name"
+msgstr ""
+
+#: 107:29 src/components/OnboardStep2.js
+msgid "Work email"
+msgstr ""
+
+#: 127:31 src/components/OnboardStep2.js
+msgid "English job title"
+msgstr ""
+
+#: 145:31 src/components/OnboardStep2.js
+msgid "French job title"
+msgstr ""
 

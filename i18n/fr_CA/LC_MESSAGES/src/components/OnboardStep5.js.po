@@ -16,29 +16,29 @@ msgstr ""
 
 #: 91:13 src/components/OnboardStep5.js
 msgid "Step5T1"
-msgstr ""
+msgstr "Votre équipe"
 
 #: 94:18 src/components/OnboardStep5.js
 msgid "Step5D1"
-msgstr ""
+msgstr "Les équipes sont créées par les superviseurs pour montrer les personnes qui travaillent ensemble et sur quoi elles travaillent. "
 
 #: 226:17 src/components/OnboardStep5.js
 msgid "Back"
-msgstr ""
+msgstr "Retour"
 
 #: 233:17 src/components/OnboardStep5.js
 msgid "Next"
-msgstr ""
+msgstr "Enregistrer"
 
 #: 96:18 src/components/OnboardStep5.js
 msgid "Step5D2"
-msgstr ""
+msgstr "Trouvez votre superviseur et demandez à vous joindre à une équipe. Vous pouvez sauter cette étape si votre superviseur n’a pas encore de GCprofil ou une équipe."
 
 #: 120:27 src/components/OnboardStep5.js
 msgid "Supervisor"
-msgstr ""
+msgstr "Superviseur"
 
 #: 178:25 src/components/OnboardStep5.js
 msgid "Teams"
-msgstr ""
+msgstr "Équipes"
 

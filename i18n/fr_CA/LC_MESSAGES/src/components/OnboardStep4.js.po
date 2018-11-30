@@ -16,21 +16,21 @@ msgstr ""
 
 #: 17:11 src/components/OnboardStep4.js
 msgid "Step4T1"
-msgstr ""
+msgstr "Votre avatar"
 
 #: 25:15 src/components/OnboardStep4.js
 msgid "Back"
-msgstr ""
+msgstr "Retour"
 
 #: 32:15 src/components/OnboardStep4.js
 msgid "Next"
-msgstr ""
+msgstr "Continuer"
 
 #: 20:14 src/components/OnboardStep4.js
 msgid "Step4D1"
-msgstr ""
+msgstr "Mettons un visage à ce nom! Une photo aidera les autres à vous reconnaître, à bâtir la confiance et à rendre votre profil plus sympathique. Votre avatar n’a pas besoin d’être un portrait, mais gardez-le professionnel! "
 
 #: 21:14 src/components/OnboardStep4.js
 msgid "Step4D2"
-msgstr ""
+msgstr "Remarque : Vous pouvez télécharger n’importe quelle taille d’image, elle sera automatiquement redimensionnée pour s’adapter à l’interface."
 

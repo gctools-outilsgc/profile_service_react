@@ -88,7 +88,7 @@ class OnboardStep2 extends Component {
                     values={[{
                 lang: '',
                 value: this.state.name || '',
-                placeholder: 'Name',
+                placeholder: __('Full name'),
               }]}
                     showLabel={false}
                     onChange={(e) => {
@@ -104,7 +104,7 @@ class OnboardStep2 extends Component {
                     values={[{
                 lang: '',
                 value: this.state.email || '',
-                placeholder: 'Email',
+                placeholder: __('Work email'),
               }]}
                     showLabel={false}
                     onChange={(e) => {
@@ -124,7 +124,7 @@ class OnboardStep2 extends Component {
                 {
                   lang: 'en_CA',
                   value: this.state.titleEn || '',
-                  placeholder: __('Title'),
+                  placeholder: __('English job title'),
                 },
               ]}
                     onChange={(e) => {
@@ -142,7 +142,7 @@ class OnboardStep2 extends Component {
                 {
                   lang: 'fr_CA',
                   value: this.state.titleFr || '',
-                  placeholder: __('Title'),
+                  placeholder: __('French job title'),
                 },
               ]}
                     onChange={(e) => {

@@ -34,3 +34,19 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
+#: src/components/OnboardStep2.js 91:29
+msgid "Full name"
+msgstr ""
+
+#: src/components/OnboardStep2.js 107:29
+msgid "Work email"
+msgstr ""
+
+#: src/components/OnboardStep2.js 127:31
+msgid "English job title"
+msgstr ""
+
+#: src/components/OnboardStep2.js 145:31
+msgid "French job title"
+msgstr ""
+
