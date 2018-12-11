@@ -182,42 +182,44 @@ class OnboardStep3 extends Component {
             </h2>
             <Row>
               <Col md="3">
-                <ReactI18nEdit
-                  edit
-                  values={[{
-                          lang: '',
-                          value: this.state.officePhone || '',
-                          placeholder: __('Phone number'),
-                        }]}
-                  showLabel={false}
-                  type="tel"
-                  onChange={(e) => {
-                          if (e.value.length <= 15) {
-                            this.setState({
-                              officePhone: e.value,
-                            });
-                          }
-                        }}
-                />
+                <label htmlFor="officePhone">
+                  {__('Phone number')}
+                  <small className="text-muted ml-2">
+                        1234567890
+                  </small>
+                  <input
+                    id="officePhone"
+                    type="tel"
+                    className="form-control"
+                    value={this.state.officePhone || ''}
+                    pattern="^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$"
+                    onChange={(e) => {
+                      this.setState({
+                        officePhone: e.target.value,
+                      });
+                    }}
+                  />
+                </label>
               </Col>
               <Col md="3">
-                <ReactI18nEdit
-                  edit
-                  values={[{
-                          lang: '',
-                          value: this.state.mobilePhone || '',
-                          placeholder: __('Mobile phone number'),
-                        }]}
-                  showLabel={false}
-                  type="tel"
-                  onChange={(e) => {
-                          if (e.value.length <= 15) {
-                            this.setState({
-                              mobilePhone: e.value,
-                            });
-                          }
-                        }}
-                />
+                <label htmlFor="mobilePhone">
+                  {__('Mobile phone number')}
+                  <small className="text-muted ml-2">
+                        1234567890
+                  </small>
+                  <input
+                    id="mobilePhone"
+                    type="tel"
+                    className="form-control"
+                    value={this.state.mobilePhone || ''}
+                    pattern="^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$"
+                    onChange={(e) => {
+                      this.setState({
+                        mobilePhone: e.target.value,
+                      });
+                    }}
+                  />
+                </label>
               </Col>
             </Row>
             <Row className="m-2 border-top">

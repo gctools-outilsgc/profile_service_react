@@ -7,7 +7,8 @@ import {
   CardBody,
   Modal,
   ModalBody,
-  ModalHeader
+  ModalHeader,
+  Form
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 import LocalizedComponent
@@ -16,6 +17,7 @@ import ReactI18nEdit from '@gctools-components/react-i18n-edit';
 
 import OrgTierCreate from './OrgTierCreate';
 import LoadingOverlay from './LoadingOverlay';
+import UserAvatar from './UserAvatar';
 import { orgChartSupervisorQuery, orgChartEmpQuery } from './GQLOrgChart';
 
 const defaultNewOrgTier = { nameEn: '', nameFr: '' };
@@ -334,27 +336,33 @@ class ProfileInfo extends Component {
           >
             <ModalBody>
               <ModalHeader>Basic Info</ModalHeader>
-              <Row>
+              <Form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  this.onSave();
+                }}
+              >
                 <div className="w-50 mx-auto basic-form-holder">
                   <div>
-                    <ReactI18nEdit
-                      edit
-                      values={[{
-                    lang: '',
-                    value: this.state.profile.name || '',
-                    placeholder: 'Name',
-                  }]}
-                      showLabel={false}
-                      onChange={(data) => {
-                    this.setState({
-                      profile: Object.assign(
-                        {},
-                        this.state.profile,
-                        { name: data.value },
-                      ),
-                    });
-                  }}
-                    />
+                    <label htmlFor="nameTest">
+                      {__('Full name')}
+                      <input
+                        required
+                        type="text"
+                        id="nameTest"
+                        className="form-control"
+                        value={this.state.profile.name || ''}
+                        onChange={(e) => {
+                          this.setState({
+                            profile: Object.assign(
+                              {},
+                              this.state.profile,
+                              { name: e.target.value },
+                            ),
+                          });
+                        }}
+                      />
+                    </label>
                     <ReactI18nEdit
                       edit
                       lang={localizer.lang}
@@ -405,50 +413,52 @@ class ProfileInfo extends Component {
                   </div>
                   <Row className="mt-3 border-top pt-2">
                     <Col sm="6">
-                      <ReactI18nEdit
-                        edit
-                        values={[{
-                            lang: '',
-                            value: this.state.profile.officePhone || '',
-                            placeholder: __('Phone number'),
-                          }]}
-                        showLabel={false}
-                        type="tel"
-                        onChange={(data) => {
-                            if (data.value.length <= 15) {
-                              this.setState({
-                                profile: Object.assign(
-                                  {},
-                                  this.state.profile,
-                                  { officePhone: data.value },
-                                ),
-                              });
-                            }
+                      <label htmlFor="officePhone">
+                        {__('Phone number')}
+                        <small className="text-muted ml-2">
+                          1234567890
+                        </small>
+                        <input
+                          id="officePhone"
+                          type="tel"
+                          className="form-control"
+                          value={this.state.profile.officePhone || ''}
+                          pattern="^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$"
+                          onChange={(e) => {
+                            this.setState({
+                              profile: Object.assign(
+                                {},
+                                this.state.profile,
+                                { officePhone: e.target.value },
+                              ),
+                            });
                           }}
-                      />
+                        />
+                      </label>
                     </Col>
                     <Col sm="6">
-                      <ReactI18nEdit
-                        edit
-                        values={[{
-                            lang: '',
-                            value: this.state.profile.mobilePhone || '',
-                            placeholder: __('Mobile phone number'),
-                          }]}
-                        showLabel={false}
-                        type="tel"
-                        onChange={(data) => {
-                            if (data.value.length <= 15) {
-                              this.setState({
-                                profile: Object.assign(
-                                  {},
-                                  this.state.profile,
-                                  { mobilePhone: data.value },
-                                ),
-                              });
-                            }
+                      <label htmlFor="mobilePhone">
+                        {__('Mobile phone number')}
+                        <small className="text-muted ml-2">
+                              1234567890
+                        </small>
+                        <input
+                          id="mobilePhone"
+                          type="tel"
+                          className="form-control"
+                          value={this.state.profile.mobilePhone || ''}
+                          pattern="^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$"
+                          onChange={(e) => {
+                            this.setState({
+                              profile: Object.assign(
+                                {},
+                                this.state.profile,
+                                { mobilePhone: e.target.value },
+                              ),
+                            });
                           }}
-                      />
+                        />
+                      </label>
                     </Col>
 
                     <Col sm="12" className="mt-3 border-top">
@@ -535,8 +545,8 @@ class ProfileInfo extends Component {
                   <Button
                     floated="right"
                     size="small"
-                    primary
-                    onClick={this.onSave}
+                    color="primary"
+                    type="submit"
                   >
                     {__('Save')}
                   </Button>
@@ -559,7 +569,7 @@ class ProfileInfo extends Component {
                     {__('Cancel')}
                   </Button>
                 </div>
-              </Row>
+              </Form>
             </ModalBody>
           </Modal>
           {editButtons}
@@ -721,6 +731,13 @@ class ProfileInfo extends Component {
                   />
                 </label>
               </Button>
+              <UserAvatar
+                edit
+                gcID={this.state.profile.gcID}
+                avatar={this.state.profile.avatar}
+                myGcID={myGcID}
+                accessToken={accessToken}
+              />
             </Col>
             <Col xs="10">
               <div className="text-primary h2 mb-0">

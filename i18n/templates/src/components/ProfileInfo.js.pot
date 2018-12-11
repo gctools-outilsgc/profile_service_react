@@ -122,3 +122,7 @@ msgstr ""
 msgid "Create new team"
 msgstr ""
 
+#: src/components/ProfileInfo.js 366:23
+msgid "Full name"
+msgstr ""
+

@@ -83,36 +83,38 @@ class OnboardStep2 extends Component {
                   <p>{__('Step2D1')}</p>
                 </Col>
                 <Col md="6">
-                  <ReactI18nEdit
-                    edit
-                    values={[{
-                lang: '',
-                value: this.state.name || '',
-                placeholder: __('Full name'),
-              }]}
-                    showLabel={false}
-                    onChange={(e) => {
-                this.setState({
-                  name: e.value,
-                });
-              }}
-                  />
+                  <label htmlFor="nameTest">
+                    {__('Full name')}
+                    <input
+                      required
+                      type="text"
+                      id="nameTest"
+                      className="form-control"
+                      value={this.state.name || ''}
+                      onChange={(e) => {
+                        this.setState({
+                          name: e.target.value,
+                        });
+                      }}
+                    />
+                  </label>
                 </Col>
                 <Col md="6">
-                  <ReactI18nEdit
-                    edit
-                    values={[{
-                lang: '',
-                value: this.state.email || '',
-                placeholder: __('Work email'),
-              }]}
-                    showLabel={false}
-                    onChange={(e) => {
-                this.setState({
-                  email: e.value,
-                });
-              }}
-                  />
+                  <label htmlFor="emailTest">
+                    {__('Work email')}
+                    <input
+                      id="emailTest"
+                      type="email"
+                      required
+                      className="form-control"
+                      value={this.state.email || ''}
+                      onChange={(e) => {
+                        this.setState({
+                          email: e.target.value,
+                        });
+                      }}
+                    />
+                  </label>
                 </Col>
               </Row>
               <Row>
