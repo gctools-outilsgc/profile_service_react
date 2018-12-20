@@ -22,11 +22,6 @@ class UserAvatar extends Component {
     this.state = {
       fileUrl: '',
     };
-    this.handleUpload = this.handleUpload.bind(this);
-  }
-
-  handleUpload() {
-    this.setState({ fileUrl: 'ha!' });
   }
 
   render() {
@@ -66,15 +61,20 @@ class UserAvatar extends Component {
             <Button>
               <label htmlFor="avatarUploadTest">
                 Upload
-                {this.state.fileUrl}
                 <input
                   type="file"
                   id="avatarUploadTest"
                   style={{ display: 'none' }}
                   required
                   onChange={({ target }) => {
-               console.log(target.files[0]);
-               this.handleUpload();
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                      this.setState({
+                        fileUrl: target.files[0],
+                      });
+                    };
+                    reader.readAsDataURL(target.files[0]);
+               console.log(this.state.fileUrl);
               }}
                 />
               </label>
