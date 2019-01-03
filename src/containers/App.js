@@ -25,10 +25,10 @@ import oidcConfig from 'oidcConfig'; // eslint-disable-line
 import Home from './Home';
 import Profile from './Profile';
 import Onboard from './Onboard';
-import ProfileSearch from '../components/ProfileSearch';
+import ProfileSearch from '../components/core/ProfileSearch';
 
 import { loginAction, logoutAction, clearErrorAction } from '../store';
-import '../Search.css';
+import '../assets/css/Search.css';
 
 const changeLanguage = () => {
   const lang = (localizer.lang === 'en_CA') ? 'fr_CA' : 'en_CA';
@@ -37,7 +37,7 @@ const changeLanguage = () => {
 };
 
 const LanguageToggle = () => (
-  <Button compact onClick={changeLanguage}>
+  <Button onClick={changeLanguage}>
     {__('FR')}
   </Button>
 );
@@ -157,8 +157,6 @@ class App extends React.Component {
                               }
                             }}
                               label={this.state.name || __('Login')}
-                              primary
-                              compact
                             >
                               {this.state.name || __('Login')}
                             </Button>

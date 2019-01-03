@@ -4,7 +4,7 @@ import LocalizedComponent
 
 // import { Card, CardBody } from 'reactstrap';
 
-import OnboardMod from '../components/GQLOnboard';
+import OnboardMod from '../components/onboard/GQLOnboard';
 
 class Onboard extends Component {
   componentDidMount() {

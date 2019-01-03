@@ -1,0 +1,36 @@
+
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2018-12-21 10:47-0500\n"
+"PO-Revision-Date: 2018-12-21 10:47-0500\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en_CA\n"
+"Language-Team: en_CA <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: 14:11 src/components/onboard/OnboardStep4.js
+msgid "Step4T1"
+msgstr "Your avatar"
+
+#: 17:14 src/components/onboard/OnboardStep4.js
+msgid "Step4D1"
+msgstr "Let's put a face to that name! A photo will help others recognize you, builds trust, and makes your profile more personable. Your avatar doesn’t need to be a headshot, but keep it professional! "
+
+#: 18:14 src/components/onboard/OnboardStep4.js
+msgid "Step4D2"
+msgstr "Note: you can upload any image size, it will automatically be resized to fit."
+
+#: 26:15 src/components/onboard/OnboardStep4.js
+msgid "Back"
+msgstr ""
+
+#: 33:15 src/components/onboard/OnboardStep4.js
+msgid "Next"
+msgstr "Continue"
+

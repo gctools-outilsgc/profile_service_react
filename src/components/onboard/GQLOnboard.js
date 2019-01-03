@@ -55,15 +55,7 @@ query profileInfoQuery($gcID: String!) {
     }
   }
 }`;
-/*
-const modifyProfileMutation = gql`
-mutation modifyPr($gcID: String!, $profileInfo: ModifyProfileInput!) {
-  modifyProfile(gcId: $gcID, profileInfo: $profileInfo) {
-    gcID
-  }
-}
-`;
-*/
+
 const mapStateToProps = ({ user }) => {
   const props = {};
   if (user) {

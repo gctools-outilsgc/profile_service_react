@@ -1,0 +1,28 @@
+msgid ""
+msgstr ""
+"Language : en\n"
+"Plural-Forms : nplurals=2; plural=(n != 1);\n"
+"MIME-Version : 1.0\n"
+"Content-Type : text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding : 8bit\n"
+
+#: src/components/onboard/OnboardStep4.js 14:11
+msgid "Step4T1"
+msgstr ""
+
+#: src/components/onboard/OnboardStep4.js 17:14
+msgid "Step4D1"
+msgstr ""
+
+#: src/components/onboard/OnboardStep4.js 18:14
+msgid "Step4D2"
+msgstr ""
+
+#: src/components/onboard/OnboardStep4.js 26:15
+msgid "Back"
+msgstr ""
+
+#: src/components/onboard/OnboardStep4.js 33:15
+msgid "Next"
+msgstr ""
+

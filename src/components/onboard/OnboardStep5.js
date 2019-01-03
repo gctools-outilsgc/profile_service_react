@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import LocalizedComponent
   from '@gctools-components/react-i18n-translation-webpack';
 
@@ -7,9 +8,8 @@ import { Query, Mutation } from 'react-apollo';
 
 import { Button, Row, Col } from 'reactstrap';
 
-import OrgTierChooser from './OrgTierChooser';
-import ProfileSearch from './ProfileSearch';
-/* eslint react/prop-types: 0 */
+import OrgTierChooser from '../OrgTierChooser';
+import ProfileSearch from '../core/ProfileSearch';
 
 const orgTeamQuery = gql`
 query orgTeamQuery($gcID: String!) {
@@ -52,10 +52,6 @@ class OnboardStep5 extends Component {
 
     this.editSup = this.editSup.bind(this);
     this.editOrg = this.editOrg.bind(this);
-  }
-
-  componentDidMount() {
-    console.log('clam down');
   }
 
   editSup() {
@@ -245,5 +241,20 @@ class OnboardStep5 extends Component {
     );
   }
 }
+
+OnboardStep5.defaultProps = {
+  userObject: {},
+  nextStep: undefined,
+  previousStep: undefined,
+};
+
+OnboardStep5.propTypes = {
+  userObject: PropTypes.shape({
+    gcID: PropTypes.string,
+  }),
+  token: PropTypes.string.isRequired,
+  nextStep: PropTypes.func,
+  previousStep: PropTypes.func,
+};
 
 export default LocalizedComponent(OnboardStep5);

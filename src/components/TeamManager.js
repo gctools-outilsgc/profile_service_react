@@ -220,18 +220,18 @@ TeamManager.propTypes = {
     name: PropTypes.string.isRequired,
     gcID: PropTypes.string.isRequired,
     org: PropTypes.shape({
-      id: PropTypes.number,
+      id: PropTypes.string,
     }),
   })).isRequired,
   teamMembers: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
     gcID: PropTypes.string.isRequired,
     org: PropTypes.shape({
-      id: PropTypes.number,
+      id: PropTypes.string,
     }),
   })).isRequired,
   handleSave: PropTypes.func.isRequired,
-  orgId: PropTypes.number.isRequired,
+  orgId: PropTypes.string.isRequired,
   singleSelection: PropTypes.bool,
   /* placeholder: PropTypes.string,
   name: PropTypes.string, */

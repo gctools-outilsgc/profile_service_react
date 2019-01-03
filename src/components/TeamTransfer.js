@@ -9,7 +9,7 @@ import {
 } from 'reactstrap';
 import LocalizedComponent
   from '@gctools-components/react-i18n-translation-webpack';
-import ProfileSearch from './ProfileSearch';
+import ProfileSearch from './core/ProfileSearch';
 
 class TeamTransfer extends Component {
   constructor(props) {
@@ -72,7 +72,6 @@ class TeamTransfer extends Component {
                   });
                 }}
                 onResultSelect={(data) => {
-                  console.log(data);
                   /* const sup = (this.state.profile.supervisor) ?
                     this.state.profile.supervisor.gcID : null; */
                   this.setState({

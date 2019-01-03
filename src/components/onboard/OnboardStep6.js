@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import LocalizedComponent
   from '@gctools-components/react-i18n-translation-webpack';
 
 import { Button, Row } from 'reactstrap';
-/* eslint react/prop-types: 0 */
+/* eslint react/prefer-stateless-function: 0 */
 
 class OnboardStep6 extends Component {
-  componentDidMount() {
-    console.log('clam down');
-  }
-
   render() {
     const {
       forwardID,
@@ -37,5 +34,9 @@ class OnboardStep6 extends Component {
     );
   }
 }
+
+OnboardStep6.propTypes = {
+  forwardID: PropTypes.string.isRequired,
+};
 
 export default LocalizedComponent(OnboardStep6);

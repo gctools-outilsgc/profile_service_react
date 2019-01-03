@@ -1,0 +1,71 @@
+
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2018-12-21 10:47-0500\n"
+"PO-Revision-Date: 2018-12-21 10:47-0500\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en_CA\n"
+"Language-Team: en_CA <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: 14:11 src/components/onboard/OnboardStep1.js
+msgid "Welcome"
+msgstr "Welcome to GCprofile!"
+
+#: 17:11 src/components/onboard/OnboardStep1.js
+msgid "Step1Sub1"
+msgstr "What is GCprofile?"
+
+#: 19:12 src/components/onboard/OnboardStep1.js
+msgid "welcome body"
+msgstr ""
+"GCprofile is a self-service application that enhances collaboration by "
+"providing accurate user contact and organizational information. With "
+"GCprofile, you can…"
+
+#: 21:15 src/components/onboard/OnboardStep1.js
+msgid "Step1List1"
+msgstr "Easily update your contact information so that it is always accurate! "
+
+#: 22:15 src/components/onboard/OnboardStep1.js
+msgid "Step1List2"
+msgstr ""
+"Have one single profile across all the digital workspace services and "
+"approved applications. "
+
+#: 23:15 src/components/onboard/OnboardStep1.js
+msgid "Step1List3"
+msgstr "Quickly find others and start collaborating."
+
+#: 24:15 src/components/onboard/OnboardStep1.js
+msgid "Step1List4"
+msgstr "Create teams and self-manage members (for supervisors)."
+
+#: 27:11 src/components/onboard/OnboardStep1.js
+msgid "Step1Sub2"
+msgstr "Why use GCprofile?"
+
+#: 29:12 src/components/onboard/OnboardStep1.js
+msgid "Step1Sub2Desc"
+msgstr ""
+"Being able to connect with people is the first step to successful "
+"collaboration. Your profile lets others know who you are and helps you "
+"make important connections."
+
+#: 30:12 src/components/onboard/OnboardStep1.js
+msgid "Step1Sub2Desc2"
+msgstr ""
+"Having easy access to up-to-date contact "
+"information means that it is easy to connect, share and engage with the "
+"people you need to work better and smarter!"
+
+#: 37:15 src/components/onboard/OnboardStep1.js
+msgid "Get Started"
+msgstr ""
+

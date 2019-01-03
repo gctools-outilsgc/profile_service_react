@@ -13,7 +13,7 @@ import { createLink } from 'apollo-absinthe-upload-link';
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
-import './index.css';
+import './assets/css/index.css';
 import App from './containers/App';
 import registerServiceWorker from './registerServiceWorker';
 import store, { errorAction } from './store';

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import LocalizedComponent
   from '@gctools-components/react-i18n-translation-webpack';
 
@@ -7,7 +8,6 @@ import { Mutation } from 'react-apollo';
 
 import { Button, Form, Row, Col } from 'reactstrap';
 import ReactI18nEdit from '@gctools-components/react-i18n-edit';
-/* eslint react/prop-types: 0 */
 
 const modifyProfileMutation = gql`
 mutation modifyPr($gcID: String!, $profileInfo: ModifyProfileInput!) {
@@ -27,10 +27,6 @@ class OnboardStep2 extends Component {
       titleFr: this.props.userObject.titleFr || '',
     };
     this.handleNext = this.handleNext.bind(this);
-  }
-
-  componentDidMount() {
-    console.log('clam down');
   }
 
   handleNext() {
@@ -122,6 +118,7 @@ class OnboardStep2 extends Component {
                   <ReactI18nEdit
                     edit
                     lang={localizer.lang}
+                    forId="titleEn"
                     values={[
                 {
                   lang: 'en_CA',
@@ -140,6 +137,7 @@ class OnboardStep2 extends Component {
                   <ReactI18nEdit
                     edit
                     lang={localizer.lang}
+                    forId="titleFr"
                     values={[
                 {
                   lang: 'fr_CA',
@@ -172,5 +170,22 @@ class OnboardStep2 extends Component {
     );
   }
 }
+
+OnboardStep2.defaultProps = {
+  userObject: {},
+  nextStep: undefined,
+};
+
+OnboardStep2.propTypes = {
+  userObject: PropTypes.shape({
+    gcID: PropTypes.string,
+    name: PropTypes.string,
+    email: PropTypes.string,
+    titleEn: PropTypes.string,
+    titleFr: PropTypes.string,
+  }),
+  token: PropTypes.string.isRequired,
+  nextStep: PropTypes.func,
+};
 
 export default LocalizedComponent(OnboardStep2);

@@ -25,7 +25,7 @@ class InputForm extends React.Component {
           placeholder={this.props.placeholder}
         />
         <Button
-          primary
+          color="primary"
           onClick={() =>
             this.props.handleSubmit(this.state.value)}
         >

@@ -4,12 +4,9 @@ import LocalizedComponent
 
 import { Button, Row } from 'reactstrap';
 /* eslint react/prop-types: 0 */
+/* eslint react/prefer-stateless-function: 0 */
 
 class OnboardStep4 extends Component {
-  componentDidMount() {
-    console.log('clam down');
-  }
-
   render() {
     return (
       <div>

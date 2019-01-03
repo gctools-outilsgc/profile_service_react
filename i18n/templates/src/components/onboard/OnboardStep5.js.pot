@@ -1,0 +1,36 @@
+msgid ""
+msgstr ""
+"Language : en\n"
+"Plural-Forms : nplurals=2; plural=(n != 1);\n"
+"MIME-Version : 1.0\n"
+"Content-Type : text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding : 8bit\n"
+
+#: src/components/onboard/OnboardStep5.js 87:13
+msgid "Step5T1"
+msgstr ""
+
+#: src/components/onboard/OnboardStep5.js 91:18
+msgid "Step5D1"
+msgstr ""
+
+#: src/components/onboard/OnboardStep5.js 92:18
+msgid "Step5D2"
+msgstr ""
+
+#: src/components/onboard/OnboardStep5.js 116:25
+msgid "Supervisor"
+msgstr ""
+
+#: src/components/onboard/OnboardStep5.js 174:25
+msgid "Teams"
+msgstr ""
+
+#: src/components/onboard/OnboardStep5.js 225:17
+msgid "Back"
+msgstr ""
+
+#: src/components/onboard/OnboardStep5.js 232:17
+msgid "Next"
+msgstr ""
+

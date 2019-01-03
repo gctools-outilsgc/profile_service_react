@@ -24,11 +24,11 @@ import { Query, Mutation } from 'react-apollo';
 import LocalizedComponent
   from '@gctools-components/react-i18n-translation-webpack';
 
-import InputForm from './InputForm';
+import InputForm from './core/InputForm';
 import TeamManager from './TeamManager';
 import TeamTransfer from './TeamTransfer';
 import OrgTierChooser from './OrgTierChooser';
-import ProfileSearch from './ProfileSearch';
+import ProfileSearch from './core/ProfileSearch';
 
 const organizationTierQuery = gql`
 query organizationTierQuery($gcID: String!) {
@@ -179,7 +179,7 @@ class OrgManager extends React.Component {
             nameEn,
             nameFr,
           }) => (
-            <NavItem>
+            <NavItem key={id}>
               <NavLink
                 href="#!"
                 onClick={() => { this.toggle(id); }}
@@ -193,7 +193,7 @@ class OrgManager extends React.Component {
             nameFr,
             OrgMembers,
           }) => (
-            <TabPane tabId={id}>
+            <TabPane tabId={id} key={id}>
               <Mutation
                 mutation={transferOwnership}
                 refetchQueries={[{
@@ -229,7 +229,6 @@ class OrgManager extends React.Component {
                   <Button
                     floated="right"
                     size="small"
-                    negative
                     onClick={() => {
                                 deleteOrgTier({
                                   variables: {
@@ -413,7 +412,6 @@ class OrgManager extends React.Component {
                               {modifyProfile => (
                                 <ProfileSearch
                                   onResultSelect={(s) => {
-                                  console.log(s.id);
                                   modifyProfile({
                                     variables: {
                                       gcID: String(gcID),
@@ -450,7 +448,6 @@ class OrgManager extends React.Component {
                                   supervisor={supTest}
                                   gcID={gcID}
                                   onTeamChange={(t) => {
-                                    console.log(t);
                                     modifyProfile({
                                         variables: {
                                           gcID: String(gcID),
@@ -496,11 +493,12 @@ class OrgManager extends React.Component {
 OrgManager.defaultProps = {
   // editMode: false,
   myGcID: '',
+  accessToken: '',
 };
 
 OrgManager.propTypes = {
   gcID: PropTypes.string.isRequired,
-  accessToken: PropTypes.string.isRequired,
+  accessToken: PropTypes.string,
   myGcID: PropTypes.string,
 };
 

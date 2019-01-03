@@ -113,7 +113,7 @@ class OrgTierChooser extends React.Component {
                 value={this.state.newTeamVal.id}
               >
                 {tierOptions.map(x => (
-                  <option value={x.value}>{x.text}</option>
+                  <option key={x.value} value={x.value}>{x.text}</option>
               ))}
               </Input>
             </div>

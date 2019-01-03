@@ -16,8 +16,8 @@ import LocalizedComponent
 import ReactI18nEdit from '@gctools-components/react-i18n-edit';
 
 import OrgTierCreate from './OrgTierCreate';
-import LoadingOverlay from './LoadingOverlay';
-import UserAvatar from './UserAvatar';
+import LoadingOverlay from './core/LoadingOverlay';
+import UserAvatar from './core/UserAvatar';
 import { orgChartSupervisorQuery, orgChartEmpQuery } from './GQLOrgChart';
 
 const defaultNewOrgTier = { nameEn: '', nameFr: '' };
@@ -249,7 +249,6 @@ class ProfileInfo extends Component {
         Promise.all(operations).then(() => {
           refetch();
         }).catch(() => {
-          console.log('An error has occured.');
           this.setState({ editMode: true, saving: false });
         });
       } else {
@@ -309,7 +308,6 @@ class ProfileInfo extends Component {
           <Button
             floated="right"
             size="small"
-            basic
             onClick={() => {
               this.setState({
                 editMode: false,
@@ -393,6 +391,7 @@ class ProfileInfo extends Component {
                     />
                     <ReactI18nEdit
                       edit
+                      forId="email"
                       values={[{
                             lang: '',
                             value: this.state.profile.email || '',
@@ -466,6 +465,7 @@ class ProfileInfo extends Component {
                         <Col sm="6">
                           <ReactI18nEdit
                             edit
+                            forId="streetAddress"
                             values={[{
                             lang: '',
                             value:
@@ -482,6 +482,7 @@ class ProfileInfo extends Component {
                         <Col sm="6">
                           <ReactI18nEdit
                             edit
+                            forId="city"
                             values={[{
                             lang: '',
                             value: this.state.profile.address.city || '',
@@ -497,6 +498,7 @@ class ProfileInfo extends Component {
                         <Col sm="6">
                           <ReactI18nEdit
                             edit
+                            forId="province"
                             values={[{
                             lang: '',
                             value: this.state.profile.address.province || '',
@@ -512,6 +514,7 @@ class ProfileInfo extends Component {
                         <Col sm="6">
                           <ReactI18nEdit
                             edit
+                            forId="postalCode"
                             values={[{
                             lang: '',
                             value: this.state.profile.address.postalCode || '',
@@ -527,6 +530,7 @@ class ProfileInfo extends Component {
                         <Col sm="6">
                           <ReactI18nEdit
                             edit
+                            forId="country"
                             values={[{
                             lang: '',
                             value: this.state.profile.address.country || '',
@@ -553,7 +557,6 @@ class ProfileInfo extends Component {
                   <Button
                     floated="right"
                     size="small"
-                    basic
                     onClick={() => {
               this.setState({
                 editOpen: false,
@@ -581,7 +584,6 @@ class ProfileInfo extends Component {
               <Button
                 size="small"
                 floated="right"
-                basic
                 onClick={onClick}
               >
                 {__('Team')}
@@ -657,7 +659,6 @@ class ProfileInfo extends Component {
               <Button
                 floated="left"
                 size="small"
-                basic
                 onClick={() => {
                   mutateProfile({
                     refetchQueries,
@@ -696,7 +697,6 @@ class ProfileInfo extends Component {
               </div>
               <Button
                 size="small"
-                basic
                 style={{
             margin: '0 auto',
             display: (this.state.editMode) ? 'block' : 'none',
@@ -741,15 +741,7 @@ class ProfileInfo extends Component {
             </Col>
             <Col xs="10">
               <div className="text-primary h2 mb-0">
-                <ReactI18nEdit
-                  edit={this.state.editMode}
-                  values={[{
-                    lang: '',
-                    value: this.state.profile.name || '',
-                    placeholder: 'name',
-                  }]}
-                  showLabel={false}
-                />
+                {this.state.profile.name || ''}
               </div>
               <div className="item-meta-ph h5 mb-0">
                 <ReactI18nEdit
@@ -784,15 +776,7 @@ class ProfileInfo extends Component {
                   <div>
                     <div className="font-weight-bold">{__('Email')} </div>
                     <span className="list-desc-ph">
-                      <ReactI18nEdit
-                        edit={this.state.editMode}
-                        values={[{
-                            lang: '',
-                            value: this.state.profile.email || '',
-                            placeholder: __('Email'),
-                          }]}
-                        showLabel={false}
-                      />
+                      {this.state.profile.email || ''}
                     </span>
                   </div>
                 </li>
@@ -800,15 +784,7 @@ class ProfileInfo extends Component {
                   <div>
                     <div className="font-weight-bold">{__('Work')}</div>
                     <span className="list-desc-ph">
-                      <ReactI18nEdit
-                        edit={this.state.editMode}
-                        values={[{
-                            lang: '',
-                            value: this.state.profile.officePhone || '',
-                            placeholder: __('Phone number'),
-                          }]}
-                        showLabel={false}
-                      />
+                      {this.state.profile.officePhone || ''}
                     </span>
                   </div>
                 </li>
@@ -816,14 +792,7 @@ class ProfileInfo extends Component {
                   <div>
                     <div className="font-weight-bold">{__('Mobile')}</div>
                     <span className="list-desc-ph">
-                      <ReactI18nEdit
-                        edit={this.state.editMode}
-                        values={[{
-                            lang: '',
-                            value: this.state.profile.mobilePhone || '',
-                            placeholder: __('Mobile phone number'),
-                          }]}
-                      />
+                      {this.state.profile.mobilePhone || ''}
                     </span>
                   </div>
                 </li>
@@ -832,60 +801,19 @@ class ProfileInfo extends Component {
                     <div className="font-weight-bold">{__('Address')}</div>
                     <span className="list-desc-ph">
                       <span className="mr-1">
-                        <ReactI18nEdit
-                          edit={this.state.editMode}
-                          values={[{
-                            lang: '',
-                            value:
-                              this.state.profile.address.streetAddress || '',
-                            placeholder: __('Address'),
-                          }]}
-                          error={this.state.errorState.streetAddress}
-                        />
+                        {this.state.profile.address.streetAddress || ''}
                       </span>
                       <span className="mr-1">
-                        <ReactI18nEdit
-                          edit={this.state.editMode}
-                          values={[{
-                            lang: '',
-                            value: this.state.profile.address.city || '',
-                            placeholder: __('City'),
-                          }]}
-                          error={this.state.errorState.city}
-                        />
+                        {this.state.profile.address.city || ''}
                       </span>
                       <span className="mr-1">
-                        <ReactI18nEdit
-                          edit={this.state.editMode}
-                          values={[{
-                            lang: '',
-                            value: this.state.profile.address.province || '',
-                            placeholder: __('Province'),
-                          }]}
-                          error={this.state.errorState.province}
-                        />
+                        {this.state.profile.address.province || ''}
                       </span>
                       <span className="mr-1">
-                        <ReactI18nEdit
-                          edit={this.state.editMode}
-                          values={[{
-                            lang: '',
-                            value: this.state.profile.address.postalCode || '',
-                            placeholder: __('Postal Code'),
-                          }]}
-                          error={this.state.errorState.postalCode}
-                        />
+                        {this.state.profile.address.postalCode || ''}
                       </span>
                       <span className="mr-1">
-                        <ReactI18nEdit
-                          edit={this.state.editMode}
-                          values={[{
-                            lang: '',
-                            value: this.state.profile.address.country || '',
-                            placeholder: __('Country'),
-                          }]}
-                          error={this.state.errorState.country}
-                        />
+                        {this.state.profile.address.country || ''}
                       </span>
                     </span>
                   </div>

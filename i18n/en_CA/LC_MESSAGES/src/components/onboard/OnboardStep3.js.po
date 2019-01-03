@@ -1,0 +1,70 @@
+
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2018-12-21 10:47-0500\n"
+"PO-Revision-Date: 2018-12-21 10:47-0500\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en_CA\n"
+"Language-Team: en_CA <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: 82:15 src/components/onboard/OnboardStep3.js
+msgid "Step3T1"
+msgstr "Your contact information"
+
+#: 84:16 src/components/onboard/OnboardStep3.js
+msgid "Step3D1"
+msgstr "Add your contact details to let others know how to reach you!"
+
+#: 88:19 src/components/onboard/OnboardStep3.js
+msgid "Step3T2"
+msgstr "Your phone number"
+
+#: 99:23 src/components/onboard/OnboardStep3.js
+msgid "Address"
+msgstr "Street number and name"
+
+#: 115:23 src/components/onboard/OnboardStep3.js
+msgid "City"
+msgstr ""
+
+#: 131:23 src/components/onboard/OnboardStep3.js
+msgid "Province"
+msgstr ""
+
+#: 149:23 src/components/onboard/OnboardStep3.js
+msgid "Postal Code"
+msgstr ""
+
+#: 165:23 src/components/onboard/OnboardStep3.js
+msgid "Country"
+msgstr ""
+
+#: 177:15 src/components/onboard/OnboardStep3.js
+msgid "Step3T2"
+msgstr "Your phone number"
+
+#: 182:19 src/components/onboard/OnboardStep3.js
+msgid "Phone number"
+msgstr "Work phone number"
+
+#: 202:19 src/components/onboard/OnboardStep3.js
+msgid "Mobile phone number"
+msgstr ""
+
+#: 227:19 src/components/onboard/OnboardStep3.js
+msgid "Back"
+msgstr ""
+
+#: 234:19 src/components/onboard/OnboardStep3.js
+msgid "Next"
+msgstr "Continue"
+
+msgid "Step3SubT2"
+msgstr "Your work address"

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import LocalizedComponent
   from '@gctools-components/react-i18n-translation-webpack';
 
@@ -7,7 +8,6 @@ import { Mutation } from 'react-apollo';
 
 import { Button, Form, Row, Col } from 'reactstrap';
 import ReactI18nEdit from '@gctools-components/react-i18n-edit';
-/* eslint react/prop-types: 0 */
 
 const modifyProfileMutation = gql`
 mutation modifyPr($gcID: String!, $profileInfo: ModifyProfileInput!) {
@@ -31,12 +31,8 @@ class OnboardStep3 extends Component {
     };
     this.handleClick = this.handleClick.bind(this);
   }
-  componentDidMount() {
-    console.log('clam down 3');
-  }
 
   handleClick() {
-    console.log('CLICKED');
     this.props.previousStep();
   }
 
@@ -97,6 +93,7 @@ class OnboardStep3 extends Component {
               <Col md="4">
                 <ReactI18nEdit
                   edit
+                  forId="streetAddress"
                   values={[{
           lang: '',
           value: this.state.streetAddress || '',
@@ -113,6 +110,7 @@ class OnboardStep3 extends Component {
               <Col md="4">
                 <ReactI18nEdit
                   edit
+                  forId="city"
                   values={[{
           lang: '',
           value: this.state.city || '',
@@ -129,6 +127,7 @@ class OnboardStep3 extends Component {
               <Col md="4">
                 <ReactI18nEdit
                   edit
+                  forId="province"
                   values={[{
           lang: '',
           value: this.state.province || '',
@@ -147,6 +146,7 @@ class OnboardStep3 extends Component {
               <Col md="3">
                 <ReactI18nEdit
                   edit
+                  forId="postalCode"
                   values={[{
           lang: '',
           value: this.state.postalCode || '',
@@ -163,6 +163,7 @@ class OnboardStep3 extends Component {
               <Col md="3">
                 <ReactI18nEdit
                   edit
+                  forId="country"
                   values={[{
           lang: '',
           value: this.state.country || '',
@@ -246,5 +247,30 @@ class OnboardStep3 extends Component {
     );
   }
 }
+
+OnboardStep3.defaultProps = {
+  userObject: { address: {} },
+  nextStep: undefined,
+  previousStep: undefined,
+};
+
+OnboardStep3.propTypes = {
+  userObject: PropTypes.shape({
+    gcID: PropTypes.string,
+    mobilePhone: PropTypes.string,
+    officePhone: PropTypes.string,
+    address: PropTypes.shape({
+      id: PropTypes.string,
+      streetAddress: PropTypes.string,
+      city: PropTypes.string,
+      province: PropTypes.string,
+      postalCode: PropTypes.string,
+      country: PropTypes.string,
+    }),
+  }),
+  token: PropTypes.string.isRequired,
+  nextStep: PropTypes.func,
+  previousStep: PropTypes.func,
+};
 
 export default LocalizedComponent(OnboardStep3);

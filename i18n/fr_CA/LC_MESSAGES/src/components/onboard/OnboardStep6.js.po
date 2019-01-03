@@ -1,0 +1,40 @@
+
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2018-12-21 10:47-0500\n"
+"PO-Revision-Date: 2018-12-21 10:47-0500\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr_CA\n"
+"Language-Team: fr_CA <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: 17:11 src/components/onboard/OnboardStep6.js
+msgid "Step6T1"
+msgstr "Vous avez terminé!"
+
+#: 19:12 src/components/onboard/OnboardStep6.js
+msgid "Step6D1"
+msgstr "Félicitations! Votre GCprofil a été créé avec succès."
+
+#: 20:12 src/components/onboard/OnboardStep6.js
+msgid "Step6D2"
+msgstr "Les renseignements que vous avez soumis apparaîtront dans votre profil pour que d’autres puissent les voir."
+
+#: 21:12 src/components/onboard/OnboardStep6.js
+msgid "Step6D3"
+msgstr "Vous pouvez ajouter, supprimer ou modifier des renseignements dans votre GCprofil en tout temps."
+
+#: 22:12 src/components/onboard/OnboardStep6.js
+msgid "Step6D4"
+msgstr "Vous pouvez maintenant chercher d’autres personnes dans GCprofil et commencer à collaborer!"
+
+#: 29:15 src/components/onboard/OnboardStep6.js
+msgid "View my Profile"
+msgstr "Consulter votre profil"
+
