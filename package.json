@@ -28,7 +28,7 @@
     "dotenv-expand": "4.2.0",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.8.0",
-    "jest": "20.0.4",
+    "jest": "23.0.0",
     "object-assign": "4.1.1",
     "promise": "8.0.1",
     "prop-types": "^15.6.1",
